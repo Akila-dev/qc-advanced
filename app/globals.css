@@ -3,31 +3,99 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+	--brand: #b62e32;
+	--highlight-bg: #b62e320a;
+	--highlight-bg-2: #2d2d2b08;
+	--tag: #f5edc7;
+	--text: #777e90;
+	--black: #2d2d2b;
+	--white: #ffffff;
+	--gray: #e1e1e1;
+	--transparent-bg: #111111bf;
+	--shadow: 0px 6px 20px 0px #0f132740;
+	--outline: 1px solid #2d2d2b0a;
+
+	--card: #f8f8f8;
+	--card-border: 1px solid #f0f0f0;
+
+	--rounding: 24px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+h1 {
+	@apply text-[6vw] lg:text-2xl font-semibold text-[--white];
+}
+h2 {
+	@apply text-[5.5vw] md:text-xl font-semibold text-[--black];
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+h3 {
+	@apply text-[5vw] md:text-base font-semibold text-[--black];
+}
+p {
+	@apply text-[4vw] md:text-sm text-[--text] font-normal;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.btn-1 {
+	@apply p-[0.75rem] bg-[--brand] w-full text-[--white] uppercase rounded-lg text-[4.5vw] md:text-base shadow-[--shadow] text-center;
+}
+.btn-2 {
+	@apply p-[0.75rem] bg-[--highlight-bg-2] w-full text-[--black] uppercase rounded-lg text-[4.5vw] md:text-base shadow-[--shadow] text-center;
+}
+
+.black-text {
+	@apply text-[--black] capitalize font-medium;
+}
+
+.auth-container {
+	@apply relative w-full md:w-auto max-w-[900px] md:min-w-[450px] max-h-[80%] p-0 h-screen md:h-auto pt-[10vh] md:pt-0 overflow-auto;
+}
+
+.popup-container {
+	@apply fixed top-0 right-0 w-full md:w-[300px] h-screen pt-[15vh] md:pt-0 overflow-auto;
+}
+
+.flex-v-center {
+	@apply flex items-center gap-3;
+}
+.flex-center {
+	@apply flex items-center justify-center gap-3 w-full;
+}
+
+/* ! FORMS */
+.input-block {
+	@apply space-y-2;
+}
+
+label {
+	@apply text-[--black] text-[4.5vw] md:text-base font-medium;
+}
+
+.icon-input {
+	@apply flex gap-3 p-3 bg-[--highlight-bg-2] border-[--highlight-bg-2] rounded-lg shadow-[--shadow];
+}
+.input-img {
+	@apply w-[20px] object-contain;
+}
+
+input {
+	@apply w-full bg-transparent outline-none border-none text-[4.5vw] md:text-base;
+}
+
+/* ! NAVIGATION */
+.sidenav-link {
+	@apply w-full flex gap-2 items-center text-[--text] p-3 rounded-lg hover:shadow font-medium hover:bg-[--highlight-bg-2] transition duration-1000 text-base;
+}
+
+/* ! DASHBOARD */
+.dashboard-content-box {
+	@apply w-full bg-[--white] shadow shadow-[--shadow] h-[85vh] lg:h-[75vh] rounded-t-[--rounding] lg:rounded-[--rounding];
+}
+
+/* ! POPUPS */
+.popup-content-box {
+	@apply w-full bg-[--white] shadow shadow-[--shadow] h-[85vh] lg:h-auto rounded-t-[--rounding] lg:rounded-none overflow-auto;
+}
+
+.popup-button {
+	@apply bg-[--white] lg:bg-[--card] w-[30px] max-w-[30px] min-w-[30px] h-[30px] max-h-[30px] p-[6px] rounded-full flex-center;
 }
