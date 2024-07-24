@@ -66,11 +66,11 @@ p {
 }
 
 label {
-	@apply text-[--black] text-[4.5vw] md:text-base font-medium;
+	@apply text-[--black] text-[4vw] md:text-sm font-medium;
 }
 
 .icon-input {
-	@apply flex gap-3 p-3 bg-[--highlight-bg-2] border-[--highlight-bg-2] rounded-lg shadow-[--shadow];
+	@apply flex gap-3 p-3 bg-[--highlight-bg-2] border-[--highlight-bg-2] rounded-lg shadow-[--shadow] text-[4vw] md:text-sm;
 }
 .input-img {
 	@apply w-[20px] object-contain;

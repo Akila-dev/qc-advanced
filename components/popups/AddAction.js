@@ -71,13 +71,6 @@ const DashboardSideNav = ({ close }) => {
 				<div className="input-block">
 					<label>Priority</label>
 					<div className="icon-input">
-						<Image
-							src={icons.envelope}
-							w={20}
-							h={20}
-							alt="mail"
-							className="input-img"
-						/>
 						<input
 							type="priority"
 							name="priority"
@@ -86,19 +79,19 @@ const DashboardSideNav = ({ close }) => {
 							onChange={handleChangeInput}
 							className="input"
 						/>
+						<Image
+							src={icons.caret}
+							w={20}
+							h={20}
+							alt="mail"
+							className="input-img p-[3px]"
+						/>
 					</div>
 				</div>
 				{/* DueDate */}
 				<div className="input-block">
 					<label>DueDate</label>
 					<div className="icon-input">
-						<Image
-							src={icons.envelope}
-							w={20}
-							h={20}
-							alt="mail"
-							className="input-img"
-						/>
 						<input
 							type="dueDate"
 							name="dueDate"
@@ -107,19 +100,19 @@ const DashboardSideNav = ({ close }) => {
 							onChange={handleChangeInput}
 							className="input"
 						/>
+						<Image
+							src={icons.calendar}
+							w={20}
+							h={20}
+							alt="mail"
+							className="input-img"
+						/>
 					</div>
 				</div>
 				{/* Assignees */}
 				<div className="input-block">
 					<label>Assignees</label>
 					<div className="icon-input">
-						<Image
-							src={icons.envelope}
-							w={20}
-							h={20}
-							alt="mail"
-							className="input-img"
-						/>
 						<input
 							type="assignees"
 							name="assignees"
@@ -127,6 +120,13 @@ const DashboardSideNav = ({ close }) => {
 							value={assignees}
 							onChange={handleChangeInput}
 							className="input"
+						/>
+						<Image
+							src={icons.caret}
+							w={20}
+							h={20}
+							alt="mail"
+							className="input-img p-[3px]"
 						/>
 					</div>
 				</div>
