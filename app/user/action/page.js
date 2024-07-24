@@ -30,14 +30,14 @@ export default function Action() {
 		<div className="lg:px-10">
 			<h1 className="h-[15vh] flex-center text-center">Actions</h1>
 			<div className="dashboard-content-box">
-				<div className="hidden md:flex p-8 pb-0">
+				<div className="md:p-8 pb-0">
 					<div>
 						<button
 							onClick={() => setAddAction(true)}
-							className="btn-1 flex-v-center !gap-2"
+							className="fixed bottom-[100px] right-4 !w-[60px] h-[60px] btn-1 !rounded-full gap-2 flex items-center justify-center !shadow-lg z-0 lg:relative lg:bottom-auto lg:right-0  lg:!w-auto lg:!h-auto lg:!rounded-lg"
 						>
-							<HiOutlinePlusSm className="text-[--white] text-xl" />
-							<span className="pr-1">Add Action</span>
+							<HiOutlinePlusSm className="text-[--white] text-3xl md:text-xl" />
+							<span className="pr-1 hidden lg:block">Add Action</span>
 						</button>
 					</div>
 				</div>
@@ -53,10 +53,12 @@ export default function Action() {
 						/>
 					))}
 				</div>
+
+				<div className="pb" />
 			</div>
 			{addAction && (
 				<SidePopupWrapper close={() => setAddAction(false)} title="Add Action">
-					<AddAction />
+					<AddAction close={() => setAddAction(false)} />
 				</SidePopupWrapper>
 			)}
 		</div>

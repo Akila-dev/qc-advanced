@@ -11,10 +11,6 @@ export default function LogIn() {
 		email: '',
 		password: '',
 	});
-	const [newsletterData, setNewsletterData] = useState({
-		NAME: '',
-		EMAIL: '',
-	});
 
 	const { email, password } = formData;
 

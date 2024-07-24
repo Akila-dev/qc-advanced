@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { images } from '../../constants';
-import { DashboardSideNav } from '../../components';
+import { DashboardSideNav, MobileBottomNav } from '../../components';
 
 export const metadata = {
 	title: 'Choose Your Business',
@@ -15,6 +15,9 @@ export default function RootLayout({ children }) {
 					<DashboardSideNav />
 				</div>
 				<div className="lg:pl-[250px]">{children}</div>
+				<div className="lg:hidden fixed bottom-0 left-0 h-[70px] w-full bg-[--white] border-t border-[--gray]">
+					<MobileBottomNav />
+				</div>
 			</div>
 			<div className="w-full h-full absolute top-0 left-0 -z-10">
 				<Image
