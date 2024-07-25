@@ -156,7 +156,7 @@ const ActionDetails = ({ close }) => {
 					create
 				</button>
 			</div> */}
-			<div className="pb" />
+			<div className="popup-pb" />
 		</div>
 	);
 };

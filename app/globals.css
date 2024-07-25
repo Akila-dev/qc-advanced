@@ -22,18 +22,18 @@
 }
 
 h1 {
-	@apply text-[6vw] lg:text-2xl font-semibold text-[--white];
+	@apply text-[5.5vw] lg:text-2xl font-semibold text-[--white];
 }
 h2 {
-	@apply text-[5.5vw] md:text-xl font-semibold text-[--black];
+	@apply text-[5vw] md:text-xl font-semibold text-[--black];
 }
 
 h3 {
-	@apply text-[5vw] md:text-base font-semibold text-[--black];
+	@apply text-[4.5vw] md:text-base font-semibold text-[--black];
 }
 p,
 .black-text {
-	@apply text-[4vw] md:text-sm text-[--text] font-normal;
+	@apply text-[3.75vw] md:text-sm text-[--text] font-normal;
 }
 
 .btn-1 {
@@ -60,6 +60,9 @@ p,
 .pb {
 	@apply h-[70px] lg:h-[10px];
 }
+.popup-pb {
+	@apply h-[10px] lg:h-[10px];
+}
 
 /* ! FORMS */
 .input-block {
@@ -67,11 +70,11 @@ p,
 }
 
 label {
-	@apply text-[--black] !text-[4vw] md:!text-sm font-medium;
+	@apply text-[--black] !text-[3.75vw] md:!text-sm font-medium;
 }
 
 .icon-input {
-	@apply flex gap-3 p-3 bg-[--highlight-bg-2] border-[--highlight-bg-2] rounded-lg shadow-[--shadow] text-[4vw] md:text-sm;
+	@apply flex gap-3 p-3 bg-[--highlight-bg-2] border-[--highlight-bg-2] rounded-lg shadow-[--shadow] text-[3.75vw] md:text-sm;
 }
 .input-img {
 	@apply w-[20px] object-contain;
@@ -79,7 +82,7 @@ label {
 
 input,
 .input {
-	@apply w-full bg-transparent outline-none border-none text-[4vw] md:text-sm;
+	@apply w-full bg-transparent outline-none border-none text-[3.75vw] md:text-sm;
 }
 
 /* ! NAVIGATION */
@@ -88,7 +91,7 @@ input,
 }
 
 .bottomnav-link {
-	@apply text-[4vw] text-[--text] flex flex-col items-center gap-1 pt-2 border-t-2 border-transparent;
+	@apply text-[3.75vw] text-[--text] flex flex-col items-center gap-1 pt-2 border-t-2 border-transparent;
 }
 
 /* ! DASHBOARD */
