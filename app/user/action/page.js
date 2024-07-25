@@ -40,7 +40,7 @@ export default function Action() {
 					<div>
 						<button
 							onClick={() => setAddAction(true)}
-							className="fixed bottom-[100px] right-4 !w-[60px] h-[60px] btn-1 !rounded-full gap-2 flex items-center justify-center !shadow-lg z-0 lg:relative lg:bottom-auto lg:right-0  lg:!w-auto lg:!h-auto lg:!rounded-lg"
+							className="fixed bottom-[100px] right-4 !w-[60px] h-[60px] btn-1 !rounded-full gap-2 flex items-center justify-center !shadow-xl !shadow-[#00000044] lg:relative lg:bottom-auto lg:right-0  lg:!w-auto lg:!h-auto lg:!rounded-lg !z-0"
 						>
 							<HiOutlinePlusSm className="text-[--white] text-3xl md:text-xl" />
 							<span className="pr-1 hidden lg:block">Add Action</span>
