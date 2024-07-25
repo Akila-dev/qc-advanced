@@ -23,17 +23,17 @@ export default function SidePopupWrapper({
 					/>{' '}
 				</div>
 				<div className="h-screen w-full">
-					<div className="w-full md:w-[350px] grid grid-cols-4 items-center h-[15vh] md:h-[80px] fixed top-0 right-0 !text-[--white] lg:!text-[--black] px-4 lg:z-10 lg:shadow md:bg-[--white]">
+					<div className="w-full md:w-[400px] grid grid-cols-4 items-center h-[15vh] md:h-[80px] fixed top-0 right-0 !text-[--white] lg:!text-[--black] px-4 lg:z-10 lg:shadow md:bg-[--white]">
 						<button onClick={close} className="popup-button">
 							<Image src={icons.arrowLeft} alt="close" />
 						</button>
 						<h2 className="text-[--white] lg:text-[--black] col-span-2 text-center">
 							{title}
 						</h2>
-						<div>
-							{other && (
+						<div className="flex justify-end">
+							{otherIcon && (
 								<button onClick={other} className="popup-button">
-									{otherIcon}
+									<Image src={otherIcon} alt="close" />
 								</button>
 							)}
 						</div>

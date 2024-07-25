@@ -31,7 +31,8 @@ h2 {
 h3 {
 	@apply text-[5vw] md:text-base font-semibold text-[--black];
 }
-p {
+p,
+.black-text {
 	@apply text-[4vw] md:text-sm text-[--text] font-normal;
 }
 
@@ -43,7 +44,7 @@ p {
 }
 
 .black-text {
-	@apply text-[--black] capitalize font-medium;
+	@apply !text-[--black] !capitalize !font-medium;
 }
 
 .auth-container {
@@ -57,7 +58,7 @@ p {
 	@apply flex items-center justify-center gap-3 w-full;
 }
 .pb {
-	@apply h-[80px] lg:h-0;
+	@apply h-[70px] lg:h-[10px];
 }
 
 /* ! FORMS */
@@ -66,7 +67,7 @@ p {
 }
 
 label {
-	@apply text-[--black] text-[4vw] md:text-sm font-medium;
+	@apply text-[--black] !text-[4vw] md:!text-sm font-medium;
 }
 
 .icon-input {
@@ -76,8 +77,9 @@ label {
 	@apply w-[20px] object-contain;
 }
 
-input {
-	@apply w-full bg-transparent outline-none border-none text-[4.5vw] md:text-base;
+input,
+.input {
+	@apply w-full bg-transparent outline-none border-none text-[4vw] md:text-sm;
 }
 
 /* ! NAVIGATION */
@@ -97,11 +99,11 @@ input {
 /* ! POPUPS */
 
 .popup-container {
-	@apply fixed top-0 right-0 w-full md:w-[350px] h-screen pt-[15vh] md:pt-0 overflow-auto;
+	@apply fixed top-0 right-0 w-full md:w-[400px] h-screen pt-[15vh] md:pt-0 overflow-auto;
 }
 
 .popup-content-box {
-	@apply w-full bg-[--white] shadow shadow-[--shadow] h-[85vh] lg:h-full md:pt-[80px] pb-[80px] lg:pb-0 rounded-t-[--rounding] lg:rounded-none overflow-auto;
+	@apply w-full bg-[--white] shadow-inner shadow-white h-[85vh] lg:h-full md:pt-[80px] pb-[80px] lg:pb-0 rounded-t-[--rounding] lg:rounded-none overflow-auto;
 }
 
 .popup-button {

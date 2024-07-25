@@ -19,6 +19,7 @@ import logout from '../assets/icons/logout.png';
 import message from '../assets/icons/message.png';
 import mobile from '../assets/icons/mobile.png';
 import noteList from '../assets/icons/note-list.png';
+import options from '../assets/icons/options.png';
 import passwordCheck from '../assets/icons/password-check.png';
 import plus from '../assets/icons/plus.png';
 import profile2 from '../assets/icons/profile-2.png';
@@ -50,6 +51,7 @@ export default {
 	message,
 	mobile,
 	noteList,
+	options,
 	passwordCheck,
 	plus,
 	profile2,
