@@ -70,7 +70,7 @@ p,
 }
 
 label {
-	@apply text-[--black] !text-[3.75vw] md:!text-sm font-medium;
+	@apply text-[--black] text-[4vw] md:!text-sm font-medium;
 }
 
 .icon-input {

@@ -43,10 +43,12 @@ const MobileBottomNav = () => {
 								: 'bottomnav-link'
 						}
 					>
-						<SideNavIcons
-							i={i}
-							color={path === '/user' + link ? '#b62e32' : '#777e90'}
-						/>
+						<span>
+							<SideNavIcons
+								i={i}
+								color={path === '/user' + link ? '#b62e32' : '#777e90'}
+							/>
+						</span>
 						<span>{label}</span>
 					</Link>
 				))}
