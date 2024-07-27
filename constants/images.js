@@ -6,6 +6,7 @@ import business2 from '../assets/imgs/business2.png';
 import business3 from '../assets/imgs/business3.png';
 import checkmark from '../assets/imgs/checkmark.png';
 import congratulations from '../assets/imgs/congratulations.png';
+import empty from '../assets/imgs/empty.png';
 import crown from '../assets/imgs/crown.png';
 import food1 from '../assets/imgs/food1.jpg';
 import food2 from '../assets/imgs/food2.jpg';
@@ -28,6 +29,7 @@ export default {
 	checkmark,
 	congratulations,
 	crown,
+	empty,
 	food1,
 	food2,
 	lockApproved,

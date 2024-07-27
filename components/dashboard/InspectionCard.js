@@ -14,7 +14,7 @@ const InspectionCard = ({
 	return (
 		<button
 			onClick={onClick}
-			className="flex justify-between items-center w-full p-3 bg-[--card] border-[--card-border] rounded-lg"
+			className="flex justify-between items-center w-full p-[14px] bg-[--card] border border-[--border] rounded-lg"
 		>
 			<div className="flex-v-center">
 				<Image src={icons.caret} alt="caret" className="w-[10px]" />

@@ -12,7 +12,7 @@ export default function SidePopupWrapper({
 	otherIcon,
 }) {
 	return (
-		<div className="fixed top-0 left-0 right-0 bottom-0 h-full w-full bg-[--transparent-bg]">
+		<div className="fixed top-0 left-0 right-0 bottom-0 h-full w-full bg-[--transparent-bg] backdrop-blur-sm">
 			<div className={`popup-container flex flex-col items-center lg:bg-white`}>
 				{/* Background image */}
 				<div className="w-full h-screen fixed top-0 left-0  md:hidden">
@@ -23,7 +23,7 @@ export default function SidePopupWrapper({
 					/>{' '}
 				</div>
 				<div className="h-screen w-full">
-					<div className="w-full md:w-[400px] grid grid-cols-4 items-center h-[15vh] md:h-[80px] fixed top-0 right-0 !text-[--white] lg:!text-[--black] px-4 lg:z-10 lg:shadow md:bg-[--white]">
+					<div className="w-full md:w-[--sidebar] flex justify-between gap-5 items-center h-[15vh] md:h-[80px] fixed top-0 right-0 !text-[--white] lg:!text-[--black] px-4 lg:z-10 lg:shadow md:bg-[--white]">
 						<button onClick={close} className="popup-button">
 							<Image src={icons.arrowLeft} alt="close" />
 						</button>

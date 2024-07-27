@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 
-export default function SideNavIcons({ i, color }) {
+export default function SideNavIcons({ i, color, w }) {
 	return (
 		<div>
 			{i === 0 && (
 				<svg
-					width="24"
-					height="25"
+					width={w ? w : '24'}
+					height={w ? w + 1 : '25'}
 					viewBox="0 0 24 25"
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
@@ -31,8 +31,8 @@ export default function SideNavIcons({ i, color }) {
 			)}
 			{i === 1 && (
 				<svg
-					width="24"
-					height="25"
+					width={w ? w : '24'}
+					height={w ? w + 1 : '25'}
 					viewBox="0 0 24 25"
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
@@ -49,8 +49,8 @@ export default function SideNavIcons({ i, color }) {
 			)}
 			{i === 2 && (
 				<svg
-					width="24"
-					height="25"
+					width={w ? w : '24'}
+					height={w ? w + 1 : '25'}
 					viewBox="0 0 24 25"
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +64,7 @@ export default function SideNavIcons({ i, color }) {
 					<defs>
 						<clipPath id="clip0_2316_18472">
 							<rect
-								width="24"
+								width={w ? w : '24'}
 								height="24"
 								fill="white"
 								transform="translate(0 0.5)"
@@ -75,8 +75,8 @@ export default function SideNavIcons({ i, color }) {
 			)}
 			{i === 3 && (
 				<svg
-					width="24"
-					height="25"
+					width={w ? w : '24'}
+					height={w ? w + 1 : '25'}
 					viewBox="0 0 24 25"
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
