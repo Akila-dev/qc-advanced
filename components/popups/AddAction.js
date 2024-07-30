@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 import { images, icons } from '../../constants';
 
-const AddAction = ({ close }) => {
+const AddAction = ({ close, className, mini }) => {
 	const [formData, setFormData] = useState({
 		title: '',
 		description: '',
@@ -23,7 +23,11 @@ const AddAction = ({ close }) => {
 	};
 
 	return (
-		<div className="h-full w-full py-5 px-4 lg:p-7 space-y-8">
+		<div
+			className={
+				className ? className : 'h-full w-full py-5 px-4 lg:p-7 space-y-8'
+			}
+		>
 			<div className="w-full space-y-4">
 				{/* Title */}
 				<div className="input-block">
@@ -132,12 +136,23 @@ const AddAction = ({ close }) => {
 				</div>
 			</div>
 
-			<div className="w-full">
-				<button onClick={close} className="btn-1 block">
-					create
-				</button>
-			</div>
-			<div className="popup-pb" />
+			{mini ? (
+				<div className="w-full grid grid-cols-2 gap-4 lg:gap-5">
+					<button onClick={close} className="btn-2">
+						create
+					</button>
+					<button onClick={close} className="btn-1">
+						create
+					</button>
+				</div>
+			) : (
+				<div className="w-full">
+					<button onClick={close} className="btn-1 block">
+						create
+					</button>
+				</div>
+			)}
+			<div className={mini ? '' : 'popup-pb'} />
 		</div>
 	);
 };

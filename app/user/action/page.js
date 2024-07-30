@@ -57,7 +57,9 @@ export default function Action() {
 			{/* OVERVIEW */}
 			<div className="hidden lg:block min-h-[250px] w-full bg-white rounded-[--rounding] p-7 my-7">
 				<div className="w-full h-full space-y-5">
-					<div className="flex justify-end">
+					<div className="flex-v-center justify-between">
+						<h1 className="text-[--black]">Overview</h1>
+
 						<button
 							onClick={() => setAddAction(true)}
 							className="btn-1 gap-2 flex items-center justify-center shadow-md !shadow-[#00000044]  !w-auto"

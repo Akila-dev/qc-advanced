@@ -6,6 +6,7 @@
 	--brand: #b62e32;
 	--highlight-bg: #b62e320a;
 	--highlight-bg-2: #2d2d2b08;
+	--highlight-bg-3: #fcf7f7;
 	--tag: #f5edc7;
 	--text: #777e90;
 	--black: #2d2d2b;
@@ -14,6 +15,8 @@
 	--transparent-bg: #111111bf;
 	--shadow: 0px 6px 20px 0px #0f132740;
 	--outline: 1px solid #2d2d2b0a;
+	--green: #a2b639;
+	--blue: #2a85b1;
 
 	--card: #f8f8f8;
 	--card-border: 1px solid #f0f0f0;
@@ -35,7 +38,10 @@ h3 {
 }
 p,
 .black-text {
-	@apply text-[3.75vw] md:text-sm text-[--text] font-normal;
+	@apply text-[3.75vw] md:text-sm text-[--text] font-normal !leading-relaxed;
+}
+textarea {
+	@apply w-full min-h-[200px] resize-none p-2 rounded-lg outline-1 outline-[--border];
 }
 
 .btn-1 {
@@ -43,6 +49,14 @@ p,
 }
 .btn-2 {
 	@apply p-[0.75rem] bg-[--highlight-bg-2] w-full text-[--black] uppercase rounded-lg text-[4.5vw] md:text-base shadow-[--shadow] text-center;
+}
+
+.btn-group {
+	@apply flex flex-col gap-2;
+}
+
+.btn-3 {
+	@apply p-2 bg-[--highlight-bg-2] w-full text-[--black] rounded-md text-[3.75vw] md:text-sm shadow-[--shadow] text-center;
 }
 
 .black-text {

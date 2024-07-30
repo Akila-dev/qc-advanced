@@ -1,6 +1,10 @@
 /* eslint-disable import/no-anonymous-default-export */
 import arrowLeft from '../assets/icons/arrow-left.png';
-import archive from '../assets/icons/archive.svg';
+import archive from '../assets/icons/archive.png';
+import archiveWhite from '../assets/icons/archive.svg';
+import addAction from '../assets/icons/addAction.png';
+import addNote from '../assets/icons/addNote.png';
+import bin from '../assets/icons/bin.png';
 import calendar from '../assets/icons/calendar.png';
 import camera from '../assets/icons/camera.png';
 import caret from '../assets/icons/caret.png';
@@ -37,6 +41,10 @@ import user1 from '../assets/icons/user1.png';
 export default {
 	arrowLeft,
 	archive,
+	archiveWhite,
+	addAction,
+	addNote,
+	bin,
 	calendar,
 	camera,
 	caret,

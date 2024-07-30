@@ -61,6 +61,8 @@ export default function Training() {
 			{/* OVERVIEW */}
 			<div className="hidden lg:block w-full bg-white rounded-[--rounding] p-7 my-7">
 				<div className="w-full h-full space-y-5">
+					<h1 className="text-[--black]">Overview</h1>
+
 					<div className="grid grid-cols-3 gap-5">
 						{overview.map(({ label, value }, i) => (
 							<div
