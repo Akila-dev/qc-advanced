@@ -238,19 +238,19 @@ export default function Register() {
 						I agree to <b>Privacy Policy</b> and <b>Terms & Conditions</b>
 					</p>
 				</div>
-				<button
+				{/* <button
 					onClick={() => console.log(formData)}
 					className="btn-1 mb-5 !max-w-[300px]"
 				>
 					update
-				</button>
-				{/* <Link
+				</button> */}
+				<Link
 					onClick={() => console.log(formData)}
 					href="/auth/admin/verify-register"
 					className="btn-1 mb-5 !max-w-[300px]"
 				>
 					update
-				</Link> */}
+				</Link>
 				<div className="h-[20px] bg-[--white] absolute bottom-0 left-0 w-full rounded-b-[--rounding]" />
 			</div>
 		</IconBoxWrapper>
