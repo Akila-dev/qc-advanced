@@ -15,7 +15,7 @@ const SelectInput = ({
 	setFormData,
 	formData,
 }) => {
-	const [showOptions, setShowOptions] = useState(true);
+	const [showOptions, setShowOptions] = useState(false);
 	const [selectedId, setSelectedId] = useState(0);
 	const [selectedOption, setSelectedOption] = useState(options[selectedId]);
 
