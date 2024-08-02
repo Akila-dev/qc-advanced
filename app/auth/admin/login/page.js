@@ -26,7 +26,7 @@ export default function LogIn() {
 			className=""
 		>
 			<div className="flex flex-col items-center justify-center w-full max-w-[350px] gap-5">
-				<div className="w-full space-y-3 py-[25px]">
+				<div className="w-full space-y-3 py-[15px]">
 					{/* Email */}
 					<div className="input-block">
 						<label>Email</label>
@@ -68,11 +68,29 @@ export default function LogIn() {
 								className="input"
 							/>
 						</div>
+						<div className="flex justify-end w-full">
+							<Link
+								href="/auth/admin/forgot-password"
+								className="p !font-medium !text-[--black] hover:!text-[--brand]"
+							>
+								Forgot Password
+							</Link>
+						</div>
 					</div>
 				</div>
-				<Link href="/user" className="btn-1">
+				<Link href="/admin" className="btn-1">
 					log in
 				</Link>
+				<div className="pb-[50px] md:pb-[15px]" />
+				<p className="text-[--black] absolute bottom-0 left-0 p-4 w-full text-center">
+					{"Don't have an account?"}{' '}
+					<Link
+						href="/auth/admin/register"
+						className="text-[--brand] font-semibol"
+					>
+						Register
+					</Link>
+				</p>
 			</div>
 		</IconBoxWrapper>
 	);

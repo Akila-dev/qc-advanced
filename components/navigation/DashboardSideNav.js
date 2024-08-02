@@ -27,7 +27,7 @@ const menu = [
 	},
 ];
 
-const DashboardSideNav = () => {
+const DashboardSideNav = ({ type }) => {
 	const path = usePathname();
 
 	return (
@@ -46,16 +46,16 @@ const DashboardSideNav = () => {
 					{menu.map(({ label, link }, i) => (
 						<Link
 							key={i}
-							href={`/user${link}`}
+							href={`/${type}${link}`}
 							className={
-								path === '/user' + link
+								path === `/${type}` + link
 									? 'sidenav-link !bg-[--brand] !text-[--white] hover:!bg-[--brand] hover:!text-[--white] shadow'
 									: 'sidenav-link'
 							}
 						>
 							<SideNavIcons
 								i={i}
-								color={path === '/user' + link ? '#ffffff' : '#777e90'}
+								color={path === `/${type}` + link ? '#ffffff' : '#777e90'}
 							/>
 							<span>{label}</span>
 						</Link>

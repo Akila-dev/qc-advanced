@@ -6,16 +6,19 @@ import Link from 'next/link';
 
 import { images, icons } from '../../constants';
 
-const AddAction = ({ close, className, mini }) => {
+const AddAction = ({ close, className, mini, admin }) => {
 	const [formData, setFormData] = useState({
 		title: '',
 		description: '',
 		priority: '',
 		dueDate: '',
 		assignees: '',
+		business: '',
+		status: '',
 	});
 
-	const { title, description, priority, dueDate, assignees } = formData;
+	const { title, description, priority, dueDate, assignees, business, status } =
+		formData;
 
 	const handleChangeInput = (e) => {
 		const { name, value } = e.target;
@@ -33,15 +36,15 @@ const AddAction = ({ close, className, mini }) => {
 				<div className="input-block">
 					<label>Title</label>
 					<div className="icon-input">
-						<Image
+						{/* <Image
 							src={icons.envelope}
 							w={20}
 							h={20}
 							alt="mail"
 							className="input-img"
-						/>
+						/> */}
 						<input
-							type="mail"
+							type="text"
 							name="title"
 							placeholder="title"
 							value={title}
@@ -54,15 +57,15 @@ const AddAction = ({ close, className, mini }) => {
 				<div className="input-block">
 					<label>Description</label>
 					<div className="icon-input">
-						<Image
+						{/* <Image
 							src={icons.envelope}
 							w={20}
 							h={20}
 							alt="mail"
 							className="input-img"
-						/>
+						/> */}
 						<input
-							type="description"
+							type="text"
 							name="description"
 							placeholder="description"
 							value={description}
@@ -76,7 +79,7 @@ const AddAction = ({ close, className, mini }) => {
 					<label>Priority</label>
 					<div className="icon-input">
 						<input
-							type="priority"
+							type="text"
 							name="priority"
 							placeholder="priority"
 							value={priority}
@@ -88,7 +91,7 @@ const AddAction = ({ close, className, mini }) => {
 							w={20}
 							h={20}
 							alt="mail"
-							className="input-img p-[3px]"
+							className="input-img p-[4px]"
 						/>
 					</div>
 				</div>
@@ -97,7 +100,7 @@ const AddAction = ({ close, className, mini }) => {
 					<label>DueDate</label>
 					<div className="icon-input">
 						<input
-							type="dueDate"
+							type="text"
 							name="dueDate"
 							placeholder="dueDate"
 							value={dueDate}
@@ -109,7 +112,7 @@ const AddAction = ({ close, className, mini }) => {
 							w={20}
 							h={20}
 							alt="mail"
-							className="input-img"
+							className="input-img  p-[4px]"
 						/>
 					</div>
 				</div>
@@ -118,7 +121,7 @@ const AddAction = ({ close, className, mini }) => {
 					<label>Assignees</label>
 					<div className="icon-input">
 						<input
-							type="assignees"
+							type="text"
 							name="assignees"
 							placeholder="assignees"
 							value={assignees}
@@ -130,10 +133,52 @@ const AddAction = ({ close, className, mini }) => {
 							w={20}
 							h={20}
 							alt="mail"
-							className="input-img p-[3px]"
+							className="input-img p-[4px]"
 						/>
 					</div>
 				</div>
+				{admin && <>{/* Business */}
+				<div className="input-block">
+					<label>Business</label>
+					<div className="icon-input">
+						<input
+							type="text"
+							name="business"
+							placeholder="Choose Business"
+							value={business}
+							onChange={handleChangeInput}
+							className="input placeholder:capitalize"
+						/>
+						<Image
+							src={icons.caret}
+							w={20}
+							h={20}
+							alt="mail"
+							className="input-img p-[4px]"
+						/>
+					</div>
+				</div>
+				{/* Status */}
+				<div className="input-block">
+					<label>Status</label>
+					<div className="icon-input">
+						<input
+							type="text"
+							name="status"
+							placeholder="in progress"
+							value={status}
+							onChange={handleChangeInput}
+							className="input placeholder:capitalize"
+						/>
+						<Image
+							src={icons.caret}
+							w={20}
+							h={20}
+							alt="mail"
+							className="input-img p-[4px]"
+						/>
+					</div>
+				</div></>}
 			</div>
 
 			{mini ? (

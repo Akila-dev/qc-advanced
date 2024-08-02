@@ -2,7 +2,13 @@
 
 import { useRef, useEffect } from 'react';
 
-export default function TitlePopupWrapper({ children, title, close }) {
+export default function TitlePopupWrapper({
+	children,
+	title,
+	close,
+	darkBg,
+	options,
+}) {
 	const ref = useRef();
 
 	useEffect(() => {
@@ -20,20 +26,30 @@ export default function TitlePopupWrapper({ children, title, close }) {
 	}, []);
 
 	return (
-		<div className="fixed top-0 right-0 bottom-0 h-full w-full bg-[#0000000a] backdrop-blur-sm lg:w-[--sidebar !z-10 flex items-center justify-center p-5 lg:p-7">
-			<div
-				ref={ref}
-				className={`bg-white w-full py-4 lg:py-5 rounded-[--rounding] max-w-[375px] space-y-4`}
-			>
-				<div className="px-4 lg:px-5">
-					<h1 className="border-b border-[--border] text-center !text-[--black] pb-4">
-						{title}
-					</h1>
+		<div
+			className={`fixed top-0 right-0 bottom-0 h-full w-full  ${
+				darkBg ? 'bg-[--transparent-bg]' : 'bg-[#0000000a]'
+			} backdrop-blur-sm lg:w-[--sidebar !z-10 flex items-center justify-center p-5 lg:p-7`}
+		>
+			{options ? (
+				<div ref={ref} className={`w-full max-w-[375px] space-y-4`}>
+					<div className="max-h-[70vh] overflow-auto">{children}</div>
 				</div>
-				<div className="px-4 lg:px-5 max-h-[70vh] overflow-auto">
-					{children}
+			) : (
+				<div
+					ref={ref}
+					className={`bg-white w-full py-4 lg:py-5 rounded-[--rounding] max-w-[375px] space-y-4`}
+				>
+					<div className="px-4 lg:px-5">
+						<h1 className="border-b border-[--border] text-center !text-[--black] pb-4">
+							{title}
+						</h1>
+					</div>
+					<div className="px-4 lg:px-5 max-h-[70vh] overflow-auto">
+						{children}
+					</div>
 				</div>
-			</div>
+			)}
 		</div>
 	);
 }

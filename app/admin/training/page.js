@@ -5,8 +5,12 @@ import Link from 'next/link';
 import { HiOutlinePlusSm } from 'react-icons/hi';
 
 import { images, icons } from '../../../constants';
-import { TrainingCard, TrainingDetails } from '../../../components';
-import { SidePopupWrapper } from '../../../wrappers';
+import {
+	TrainingCard,
+	TrainingDetails,
+	TrainingMaterial,
+} from '../../../components';
+import { SidePopupWrapper, TitlePopupWrapper } from '../../../wrappers';
 import { SideNavIcons } from '../../../components/svgs';
 
 const overview = [
@@ -49,10 +53,23 @@ const tags = ['all', 'due soon', 'exceeded due date'];
 export default function Training() {
 	const [activeTraining, setActiveTraining] = useState(0);
 	const [showDetails, setShowDetails] = useState(false);
+	const [showEdit, setShowEdit] = useState(false);
+	const [showDelete, setShowDelete] = useState(false);
+	const [showAddMaterial, setShowAddMaterial] = useState(false);
 
 	const showTrainingDetails = (i) => {
 		setActiveTraining(i);
 		setShowDetails(true);
+	};
+
+	const showEditTraining = (i) => {
+		setActiveTraining(i);
+		setShowEdit(true);
+	};
+
+	const deleteMaterial = (i) => {
+		setActiveTraining(i);
+		setShowDelete(true);
 	};
 
 	return (
@@ -61,7 +78,18 @@ export default function Training() {
 			{/* OVERVIEW */}
 			<div className="hidden lg:block w-full bg-white rounded-[--rounding] p-7 my-7">
 				<div className="w-full h-full space-y-5">
-					<h1 className="text-[--black]">Overview</h1>
+					<div className="flex-v-center justify-between">
+						<h1 className="text-[--black]">Overview</h1>
+						<button
+							onClick={() => setShowAddMaterial(true)}
+							className="btn-1 gap-2 flex items-center justify-center shadow-md !shadow-[#00000044]  !w-auto"
+						>
+							<HiOutlinePlusSm className="text-[--white] text-3xl md:text-xl" />
+							<span className="pr-1 hidden lg:block">
+								Add Training Material
+							</span>
+						</button>
+					</div>
 
 					<div className="grid grid-cols-3 gap-5">
 						{overview.map(({ label, value }, i) => (
@@ -94,6 +122,9 @@ export default function Training() {
 							title={title}
 							text={text[0]}
 							onClick={() => showTrainingDetails(i)}
+							admin
+							remove={() => deleteMaterial(i)}
+							edit={() => showEditTraining(i)}
 						/>
 					))}
 				</div>
@@ -113,6 +144,50 @@ export default function Training() {
 						// title={trainings[activeTraining].title}
 					/>
 				</SidePopupWrapper>
+			)}
+
+			{showEdit && (
+				<SidePopupWrapper
+					close={() => setShowEdit(false)}
+					title="Edit Material"
+				>
+					<TrainingMaterial
+						close={() => setShowEdit(false)}
+						className=""
+						edit
+						editId={activeTraining}
+					/>
+				</SidePopupWrapper>
+			)}
+			{showAddMaterial && (
+				<SidePopupWrapper
+					close={() => setShowAddMaterial(false)}
+					title="Add Material"
+				>
+					<TrainingMaterial
+						close={() => setShowAddMaterial(false)}
+						className=""
+					/>
+				</SidePopupWrapper>
+			)}
+			{showDelete && (
+				<TitlePopupWrapper
+					title="Delete"
+					close={() => setShowDelete(false)}
+					darkBg
+				>
+					<div className="text-center space-y-4">
+						<p>Are you sure you want to delete this material?</p>{' '}
+						<div className="w-full grid grid-cols-2 gap-4 lg:gap-5">
+							<button onClick={() => setShowDelete(false)} className="btn-2">
+								cancel
+							</button>
+							<button onClick={() => setShowDelete(false)} className="btn-1">
+								yes
+							</button>
+						</div>
+					</div>
+				</TitlePopupWrapper>
 			)}
 		</div>
 	);

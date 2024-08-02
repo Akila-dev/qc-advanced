@@ -27,7 +27,7 @@ const menu = [
 	},
 ];
 
-const MobileBottomNav = () => {
+const MobileBottomNav = ({ type }) => {
 	const path = usePathname();
 
 	return (
@@ -36,9 +36,9 @@ const MobileBottomNav = () => {
 				{menu.map(({ label, link }, i) => (
 					<Link
 						key={i}
-						href={`/user${link}`}
+						href={`/${type}${link}`}
 						className={
-							path === '/user' + link
+							path === `/${type}` + link
 								? 'bottomnav-link !border-[--brand] !text-[--brand]'
 								: 'bottomnav-link'
 						}
@@ -46,7 +46,7 @@ const MobileBottomNav = () => {
 						<span>
 							<SideNavIcons
 								i={i}
-								color={path === '/user' + link ? '#b62e32' : '#777e90'}
+								color={path === `/${type}` + link ? '#b62e32' : '#777e90'}
 							/>
 						</span>
 						<span>{label}</span>

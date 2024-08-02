@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,11 +10,26 @@ import {
 	PrivacyPolicy,
 	TermsAndConditions,
 	SettingsNavButton,
+	EditProfile,
+	ChangePassword,
+	DeleteAccount,
 } from '../../../components';
 import { SidePopupWrapper } from '../../../wrappers';
 import { SideNavIcons } from '../../../components/svgs';
 
 const navs = [
+	{
+		label: 'Edit Profile',
+		icon: icons.profile,
+	},
+	{
+		label: 'Change Password',
+		icon: icons.passwordCheck,
+	},
+	{
+		label: 'Manage Checklist',
+		icon: icons.checklist,
+	},
 	{
 		label: 'Privacy Policy',
 		icon: icons.lock2,
@@ -25,6 +41,10 @@ const navs = [
 	{
 		label: 'Terms & Conditions',
 		icon: icons.noteList,
+	},
+	{
+		label: 'Delete Account',
+		icon: icons.trash,
 	},
 	{
 		label: 'Logout',
@@ -49,9 +69,9 @@ export default function Settings() {
 			{/* DASHBOARD CONTENT */}
 			<div className="dashboard-content-box lg:!h-full">
 				<div className="flex w-full h-full">
-					<div className="w-full lg:max-w-[300px] border-r border-[--border] p-4 lg:p-7 space-y-3">
+					<div className="w-full lg:max-w-[310px] lg:min-w-[310px] border-r border-[--border] p-4 lg:p-7 space-y-3 overflow-auto">
 						<h3 className="hidden lg:block">Settings</h3>
-						<div className="space-y-4">
+						<div className="space-y-3">
 							{navs.slice(0, navs.length - 1).map((nav, i) => (
 								<SettingsNavButton
 									key={i}
@@ -70,9 +90,11 @@ export default function Settings() {
 					<div className="hidden lg:flex p-7 w-full h-full">
 						<div className="flex-1 border border-[--border] rounded-[--rounding] py-7 flex">
 							<div className="flex-1 px-7 overflow-auto">
-								{activeTab === 0 && <PrivacyPolicy />}
-								{activeTab === 1 && <ContactUs />}
-								{activeTab === 2 && <TermsAndConditions />}
+								{activeTab === 0 && <EditProfile />}
+								{activeTab === 1 && <ChangePassword />}
+								{activeTab === 3 && <PrivacyPolicy />}
+								{activeTab === 4 && <ContactUs />}
+								{activeTab === 5 && <TermsAndConditions />}
 							</div>
 						</div>
 					</div>
@@ -80,20 +102,6 @@ export default function Settings() {
 
 				<div className="pb lg:!hidden" />
 			</div>
-
-			{/* {showDetails && (
-				<SidePopupWrapper
-					close={() => setShowDetails(false)}
-					title={trainings[activeTraining].title}
-					otherIcon={icons.download}
-				>
-					<TrainingDetails
-						img={trainings[activeTraining].img}
-						text={trainings[activeTraining].text}
-						// title={trainings[activeTraining].title}
-					/>
-				</SidePopupWrapper>
-			)} */}
 			<div className="lg:hidden">
 				{showPopup && (
 					<SidePopupWrapper
@@ -101,9 +109,11 @@ export default function Settings() {
 						close={() => setShowPopup(false)}
 					>
 						<div className="px-4 py-5">
-							{activeTab === 0 && <PrivacyPolicy />}
-							{activeTab === 1 && <ContactUs />}
-							{activeTab === 2 && <TermsAndConditions />}
+							{activeTab === 0 && <EditProfile />}
+
+							{activeTab === 3 && <PrivacyPolicy />}
+							{activeTab === 4 && <ContactUs />}
+							{activeTab === 5 && <TermsAndConditions />}
 						</div>
 					</SidePopupWrapper>
 				)}

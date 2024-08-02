@@ -6,13 +6,12 @@ import Link from 'next/link';
 import { IconBoxWrapper } from '../../../../wrappers';
 import { images, icons } from '../../../../constants';
 
-export default function LogIn() {
+export default function ForgotPassword() {
 	const [formData, setFormData] = useState({
 		email: '',
-		password: '',
 	});
 
-	const { email, password } = formData;
+	const { email } = formData;
 
 	const handleChangeInput = (e) => {
 		const { name, value } = e.target;
@@ -20,13 +19,14 @@ export default function LogIn() {
 	};
 	return (
 		<IconBoxWrapper
-			icon={images.arrow}
-			title="Login to Your Account"
-			text="Please login to continue"
+			icon={images.lockQuery}
+			title="Forgot Password?"
+			text="No worries, we will help you to reset your password."
 			className=""
+			back="/auth/admin/login"
 		>
-			<div className="flex flex-col items-center justify-center w-full max-w-[350px] gap-5">
-				<div className="w-full space-y-3 py-[25px]">
+			<div className="flex flex-col items-center justify-center w-full max-w-[350px] gap-10">
+				<div className="w-full space-y-0 pt-[15px]">
 					{/* Email */}
 					<div className="input-block">
 						<label>Email</label>
@@ -48,30 +48,9 @@ export default function LogIn() {
 							/>
 						</div>
 					</div>
-					{/* Password */}
-					<div className="input-block">
-						<label>Password</label>
-						<div className="icon-input">
-							<Image
-								src={icons.lock}
-								w={20}
-								h={20}
-								alt="mail"
-								className="input-img"
-							/>
-							<input
-								type="password"
-								name="password"
-								placeholder="password"
-								value={password}
-								onChange={handleChangeInput}
-								className="input"
-							/>
-						</div>
-					</div>
 				</div>
-				<Link href="/user" className="btn-1">
-					log in
+				<Link href="/auth/admin/verification" className="btn-1">
+					send
 				</Link>
 			</div>
 		</IconBoxWrapper>

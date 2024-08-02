@@ -1,4 +1,6 @@
 export { default as AuthAbout } from './AuthAbout';
+export { default as OTPInput } from './OTPInput';
+export { default as DragDropFile } from './DragDropFile';
 
 // Navigation
 export { default as DashboardSideNav } from './navigation/DashboardSideNav';
@@ -15,6 +17,7 @@ export { default as PrivacyPolicy } from './dashboard/PrivacyPolicy';
 export { default as ContactUs } from './dashboard/ContactUs';
 export { default as TermsAndConditions } from './dashboard/TermsAndConditions';
 export { default as SettingsNavButton } from './dashboard/SettingsNavButton';
+export { default as SelectInput } from './dashboard/SelectInput';
 
 // Popups
 export { default as AddAction } from './popups/AddAction';
@@ -24,3 +27,7 @@ export { default as InspectionDetails } from './popups/InspectionDetails';
 export { default as MiniAddNote } from './popups/MiniAddNote';
 export { default as MiniAddMedia } from './popups/MiniAddMedia';
 export { default as MiniAddAction } from './popups/MiniAddAction';
+export { default as TrainingMaterial } from './popups/TrainingMaterial';
+export { default as EditProfile } from './popups/EditProfile';
+export { default as ChangePassword } from './popups/ChangePassword';
+export { default as DeleteAccount } from './popups/DeleteAccount';

@@ -25,6 +25,26 @@
 	--rounding: 24px;
 	--sidebar: 400px;
 }
+* {
+	scrollbar-color: var(--card) #ffffff00;
+}
+
+*::-webkit-scrollbar {
+	width: 8px !important;
+	height: 8px !important;
+}
+*::-webkit-scrollbar-thumb {
+	/* Foreground */
+	background: var(--card);
+}
+*::-webkit-scrollbar-track {
+	/* Background */
+	background: #ffffff00;
+}
+
+.scroll-2 {
+	scrollbar-color: var(--gray) var(--white) !important;
+}
 
 h1 {
 	@apply text-[5.5vw] lg:text-2xl font-semibold text-[--white];
@@ -37,11 +57,17 @@ h3 {
 	@apply text-[4.5vw] md:text-base font-semibold text-[--black];
 }
 p,
-.black-text {
+.black-text,
+.p,
+.options-btn {
 	@apply text-[3.75vw] md:text-sm text-[--text] font-normal !leading-relaxed;
 }
 textarea {
-	@apply w-full min-h-[200px] resize-none p-2 rounded-lg outline-1 outline-[--border];
+	@apply w-full min-h-[200px] resize-none p-2 rounded-lg outline-1 outline-[--border] text-[3.75vw] md:text-sm;
+}
+input:-webkit-autofill {
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: var(--black) !important;
 }
 
 .btn-1 {
@@ -59,12 +85,13 @@ textarea {
 	@apply p-2 bg-[--highlight-bg-2] w-full text-[--black] rounded-md text-[3.75vw] md:text-sm shadow-[--shadow] text-center;
 }
 
-.black-text {
+.black-text,
+.options-btn {
 	@apply !text-[--black] !capitalize !font-medium;
 }
 
 .auth-container {
-	@apply relative w-full md:w-auto max-w-[900px] md:min-w-[450px] max-h-[80%] p-0 h-screen md:h-auto pt-[10vh] md:pt-0 overflow-auto;
+	@apply relative w-full md:w-auto max-w-[900px] md:min-w-[375px] max-h-[80%] p-0 h-screen md:h-auto pt-[10vh] md:pt-0 overflow-auto;
 }
 
 .flex-v-center {
@@ -88,6 +115,14 @@ textarea {
 	@apply text-[--text] capitalize border-b-2 font-medium pb-1 px-3 w-auto border-transparent;
 }
 
+.textarea {
+	@apply !bg-transparent !min-h-[120px] !p-0 !outline-none;
+}
+
+.options-btn {
+	@apply p-3 !border !border-[--border] flex-1;
+}
+
 /* ! FORMS */
 .input-block {
 	@apply space-y-2;
@@ -101,7 +136,7 @@ label {
 	@apply flex gap-3 p-3 bg-[--highlight-bg-2] border-[--highlight-bg-2] rounded-lg shadow-[--shadow] text-[3.75vw] md:text-sm;
 }
 .input-img {
-	@apply w-[20px] object-contain;
+	@apply w-[20px] min-w-[20px] max-w-[20px] h-auto object-contain;
 }
 
 input,

@@ -38,7 +38,7 @@ const ContactUs = () => {
 						<input
 							type="name"
 							name="name"
-							placeholder="name"
+							placeholder="enter your name"
 							value={name}
 							onChange={handleChangeInput}
 							className="input placeholder:capitalize"
@@ -59,7 +59,7 @@ const ContactUs = () => {
 						<input
 							type="email"
 							name="email"
-							placeholder="email"
+							placeholder="user@email.com"
 							value={email}
 							onChange={handleChangeInput}
 							className="input placeholder:capitalize"
@@ -80,7 +80,7 @@ const ContactUs = () => {
 						<input
 							type="subject"
 							name="subject"
-							placeholder="subject"
+							placeholder="choose subject"
 							value={subject}
 							onChange={handleChangeInput}
 							className="input placeholder:capitalize"
@@ -108,12 +108,15 @@ const ContactUs = () => {
 						<input
 							type="message"
 							name="message"
-							placeholder="message"
+							placeholder="Enter your message"
 							value={message}
 							onChange={handleChangeInput}
 							className="input placeholder:capitalize"
 						/>
 					</div>
+				</div>
+				<div className="pt-5">
+					<button className="btn-1">Submit</button>
 				</div>
 			</div>
 		</div>

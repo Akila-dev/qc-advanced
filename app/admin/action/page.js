@@ -188,7 +188,7 @@ export default function Action() {
 			</div>
 			{addAction && (
 				<SidePopupWrapper close={() => setAddAction(false)} title="Add Action">
-					<AddAction close={() => setAddAction(false)} />
+					<AddAction close={() => setAddAction(false)} admin />
 				</SidePopupWrapper>
 			)}
 			{showDetails && (
