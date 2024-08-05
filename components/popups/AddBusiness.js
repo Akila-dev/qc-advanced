@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { images, icons } from '../../constants';
 import { DragDropFile, SelectInput, InputField } from '../../components';
 
-const TrainingMaterial = ({ close, className, edit, editId }) => {
+const AddBusiness = ({ close, className, edit, editId }) => {
 	const [formData, setFormData] = useState({
 		title: '',
 		trainingImages: [''],
@@ -94,4 +94,4 @@ const TrainingMaterial = ({ close, className, edit, editId }) => {
 	);
 };
 
-export default TrainingMaterial;
+export default AddBusiness;

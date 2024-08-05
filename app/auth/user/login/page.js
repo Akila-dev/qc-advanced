@@ -2,22 +2,25 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { IconBoxWrapper } from '../../../../wrappers';
 import { images, icons } from '../../../../constants';
+import { InputField } from '../../../../components';
 
 export default function LogIn() {
 	const [formData, setFormData] = useState({
 		email: '',
 		password: '',
 	});
-
 	const { email, password } = formData;
 
-	const handleChangeInput = (e) => {
-		const { name, value } = e.target;
-		setFormData({ ...formData, [name]: value });
+	const router = useRouter();
+	const submitForm = () => {
+		console.log(formData);
+		router.push('/user');
 	};
+
 	return (
 		<IconBoxWrapper
 			icon={images.arrow}
@@ -28,51 +31,29 @@ export default function LogIn() {
 			<div className="flex flex-col items-center justify-center w-full max-w-[350px] gap-5">
 				<div className="w-full space-y-3 py-[25px]">
 					{/* Email */}
-					<div className="input-block">
-						<label>Email</label>
-						<div className="icon-input">
-							<Image
-								src={icons.envelope}
-								w={20}
-								h={20}
-								alt="mail"
-								className="input-img"
-							/>
-							<input
-								type="mail"
-								name="email"
-								placeholder="mail@mail.com"
-								value={email}
-								onChange={handleChangeInput}
-								className="input"
-							/>
-						</div>
-					</div>
+					<InputField
+						label="Email"
+						icon={icons.envelope}
+						type="mail"
+						placeholder="mail@mail.com"
+						formData={formData}
+						setFormData={setFormData}
+						nameValue="email"
+					/>
 					{/* Password */}
-					<div className="input-block">
-						<label>Password</label>
-						<div className="icon-input">
-							<Image
-								src={icons.lock}
-								w={20}
-								h={20}
-								alt="mail"
-								className="input-img"
-							/>
-							<input
-								type="password"
-								name="password"
-								placeholder="password"
-								value={password}
-								onChange={handleChangeInput}
-								className="input"
-							/>
-						</div>
-					</div>
+					<InputField
+						label="Password"
+						icon={icons.lock}
+						type="password"
+						placeholder="password"
+						formData={formData}
+						setFormData={setFormData}
+						nameValue="password"
+					/>
 				</div>
-				<Link href="/user" className="btn-1">
-					log in
-				</Link>
+				<button onClick={() => submitForm()} className="btn-1">
+					login
+				</button>
 			</div>
 		</IconBoxWrapper>
 	);

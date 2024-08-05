@@ -62,16 +62,16 @@ export default function Settings() {
 	};
 
 	return (
-		<div className="lg:p-10 h-screen overflow-auto scroll-2">
+		<div className="md:p-10 h-screen overflow-auto scroll-2">
 			<h1 className="h-[15vh] lg:h-auto flex-center text-center lg:pb-7">
 				Settings
 			</h1>
 			{/* DASHBOARD CONTENT */}
 			<div className="dashboard-content-box lg:!h-full">
-				<div className="flex w-full h-full">
-					<div className="w-full lg:max-w-[310px] lg:min-w-[310px] border-r border-[--border] p-4 lg:p-7 space-y-3 overflow-auto">
+				<div className="flex w-full lg:h-full">
+					<div className="w-full lg:max-w-[310px] lg:min-w-[310px] border-r border-[--border] p-4 lg:p-7 lg:space-y-3 overflow-auto">
 						<h3 className="hidden lg:block">Settings</h3>
-						<div className="space-y-3">
+						<div className="flex w-full flex-col gap-3">
 							{navs.slice(0, navs.length - 1).map((nav, i) => (
 								<SettingsNavButton
 									key={i}
@@ -110,7 +110,9 @@ export default function Settings() {
 					>
 						<div className="px-4 py-5">
 							{activeTab === 0 && <EditProfile />}
-
+							{activeTab === 1 && (
+								<ChangePassword close={() => setShowPopup(false)} />
+							)}
 							{activeTab === 3 && <PrivacyPolicy />}
 							{activeTab === 4 && <ContactUs />}
 							{activeTab === 5 && <TermsAndConditions />}

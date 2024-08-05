@@ -8,6 +8,7 @@ import bin from '../assets/icons/bin.png';
 import calendar from '../assets/icons/calendar.png';
 import camera from '../assets/icons/camera.png';
 import caret from '../assets/icons/caret.png';
+import caret2 from '../assets/icons/caret2.png';
 import category from '../assets/icons/category.png';
 import checklist from '../assets/icons/checklist.png';
 import deleteRed from '../assets/icons/delete-red.png';
@@ -30,6 +31,7 @@ import options from '../assets/icons/options.png';
 import passwordCheck from '../assets/icons/password-check.png';
 import plane from '../assets/icons/plane.png';
 import plus from '../assets/icons/plus.png';
+import plus2 from '../assets/icons/plus2.png';
 import profile2 from '../assets/icons/profile-2.png';
 import profile from '../assets/icons/profile.png';
 import subtitle from '../assets/icons/subtitle.png';
@@ -48,6 +50,7 @@ export default {
 	calendar,
 	camera,
 	caret,
+	caret2,
 	category,
 	checklist,
 	deleteRed,
@@ -70,6 +73,7 @@ export default {
 	passwordCheck,
 	plane,
 	plus,
+	plus2,
 	profile2,
 	profile,
 	subtitle,

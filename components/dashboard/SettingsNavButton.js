@@ -17,13 +17,13 @@ const SettingsNavButton = ({ icon, label, onClick }) => {
 						className="w-full h-full object-contain"
 					/>
 				</div>
-				<p className="!text-[--black]">{label}</p>
+				<p className="!text-[--black] w-full text-left">{label}</p>
+				<Image
+					src={icons.caret2}
+					alt="open"
+					className="w-[11px] h-full max-w-[11px] min-w-[11px] -rotate-9 p-[2px]"
+				/>
 			</div>
-			<Image
-				src={icons.caret}
-				alt="open"
-				className="w-[11px] h-auto max-w-[11px] min-w-[11px] -rotate-90"
-			/>
 		</button>
 	);
 };

@@ -14,8 +14,8 @@ export default function Choose() {
 			className=""
 			logo
 		>
-			<div className="flex items-center justify-center w-full py-[30px]">
-				<div className="flex flex-col items-center justify-center w-full max-w-[300px] gap-3">
+			<div className="flex items-center justify-center w-full py-[12vw] md:py-[30px]">
+				<div className="flex flex-col items-center justify-center w-full md:max-w-[300px] gap-3 ">
 					<Link href="auth/admin/about" className="btn-1">
 						admin
 					</Link>

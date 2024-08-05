@@ -18,6 +18,11 @@ export { default as ContactUs } from './dashboard/ContactUs';
 export { default as TermsAndConditions } from './dashboard/TermsAndConditions';
 export { default as SettingsNavButton } from './dashboard/SettingsNavButton';
 export { default as SelectInput } from './dashboard/SelectInput';
+export { default as EditProfileImage } from './dashboard/EditProfileImage';
+export { default as DateTimePicker } from './dashboard/DateTimePicker';
+export { default as InputField } from './dashboard/InputField';
+export { default as Checkbox } from './dashboard/Checkbox';
+export { default as BusinessCard } from './dashboard/BusinessCard';
 
 // Popups
 export { default as AddAction } from './popups/AddAction';
@@ -31,3 +36,8 @@ export { default as TrainingMaterial } from './popups/TrainingMaterial';
 export { default as EditProfile } from './popups/EditProfile';
 export { default as ChangePassword } from './popups/ChangePassword';
 export { default as DeleteAccount } from './popups/DeleteAccount';
+export { default as AddBusiness } from './popups/AddBusiness';
+export { default as SelectChecklist } from './popups/SelectChecklist';
+export { default as AddChecklist } from './popups/AddChecklist';
+export { default as MyChecklist } from './popups/MyChecklist';
+export { default as InspectionsList } from './popups/InspectionsList';

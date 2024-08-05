@@ -95,7 +95,7 @@ export default function Verification() {
 					text="You have created your account successfully"
 					smallIcon
 				>
-					<Link href="/auth/admin/login" className="btn-1 mt-5">
+					<Link href="/auth/admin/purchase" className="btn-1 mt-5">
 						OK
 					</Link>
 				</IconPopupWrapper>

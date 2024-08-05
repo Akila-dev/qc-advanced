@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { images, icons } from '../../constants';
 import { SelectInput, DateTimePicker, InputField } from '../../components';
 
-const AddAction = ({ close, className, mini, admin }) => {
+const AddChecklist = ({ close, className, mini, admin }) => {
 	const [formData, setFormData] = useState({
 		title: '',
 		description: '',
@@ -128,4 +128,4 @@ const AddAction = ({ close, className, mini, admin }) => {
 	);
 };
 
-export default AddAction;
+export default AddChecklist;

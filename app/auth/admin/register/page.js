@@ -3,13 +3,16 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { IconBoxWrapper, IconPopupWrapper } from '../../../../wrappers';
 import { images, icons } from '../../../../constants';
-import { SelectInput } from '../../../../components';
+import { SelectInput, InputField, Checkbox } from '../../../../components';
 
 export default function Register() {
+	const [acceptedTO, setAcceptedTO] = useState(false);
 	const [formData, setFormData] = useState({
+		profileImg: '',
 		fName: '',
 		lName: '',
 		email: '',
@@ -20,8 +23,8 @@ export default function Register() {
 		password: '',
 		confirmPassword: '',
 	});
-
 	const {
+		profileImg,
 		fName,
 		lName,
 		email,
@@ -33,128 +36,75 @@ export default function Register() {
 		confirmPassword,
 	} = formData;
 
-	const handleChangeInput = (e) => {
-		const { name, value } = e.target;
-		setFormData({ ...formData, [name]: value });
+	const router = useRouter();
+	const submitForm = () => {
+		console.log(formData);
+		router.push('/auth/admin/verify-register');
 	};
+
 	return (
 		<IconBoxWrapper
-			icon={images.lockApproved}
 			title="Create New Account"
 			text="Enter your details below"
 			className=""
 			profile
-			profileImage={images.profile}
-			changeProfile={() => console.log('change profile image')}
+			formData={formData}
+			setFormData={setFormData}
+			valueName="profileImg"
 		>
 			<div className="flex flex-col items-center justify-center w-full md:min-w-[600px] lg:min-w-[650px] gap-5">
 				<div className="grid grid-cols-1 md:grid-cols-2 w-full gap-3 py-5">
 					<div className="hidden md:block h-[50px] bg-[--white] absolute top-[50px] left-0 w-full rounded-t-[--rounding]" />
 					{/* First Name */}
-					<div className="input-block">
-						<label>First Name</label>
-						<div className="icon-input">
-							<Image
-								src={icons.user1}
-								w={20}
-								h={20}
-								alt="mail"
-								className="input-img"
-							/>
-							<input
-								type="text"
-								name="fName"
-								placeholder="First Name"
-								value={fName}
-								onChange={handleChangeInput}
-								className="input"
-							/>
-						</div>
-					</div>
+					<InputField
+						label="First Name"
+						icon={icons.user1}
+						type="text"
+						placeholder="John"
+						formData={formData}
+						setFormData={setFormData}
+						nameValue="fName"
+					/>
 					{/* Last Name */}
-					<div className="input-block">
-						<label>Last Name</label>
-						<div className="icon-input">
-							<Image
-								src={icons.user1}
-								w={20}
-								h={20}
-								alt="mail"
-								className="input-img"
-							/>
-							<input
-								type="text"
-								name="lName"
-								placeholder="Last Name"
-								value={lName}
-								onChange={handleChangeInput}
-								className="input"
-							/>
-						</div>
-					</div>
+					<InputField
+						label="Last Name"
+						icon={icons.user1}
+						type="text"
+						placeholder="Doe"
+						formData={formData}
+						setFormData={setFormData}
+						nameValue="lName"
+					/>
 					{/* Email */}
-					<div className="input-block">
-						<label>Email</label>
-						<div className="icon-input">
-							<Image
-								src={icons.envelope}
-								w={20}
-								h={20}
-								alt="mail"
-								className="input-img"
-							/>
-							<input
-								type="mail"
-								name="email"
-								placeholder="mail@mail.com"
-								value={email}
-								onChange={handleChangeInput}
-								className="input"
-							/>
-						</div>
-					</div>
+					<InputField
+						label="Email"
+						icon={icons.envelope}
+						type="mail"
+						placeholder="user@mail.com"
+						formData={formData}
+						setFormData={setFormData}
+						nameValue="email"
+					/>
 					{/* Phone Number */}
-					<div className="input-block">
-						<label>Phone Number</label>
-						<div className="icon-input">
-							<Image
-								src={icons.mobile}
-								w={20}
-								h={20}
-								alt="mail"
-								className="input-img"
-							/>
-							<input
-								type="phone"
-								name="phoneNumber"
-								placeholder="XXXXX XXXXX"
-								value={phoneNumber}
-								onChange={handleChangeInput}
-								className="input"
-							/>
-						</div>
-					</div>
+					<InputField
+						label="Phone Number"
+						icon={icons.mobile}
+						type="text"
+						placeholder="00000 00000"
+						formData={formData}
+						setFormData={setFormData}
+						nameValue="phoneNumber"
+					/>
 					{/* Business Name */}
-					<div className="input-block">
-						<label>Business Name</label>
-						<div className="icon-input">
-							<Image
-								src={icons.details}
-								w={20}
-								h={20}
-								alt="mail"
-								className="input-img"
-							/>
-							<input
-								type="text"
-								name="businessName"
-								placeholder="Business Name"
-								value={businessName}
-								onChange={handleChangeInput}
-								className="input"
-							/>
-						</div>
-					</div>
+					<InputField
+						label="Business Name"
+						icon={icons.details}
+						type="text"
+						placeholder="Business Name"
+						formData={formData}
+						setFormData={setFormData}
+						nameValue="businessName"
+					/>
 					{/* Business Type */}
 					<SelectInput
 						icon={icons.details}
@@ -169,88 +119,58 @@ export default function Register() {
 						valueName="businessType"
 						setFormData={setFormData}
 						formData={formData}
+						darkBg
 					/>
 					{/* Address */}
-					<div className="input-block md:col-span-2">
-						<label>Address</label>
-						<div className="icon-input !items-start">
-							<Image
-								src={icons.location}
-								w={20}
-								h={20}
-								alt="mail"
-								className="input-img"
-							/>
-							<textarea placeholder="Address" className="textarea" />
-						</div>
-					</div>
+					<InputField
+						label="Address"
+						icon={icons.location}
+						type="textarea"
+						placeholder="Enter your Address"
+						formData={formData}
+						setFormData={setFormData}
+						nameValue="address"
+						additionalClassName="md:col-span-2"
+					/>
 
 					{/* Password */}
-					<div className="input-block">
-						<label>Password</label>
-						<div className="icon-input">
-							<Image
-								src={icons.lock}
-								w={20}
-								h={20}
-								alt="mail"
-								className="input-img"
-							/>
-							<input
-								type="password"
-								name="password"
-								placeholder="New Password"
-								value={password}
-								onChange={handleChangeInput}
-								className="input"
-							/>
-						</div>
-					</div>
+					<InputField
+						label="Password"
+						icon={icons.lock}
+						type="password"
+						placeholder="Enter Password"
+						formData={formData}
+						setFormData={setFormData}
+						nameValue="password"
+					/>
 					{/* Confirm Password */}
-					<div className="input-block">
-						<label>Confirm Password</label>
-						<div className="icon-input">
-							<Image
-								src={icons.lock}
-								w={20}
-								h={20}
-								alt="mail"
-								className="input-img"
-							/>
-							<input
-								type="password"
-								name="confirmPassword"
-								placeholder="Confirm Password"
-								value={confirmPassword}
-								onChange={handleChangeInput}
-								className="input"
-							/>
-						</div>
-					</div>
+					<InputField
+						label="Confirm Password"
+						icon={icons.lock}
+						type="password"
+						placeholder="Confirm Password"
+						formData={formData}
+						setFormData={setFormData}
+						nameValue="confirmPassword"
+					/>
 				</div>
 				{/* T & C */}
 				<div className="flex md:items-center md:justify-center gap-2 w-full">
-					<input
-						type="checkbox"
-						className="min-w-[17.5px] max-w-[17.5px] h-[17.5px] mt-1 md:mt-0"
-					/>
+					<Checkbox toggle={setAcceptedTO} toggled={acceptedTO} />
 					<p>
 						I agree to <b>Privacy Policy</b> and <b>Terms & Conditions</b>
 					</p>
 				</div>
-				{/* <button
-					onClick={() => console.log(formData)}
-					className="btn-1 mb-5 !max-w-[300px]"
+				<button
+					onClick={() => submitForm()}
+					className={`btn-1 mb-5 !max-w-[300px] ${
+						acceptedTO
+							? 'opacity-100 pointer-events-auto'
+							: 'opacity-70 pointer-events-none'
+					}`}
 				>
-					update
-				</button> */}
-				<Link
-					onClick={() => console.log(formData)}
-					href="/auth/admin/verify-register"
-					className="btn-1 mb-5 !max-w-[300px]"
-				>
-					update
-				</Link>
+					register
+				</button>
 				<div className="h-[20px] bg-[--white] absolute bottom-0 left-0 w-full rounded-b-[--rounding]" />
 			</div>
 		</IconBoxWrapper>

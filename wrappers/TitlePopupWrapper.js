@@ -28,12 +28,14 @@ export default function TitlePopupWrapper({
 	return (
 		<div
 			className={`fixed top-0 right-0 bottom-0 h-full w-full  ${
-				darkBg ? 'bg-[--transparent-bg]' : 'bg-[#0000000a]'
-			} backdrop-blur-sm lg:w-[--sidebar !z-10 flex items-center justify-center p-5 lg:p-7`}
+				darkBg
+					? 'bg-[--transparent-bg]'
+					: 'bg-[--transparent-bg] lg:bg-[#0000000a]'
+			} backdrop-blur-sm !z-10 flex items-center justify-center p-5 lg:p-7`}
 		>
 			{options ? (
-				<div ref={ref} className={`w-full max-w-[375px] space-y-4`}>
-					<div className="max-h-[70vh] overflow-auto">{children}</div>
+				<div ref={ref} className={`w-full max-w-[350px] space-y-4`}>
+					<div className="max-h-[500px] overflow-auto">{children}</div>
 				</div>
 			) : (
 				<div

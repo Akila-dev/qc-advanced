@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 
+import { SelectInput, InputField } from '../../components';
 import { images, icons } from '../../constants';
 
 const ContactUs = () => {
@@ -12,111 +13,67 @@ const ContactUs = () => {
 		subject: '',
 		message: '',
 	});
-
 	const { name, email, subject, message } = formData;
 
-	const handleChangeInput = (e) => {
-		const { name, value } = e.target;
-		setFormData({ ...formData, [name]: value });
+	const submitForm = () => {
+		console.log(formData);
 	};
 
 	return (
 		<div>
-			<div className="space-y-5">
+			<div className="lg:space-y-5">
 				<h2 className="hidden lg:block">Contact Us</h2>
 				{/* Name */}
-				<div className="input-block">
-					<label>Name</label>
-					<div className="icon-input">
-						<Image
-							src={icons.user1}
-							w={20}
-							h={20}
-							alt="name"
-							className="input-img"
-						/>
-						<input
-							type="name"
-							name="name"
-							placeholder="enter your name"
-							value={name}
-							onChange={handleChangeInput}
-							className="input placeholder:capitalize"
-						/>
-					</div>
-				</div>
+				<InputField
+					label="Name"
+					icon={icons.user1}
+					type="mail"
+					placeholder="Enter name"
+					formData={formData}
+					setFormData={setFormData}
+					nameValue="name"
+				/>
 				{/* Email */}
-				<div className="input-block">
-					<label>Email</label>
-					<div className="icon-input">
-						<Image
-							src={icons.envelope}
-							w={20}
-							h={20}
-							alt="mail"
-							className="input-img"
-						/>
-						<input
-							type="email"
-							name="email"
-							placeholder="user@email.com"
-							value={email}
-							onChange={handleChangeInput}
-							className="input placeholder:capitalize"
-						/>
-					</div>
-				</div>
+				<InputField
+					label="Email"
+					icon={icons.envelope}
+					type="mail"
+					placeholder="mail@mail.com"
+					formData={formData}
+					setFormData={setFormData}
+					nameValue="email"
+				/>
 				{/* Subject */}
-				<div className="input-block">
-					<label>Subject</label>
-					<div className="icon-input">
-						<Image
-							src={icons.subtitle}
-							w={20}
-							h={20}
-							alt="subject"
-							className="input-img p-[0px]"
-						/>
-						<input
-							type="subject"
-							name="subject"
-							placeholder="choose subject"
-							value={subject}
-							onChange={handleChangeInput}
-							className="input placeholder:capitalize"
-						/>
-						<Image
-							src={icons.caret}
-							w={20}
-							h={20}
-							alt="subject"
-							className="input-img p-[4px]"
-						/>
-					</div>
-				</div>
+				<SelectInput
+					icon={icons.subtitle}
+					label="Subject"
+					placeholder="Choose a subject"
+					options={[
+						'Full Service Restaurant',
+						'Quick Service Restaurant',
+						'Cafe/Coffee Shop',
+						'Food Truck',
+						'Pop-up Station',
+					]}
+					valueName="subject"
+					setFormData={setFormData}
+					formData={formData}
+					darkBg
+				/>
 				{/* Message */}
-				<div className="input-block">
-					<label>Message</label>
-					<div className="icon-input">
-						<Image
-							src={icons.message}
-							w={20}
-							h={20}
-							alt="message"
-							className="input-img"
-						/>
-						<input
-							type="message"
-							name="message"
-							placeholder="Enter your message"
-							value={message}
-							onChange={handleChangeInput}
-							className="input placeholder:capitalize"
-						/>
-					</div>
-				</div>
-				<div className="pt-5">
-					<button className="btn-1">Submit</button>
+				<InputField
+					label="Message"
+					icon={icons.message}
+					type="textarea"
+					placeholder="Enter your Message"
+					formData={formData}
+					setFormData={setFormData}
+					nameValue="message"
+				/>
+				<div className="pt-7 lg:pt-5">
+					<button className="btn-1" onClick={() => submitForm()}>
+						Submit
+					</button>
 				</div>
 			</div>
 		</div>

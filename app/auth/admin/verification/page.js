@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { IconBoxWrapper } from '../../../../wrappers';
 import { OTPInput } from '../../../../components';
@@ -23,7 +24,13 @@ export default function Verification() {
 	};
 
 	const handleSubmit = () => {
+		submitForm();
+	};
+	const router = useRouter();
+
+	const submitForm = () => {
 		console.log(formData);
+		router.push('/auth/admin/reset-password');
 	};
 
 	return (
@@ -75,9 +82,9 @@ export default function Verification() {
 						/>
 					</div>
 				</div>
-				<Link href="/auth/admin/reset-password" className="btn-1">
+				<button onClick={() => submitForm()} className="btn-1">
 					verify
-				</Link>
+				</button>
 				<div className="pb-[50px] md:pb-[25px]" />
 				<p className="text-[--black] absolute bottom-0 left-0 p-4 w-full text-center">
 					{"Didn't receive the code?"}{' '}

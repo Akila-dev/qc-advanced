@@ -73,8 +73,21 @@ export default function Training() {
 	};
 
 	return (
-		<div className="lg:p-10 h-screen overflow-auto scroll-2">
-			<h1 className="h-[15vh] lg:h-auto flex-center text-center">Training</h1>
+		<div className="md:p-10 h-screen overflow-auto scroll-2">
+			<h1 className="h-[15vh] lg:h-auto flex-center text-center relative">
+				Training <span className="md:hidden">Material</span>
+				<button
+					onClick={() => setShowAddMaterial(true)}
+					className="md:hidden bg-[--white] !w-[35px] h-[35px] absolute right-4 rounded-full flex-center"
+				>
+					{/* <HiOutlinePlusSm className="text-[--black] font-thin text-[23px]" /> */}
+					<Image
+						src={icons.plus2}
+						alt="Add Training Material"
+						className="w-[15px]"
+					/>
+				</button>
+			</h1>
 			{/* OVERVIEW */}
 			<div className="hidden lg:block w-full bg-white rounded-[--rounding] p-7 my-7">
 				<div className="w-full h-full space-y-5">
@@ -115,7 +128,7 @@ export default function Training() {
 						<h2 className="hidden lg:block">Training Materials</h2>
 					</div>
 				</div>
-				<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 lg:gap-5 px-4 py-5 lg:p-8 lg:pt-5">
+				<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 px-4 py-5 md:pt-0  lg:p-8 lg:pt-5">
 					{trainings.map(({ title, text }, i) => (
 						<TrainingCard
 							key={i}

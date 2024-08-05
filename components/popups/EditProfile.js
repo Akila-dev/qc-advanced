@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { images, icons } from '../../constants';
 import { IconPopupWrapper } from '../../wrappers';
-import { SelectInput } from '../../components';
+import { SelectInput, InputField } from '../../components';
 
 export default function EditProfile() {
 	const [formData, setFormData] = useState({
@@ -29,123 +29,65 @@ export default function EditProfile() {
 		address,
 	} = formData;
 
-	const handleChangeInput = (e) => {
-		const { name, value } = e.target;
-		setFormData({ ...formData, [name]: value });
-	};
-
-	const saveProfile = () => {
+	const submitForm = () => {
+		console.log(formData);
 		setSavedPopup(true);
 	};
 
 	return (
 		<div className="flex flex-col items-center justify-center w-full gap-5">
-			<div className="grid grid-cols-1 md:grid-cols-2 w-full gap-3 py-0">
+			<div className="grid grid-cols-1 xl:grid-cols-2 w-full gap-3 py-0">
 				{/* First Name */}
-				<div className="input-block">
-					<label>First Name</label>
-					<div className="icon-input">
-						<Image
-							src={icons.user1}
-							w={20}
-							h={20}
-							alt="mail"
-							className="input-img"
-						/>
-						<input
-							type="text"
-							name="fName"
-							placeholder="First Name"
-							value={fName}
-							onChange={handleChangeInput}
-							className="input"
-						/>
-					</div>
-				</div>
+				<InputField
+					label="First Name"
+					icon={icons.user1}
+					type="text"
+					placeholder="John"
+					formData={formData}
+					setFormData={setFormData}
+					nameValue="fName"
+				/>
 				{/* Last Name */}
-				<div className="input-block">
-					<label>Last Name</label>
-					<div className="icon-input">
-						<Image
-							src={icons.user1}
-							w={20}
-							h={20}
-							alt="mail"
-							className="input-img"
-						/>
-						<input
-							type="text"
-							name="lName"
-							placeholder="Last Name"
-							value={lName}
-							onChange={handleChangeInput}
-							className="input"
-						/>
-					</div>
-				</div>
+				<InputField
+					label="Last Name"
+					icon={icons.user1}
+					type="text"
+					placeholder="Doe"
+					formData={formData}
+					setFormData={setFormData}
+					nameValue="lName"
+				/>
 				{/* Email */}
-				<div className="input-block">
-					<label>Email</label>
-					<div className="icon-input">
-						<Image
-							src={icons.envelope}
-							w={20}
-							h={20}
-							alt="mail"
-							className="input-img"
-						/>
-						<input
-							type="mail"
-							name="email"
-							placeholder="mail@mail.com"
-							value={email}
-							onChange={handleChangeInput}
-							className="input"
-						/>
-					</div>
-				</div>
+				<InputField
+					label="Email"
+					icon={icons.envelope}
+					type="mail"
+					placeholder="user@mail.com"
+					formData={formData}
+					setFormData={setFormData}
+					nameValue="email"
+				/>
 				{/* Phone Number */}
-				<div className="input-block">
-					<label>Phone Number</label>
-					<div className="icon-input">
-						<Image
-							src={icons.mobile}
-							w={20}
-							h={20}
-							alt="mail"
-							className="input-img"
-						/>
-						<input
-							type="phone"
-							name="phoneNumber"
-							placeholder="XXXXX XXXXX"
-							value={phoneNumber}
-							onChange={handleChangeInput}
-							className="input"
-						/>
-					</div>
-				</div>
+				<InputField
+					label="Phone Number"
+					icon={icons.mobile}
+					type="text"
+					placeholder="00000 00000"
+					formData={formData}
+					setFormData={setFormData}
+					nameValue="phoneNumber"
+				/>
 				{/* Business Name */}
-				<div className="input-block">
-					<label>Business Name</label>
-					<div className="icon-input">
-						<Image
-							src={icons.details}
-							w={20}
-							h={20}
-							alt="mail"
-							className="input-img"
-						/>
-						<input
-							type="text"
-							name="businessName"
-							placeholder="Business Name"
-							value={businessName}
-							onChange={handleChangeInput}
-							className="input"
-						/>
-					</div>
-				</div>
+				<InputField
+					label="Business Name"
+					icon={icons.details}
+					type="text"
+					placeholder="Business Name"
+					formData={formData}
+					setFormData={setFormData}
+					nameValue="businessName"
+					additionalClassName=""
+				/>
 				{/* Business Type */}
 				<SelectInput
 					icon={icons.details}
@@ -160,27 +102,24 @@ export default function EditProfile() {
 					valueName="businessType"
 					setFormData={setFormData}
 					formData={formData}
+					darkBg
 				/>
 				{/* Address */}
-				<div className="input-block md:col-span-2">
-					<label>Address</label>
-					<div className="icon-input !items-start">
-						<Image
-							src={icons.location}
-							w={20}
-							h={20}
-							alt="mail"
-							className="input-img"
-						/>
-						<textarea placeholder="Address" className="textarea" />
-					</div>
-				</div>
+				<InputField
+					label="Address"
+					icon={icons.location}
+					type="textarea"
+					placeholder="Enter your Address"
+					formData={formData}
+					setFormData={setFormData}
+					nameValue="address"
+					additionalClassName="xl:col-span-2"
+				/>
 			</div>
 			<button
 				type="button"
-				onClick={() => saveProfile()}
-				href="/auth/admin/verify-register"
-				className="btn-1 mb-5 !max-w-[300px]"
+				onClick={() => submitForm()}
+				className="btn-1 md:mb-5 !max-w-[300px]"
 			>
 				save
 			</button>

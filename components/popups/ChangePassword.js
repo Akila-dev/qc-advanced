@@ -4,8 +4,9 @@ import Image from 'next/image';
 
 import { images, icons } from '../../constants';
 import { IconPopupWrapper } from '../../wrappers';
+import { InputField } from '../../components';
 
-const ChangePassword = () => {
+const ChangePassword = ({ close }) => {
 	const [formData, setFormData] = useState({
 		currentPassword: '',
 		newPassword: '',
@@ -15,84 +16,47 @@ const ChangePassword = () => {
 
 	const { currentPassword, newPassword, confirmPassword } = formData;
 
-	const handleChangeInput = (e) => {
-		const { name, value } = e.target;
-		setFormData({ ...formData, [name]: value });
-	};
-
-	const savePassword = () => {
+	const submitForm = () => {
 		setPasswordSavedPopup(true);
+		console.log(formData);
 	};
 
 	return (
-		<div className="flex flex-col gap-5">
+		<div className="flex flex-col gap-3">
 			{/* Current Password */}
-			<div className="input-block">
-				<label>Current Password</label>
-				<div className="icon-input">
-					<Image
-						src={icons.lock}
-						w={20}
-						h={20}
-						alt="mail"
-						className="input-img"
-					/>
-					<input
-						type="password"
-						name="currentPassword"
-						placeholder="Current Password"
-						value={currentPassword}
-						onChange={handleChangeInput}
-						className="input"
-					/>
-				</div>
-			</div>
+			<InputField
+				label="Current Password"
+				icon={icons.lock}
+				type="password"
+				placeholder="Current Password"
+				formData={formData}
+				setFormData={setFormData}
+				nameValue="currentPassword"
+			/>
 			{/* New Password */}
-			<div className="input-block">
-				<label>New Password</label>
-				<div className="icon-input">
-					<Image
-						src={icons.lock}
-						w={20}
-						h={20}
-						alt="mail"
-						className="input-img"
-					/>
-					<input
-						type="password"
-						name="newPassword"
-						placeholder="New Password"
-						value={newPassword}
-						onChange={handleChangeInput}
-						className="input"
-					/>
-				</div>
-			</div>
+			<InputField
+				label="New Password"
+				icon={icons.lock}
+				type="password"
+				placeholder="New Password"
+				formData={formData}
+				setFormData={setFormData}
+				nameValue="newPassword"
+			/>
 			{/* Confirm Password */}
-			<div className="input-block">
-				<label>Confirm New Password</label>
-				<div className="icon-input">
-					<Image
-						src={icons.lock}
-						w={20}
-						h={20}
-						alt="mail"
-						className="input-img"
-					/>
-					<input
-						type="password"
-						name="confirmPassword"
-						placeholder="Confirm Password"
-						value={confirmPassword}
-						onChange={handleChangeInput}
-						className="input"
-					/>
-				</div>
-			</div>
+			<InputField
+				label="Confirm Password"
+				icon={icons.lock}
+				type="password"
+				placeholder="Confirm Password"
+				formData={formData}
+				setFormData={setFormData}
+				nameValue="confirmPassword"
+			/>
 			<div className="pt-5">
 				<button
 					type="button"
-					onClick={() => savePassword()}
+					onClick={() => submitForm()}
 					className="btn-1 !max-w-[300px]"
 				>
 					save
@@ -105,10 +69,7 @@ const ChangePassword = () => {
 					text="Your password has been changed successfully"
 					smallIcon
 				>
-					<button
-						onClick={() => setPasswordSavedPopup(false)}
-						className="btn-1 mt-5"
-					>
+					<button onClick={close} className="btn-1 mt-5">
 						OK
 					</button>
 				</IconPopupWrapper>

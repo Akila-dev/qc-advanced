@@ -6,7 +6,14 @@ import Link from 'next/link';
 import { RiEyeLine } from 'react-icons/ri';
 
 import { images, icons } from '../../constants';
-import { Tabs, ActionActivityCard, CommentTextBox } from '../../components';
+import {
+	Tabs,
+	ActionActivityCard,
+	CommentTextBox,
+	SelectInput,
+	DateTimePicker,
+	InputField,
+} from '../../components';
 
 const actionActivities = [
 	{
@@ -21,9 +28,28 @@ const actionActivities = [
 	},
 ];
 
-const ActionDetails = ({ close }) => {
+const ActionDetails = ({ close, admin }) => {
+	// TAB VARIABLES
 	const [activeTab, setActiveTab] = useState(0);
+	// COMMENT VARIABLES
 	const [comment, setComment] = useState('');
+	// FORM VARIABLES
+	const [formData, setFormData] = useState({
+		title: '',
+		description: '',
+		priority: '',
+		dueDate: '',
+		assignees: '',
+		business: '',
+		status: '',
+	});
+	const { title, description, priority, dueDate, assignees, business, status } =
+		formData;
+
+	// FORM FUNCTIONS
+	const submitForm = () => {
+		console.log(formData);
+	};
 
 	return (
 		<div className="h-full w-full py-5 px-4 lg:p-7 space-y-8">
@@ -38,75 +64,82 @@ const ActionDetails = ({ close }) => {
 				<div className="space-y-8">
 					<div className="w-full space-y-4">
 						{/* Title */}
-						<div className="input-block">
-							<label>Title</label>
-							<div className="icon-input">
-								<Image
-									src={icons.envelope}
-									w={20}
-									h={20}
-									alt="mail"
-									className="input-img"
-								/>
-								<label className="input">Equipment</label>
-							</div>
-						</div>
+						<InputField
+							label="Title"
+							type="text"
+							placeholder="Add Title"
+							formData={formData}
+							setFormData={setFormData}
+							nameValue="title"
+						/>
 						{/* Description */}
-						<div className="input-block">
-							<label>Description</label>
-							<div className="icon-input">
-								<Image
-									src={icons.envelope}
-									w={20}
-									h={20}
-									alt="mail"
-									className="input-img"
-								/>
-								<label className="input">Coffee Machine is broken</label>
-							</div>
-						</div>
+						<InputField
+							label="Description"
+							type="text"
+							placeholder="Add Description"
+							formData={formData}
+							setFormData={setFormData}
+							nameValue="description"
+						/>
 						{/* Priority */}
-						<div className="input-block">
-							<label>Priority</label>
-							<div className="icon-input">
-								<label className="input !text-[--brand]">High</label>
-								<Image
-									src={icons.caret}
-									w={20}
-									h={20}
-									alt="mail"
-									className="input-img p-[3px]"
-								/>
-							</div>
-						</div>
+						<SelectInput
+							// icon={icons.details}
+							label="Priority"
+							options={['Low', 'Medium', 'High']}
+							colors={['#177EC1', '#2d2d2b', '#b62e32']}
+							valueName="priority"
+							setFormData={setFormData}
+							formData={formData}
+						/>
 						{/* DueDate */}
-						<div className="input-block">
-							<label>DueDate</label>
-							<div className="icon-input">
-								<label className="input">28 May 2024, 10:00 pm</label>
-								<Image
-									src={icons.calendar}
-									w={20}
-									h={20}
-									alt="mail"
-									className="input-img"
-								/>
-							</div>
-						</div>
+						<DateTimePicker
+							label="Due Date"
+							valueName="dueDate"
+							setFormData={setFormData}
+							formData={formData}
+						/>
 						{/* Assignees */}
-						<div className="input-block">
-							<label>Assignees</label>
-							<div className="icon-input">
-								<label className="input">John</label>
-								<Image
-									src={icons.caret}
-									w={20}
-									h={20}
-									alt="mail"
-									className="input-img p-[3px]"
+						<SelectInput
+							// icon={icons.details}
+							label="Assignees"
+							placeholder="Choose Assignees"
+							options={['Sigmandom', 'Rhemadom']}
+							valueName="assignees"
+							setFormData={setFormData}
+							formData={formData}
+						/>
+						{admin && (
+							<>
+								{/* Business */}
+								<SelectInput
+									// icon={icons.details}
+									label="Business"
+									placeholder="Choose Business"
+									options={['Sigmandom', 'Rhemadom']}
+									valueName="business"
+									setFormData={setFormData}
+									formData={formData}
 								/>
-							</div>
-						</div>
+								{/* Status */}
+								<SelectInput
+									// icon={icons.details}
+									label="Status"
+									options={['In Progress', 'Completed']}
+									valueName="status"
+									setFormData={setFormData}
+									formData={formData}
+								/>
+							</>
+						)}
+					</div>
+					<div className="w-full">
+						<button
+							type="button"
+							onClick={() => submitForm()}
+							className="btn-1 block"
+						>
+							UPDATE
+						</button>
 					</div>
 
 					<div className="flex flex-col items-center text-center gap-1">
@@ -116,12 +149,6 @@ const ActionDetails = ({ close }) => {
 							<RiEyeLine className="text-lg" /> View Report
 						</p>
 					</div>
-
-					{/* <div className="w-full lg:pb-[50px]">
-				<button onClick={close} className="btn-1 block">
-					create
-				</button>
-			</div> */}
 				</div>
 			) : (
 				<div className="w-full space-y-4 pt-2">

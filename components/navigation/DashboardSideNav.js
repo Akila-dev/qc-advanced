@@ -63,17 +63,31 @@ const DashboardSideNav = ({ type }) => {
 				</div>
 
 				<div className="w-full absolute bottom-0 flex gap-3 font-medium text-[--black] items-center px-5 pb-8">
-					<button className={`w-[45px] min-w-[45px]`}>
-						<Image
-							src={images.profile}
-							w={50}
-							h={50}
-							alt="log out"
-							className="w-[45px] h-[45px] rounded-full object-cover object-top"
-						/>
-					</button>
+					{type === 'admin' ? (
+						<button className={`w-[45px] min-w-[45px]`}>
+							<Image
+								src={images.profile}
+								w={50}
+								h={50}
+								alt="log out"
+								className="w-[45px] h-[45px] rounded-full object-cover object-top"
+							/>
+						</button>
+					) : (
+						<button className={`w-[45px] min-w-[45px]`}>
+							<Image
+								src={images.business1}
+								w={50}
+								h={50}
+								alt="log out"
+								className="w-[45px] h-[45px] rounded-full object-cover object-top"
+							/>
+						</button>
+					)}
 					<div className="w-full">
-						<h3 className="text-base truncate w-[150px]">John Doe</h3>
+						<h3 className="text-base truncate w-[150px]">
+							{type === 'admin' ? 'John Doe' : 'Business 1'}
+						</h3>
 						<p className="text-sm truncate w-[150px]">johndoe@mail.com</p>
 					</div>
 				</div>

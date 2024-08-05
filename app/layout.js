@@ -1,6 +1,7 @@
 import localFont from 'next/font/local';
 
 import './globals.css';
+import 'react-day-picker/style.css';
 
 const helix = localFont({ src: '../assets/fonts/Hellix-Regular.woff' });
 

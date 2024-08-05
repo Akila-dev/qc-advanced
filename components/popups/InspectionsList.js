@@ -207,7 +207,7 @@ const inspectionData = [
 	},
 ];
 
-export default function Dashboard() {
+export default function InspectionsList() {
 	const [activeInspection, setActiveInspection] = useState(0);
 	const [toggleInspectionDetails, setToggleInspectionDetails] = useState(false);
 

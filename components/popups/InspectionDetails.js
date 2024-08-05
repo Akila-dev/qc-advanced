@@ -27,7 +27,7 @@ const AddAction = ({ data, addNote, addMedia, addAction }) => {
 	// };
 
 	return (
-		<div className="h-auto w-full py-5 px-4 lg:p-7 space-y-5 z-[1000] relative">
+		<div className="h-auto w-full py-5 px-4 lg:p-5 space-y-5  relative">
 			{data.map((item, i) => (
 				<div key={i} className="p-4 lg:p-5 bg-[--card] space-y-5 rounded-xl">
 					<h3>{item.query}</h3>
