@@ -5,126 +5,77 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { images, icons } from '../../constants';
-import { SelectInput, DateTimePicker, InputField } from '../../components';
+import { SidePopupWrapper } from '../../wrappers';
+import {
+	SelectInput,
+	DateTimePicker,
+	InputField,
+	SubChecklist,
+} from '../../components';
 
-const MyChecklist = ({ close, className, mini, admin }) => {
-	const [formData, setFormData] = useState({
-		title: '',
-		description: '',
-		priority: '',
-		dueDate: '',
-		assignees: '',
-		business: '',
-		status: '',
-	});
+const MyChecklist = ({ close, list, setChecklist, checklistId }) => {
+	const [checklistData, setChecklistData] = useState(list[checklistId]);
+	const { checklist, assignee, subChecklist } = checklistData;
 
-	const { title, description, priority, dueDate, assignees, business, status } =
-		formData;
+	const handleChangeInput = (e) => {
+		const { name, value } = e.target;
+		setChecklistData({ ...checklistData, [name]: value });
+	};
 
 	// FORM FUNCTIONS
-	const submitForm = () => {
-		console.log(formData);
+	const updateChecklist = () => {
+		let newData = [...list];
+		newData[checklistId] = { ...checklistData, selected: true };
+		setChecklist(newData);
+		close();
 	};
 
 	return (
-		<div
-			className={
-				className ? className : 'h-full w-full py-5 px-4 lg:p-7 space-y-8'
-			}
-		>
-			<div className="w-full space-y-4">
-				{/* Title */}
-				<InputField
-					label="Title"
-					type="text"
-					placeholder="Add Title"
-					formData={formData}
-					setFormData={setFormData}
-					nameValue="title"
-				/>
-				{/* Description */}
-				<InputField
-					label="Description"
-					type="text"
-					placeholder="Add Description"
-					formData={formData}
-					setFormData={setFormData}
-					nameValue="description"
-				/>
-				{/* Priority */}
-				<SelectInput
-					// icon={icons.details}
-					label="Priority"
-					options={['Low', 'Medium', 'High']}
-					colors={['#177EC1', '#2d2d2b', '#b62e32']}
-					valueName="priority"
-					setFormData={setFormData}
-					formData={formData}
-					darkBg={mini}
-				/>
-				{/* DueDate */}
-				<DateTimePicker
-					label="Due Date"
-					valueName="dueDate"
-					setFormData={setFormData}
-					formData={formData}
-				/>
-				{/* Assignees */}
-				<SelectInput
-					// icon={icons.details}
-					label="Assignees"
-					placeholder="Choose Assignees"
-					options={['Sigmandom', 'Rhemadom']}
-					valueName="assignees"
-					setFormData={setFormData}
-					formData={formData}
-					darkBg={mini}
-				/>
-				{admin && (
-					<>
-						{/* Business */}
-						<SelectInput
-							// icon={icons.details}
-							label="Business"
-							placeholder="Choose Business"
-							options={['Sigmandom', 'Rhemadom']}
-							valueName="business"
-							setFormData={setFormData}
-							formData={formData}
-							darkBg={mini}
+		<SidePopupWrapper title={list[checklistId].checklist} close={close} noBg>
+			<div className={'h-full w-full py-5 px-4 lg:p-7 space-y-8'}>
+				<div className="w-full space-y-4">
+					<div className="icon-input">
+						<Image
+							src={icons.category}
+							w={20}
+							h={20}
+							alt="checklist"
+							className="input-img"
 						/>
-						{/* Status */}
-						<SelectInput
-							// icon={icons.details}
-							label="Status"
-							options={['In Progress', 'Completed']}
-							valueName="status"
-							setFormData={setFormData}
-							formData={formData}
-							darkBg={mini}
+						<input
+							type="text"
+							name="checklist"
+							value={list[checklistId].checklist}
+							placeholder="Name your checklist"
+							onChange={handleChangeInput}
+							className="input"
 						/>
-					</>
-				)}
-			</div>
-
-			{mini ? (
-				<div className="w-full grid grid-cols-2 gap-4 lg:gap-5">
-					<button onClick={close} className="btn-2">
-						close
-					</button>
-					<button onClick={() => submitForm()} className="btn-1">
-						create
-					</button>
+					</div>
+					{/* Assignee */}
+					<SelectInput
+						label="Assignee"
+						placeholder="Choose Assignee"
+						options={['Low', 'Medium', 'High']}
+						valueName="assignee"
+						setFormData={setChecklistData}
+						formData={checklistData}
+						darkBg
+					/>
+					<SubChecklist
+						formData={checklistData}
+						setFormData={setChecklistData}
+						nameValue="subChecklist"
+						edit
+					/>
 				</div>
-			) : (
 				<div className="w-full">
-					<button onClick={() => submitForm()} className="btn-1 block">
-						create
+					<button onClick={() => updateChecklist()} className="btn-1 block">
+						done
 					</button>
 				</div>
-			)}
-			<div className={mini ? '' : 'popup-pb'} />
-		</div>
+				<div className="popup-pb" />
+			</div>
+		</SidePopupWrapper>
 	);
 };
 

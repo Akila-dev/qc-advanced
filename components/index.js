@@ -23,6 +23,8 @@ export { default as DateTimePicker } from './dashboard/DateTimePicker';
 export { default as InputField } from './dashboard/InputField';
 export { default as Checkbox } from './dashboard/Checkbox';
 export { default as BusinessCard } from './dashboard/BusinessCard';
+export { default as InputCheckbox } from './dashboard/InputCheckbox';
+export { default as SubChecklist } from './dashboard/SubChecklist';
 
 // Popups
 export { default as AddAction } from './popups/AddAction';
@@ -41,3 +43,5 @@ export { default as SelectChecklist } from './popups/SelectChecklist';
 export { default as AddChecklist } from './popups/AddChecklist';
 export { default as MyChecklist } from './popups/MyChecklist';
 export { default as InspectionsList } from './popups/InspectionsList';
+export { default as AddInvitee } from './popups/AddInvitee';
+export { default as InspectionsArchive } from './popups/InspectionsArchive';

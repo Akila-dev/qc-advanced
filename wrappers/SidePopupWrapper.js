@@ -11,6 +11,7 @@ export default function SidePopupWrapper({
 	title,
 	otherIcon,
 	otherFunc,
+	noBg,
 }) {
 	useEffect(() => {
 		const onBackButtonEvent = (e) => {
@@ -24,7 +25,11 @@ export default function SidePopupWrapper({
 	}, []);
 
 	return (
-		<div className="fixed top-0 left-0 right-0 bottom-0 h-full w-full bg-[--transparent-bg] backdrop-blur-sm">
+		<div
+			className={`fixed top-0 left-0 right-0 bottom-0 h-full w-full bg-${
+				!noBg && '[--transparent-bg] backdrop-blur-sm'
+			}`}
+		>
 			<div
 				className={`popup-container relative top-0 flex flex-col items-center md:bg-white`}
 			>

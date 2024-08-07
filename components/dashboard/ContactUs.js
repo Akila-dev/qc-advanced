@@ -21,7 +21,7 @@ const ContactUs = () => {
 
 	return (
 		<div>
-			<div className="lg:space-y-5">
+			<div className="flex flex-col gap-3">
 				<h2 className="hidden lg:block">Contact Us</h2>
 				{/* Name */}
 				<InputField

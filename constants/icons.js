@@ -34,6 +34,7 @@ import plus from '../assets/icons/plus.png';
 import plus2 from '../assets/icons/plus2.png';
 import profile2 from '../assets/icons/profile-2.png';
 import profile from '../assets/icons/profile.png';
+import search from '../assets/icons/search.png';
 import subtitle from '../assets/icons/subtitle.png';
 import upload from '../assets/icons/upload.png';
 import upload2 from '../assets/icons/upload2.png';
@@ -76,6 +77,7 @@ export default {
 	plus2,
 	profile2,
 	profile,
+	search,
 	subtitle,
 	upload,
 	upload2,

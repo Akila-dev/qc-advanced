@@ -7,8 +7,8 @@ import { FaPlay } from 'react-icons/fa';
 
 import { icons } from '../../constants';
 
-const MiniAddMedia = ({ close }) => {
-	const [uploadedImages, setUploadedImages] = useState([]);
+const MiniAddMedia = ({ close, single, formData, setFormData, valueName }) => {
+	const [uploadedImages, setUploadedImages] = useState(formData[valueName]);
 	const [takingScreenShot, setTakingScreenShot] = useState(false);
 	const inputRef = useRef();
 
@@ -16,16 +16,12 @@ const MiniAddMedia = ({ close }) => {
 		let res = [...uploadedImages];
 		let removed = res.splice(i, 1);
 		setUploadedImages(res);
-		// setFormData((prev) => {
-		// 	return { ...formData, [valueName]: res };
-		// });
+		setFormData({ ...formData, [valueName]: res });
 		console.log('Upload Images', uploadedImages);
 	};
 
 	// Webcam Functions
 	const videoConstraints = {
-		// width: 720,
-		// height: 720,
 		facingMode: 'both',
 	};
 	const containerRef = useRef();
@@ -34,14 +30,38 @@ const MiniAddMedia = ({ close }) => {
 		() => {
 			const imageSrc = webcamRef.current.getScreenshot();
 			let uploads = [...uploadedImages];
-			uploads.push(imageSrc);
+			if (single) {
+				uploads = imageSrc;
+			} else {
+				uploads.push(imageSrc);
+			}
 			setUploadedImages(uploads);
 			setTakingScreenShot(false);
+			setFormData({ ...formData, [valueName]: uploads });
 			close();
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[webcamRef]
 	);
+
+	// On click on Gallery
+	const onImageChange = (event) => {
+		let uploads = [...uploadedImages];
+		if (event.target.files) {
+			if (single) {
+				uploads = URL.createObjectURL(event.target.files[0]);
+			} else {
+				for (let i = 0; i < event.target.files.length; i++) {
+					uploads.push(URL.createObjectURL(event.target.files[i]));
+				}
+			}
+			setUploadedImages(uploads);
+			setFormData({ ...formData, [valueName]: uploads });
+			close();
+		}
+	};
+
+	// Minimize when click on mothing
 	useEffect(() => {
 		const handleClickOutside = (event) => {
 			if (
@@ -59,23 +79,6 @@ const MiniAddMedia = ({ close }) => {
 		};
 	}, []);
 
-	// On click on Gallery
-	const onImageChange = (event) => {
-		console.log(event.target.files);
-
-		if (event.target.files) {
-			let uploads = [...uploadedImages];
-			for (let i = 0; i < event.target.files.length; i++) {
-				uploads.push(URL.createObjectURL(event.target.files[i]));
-			}
-			setUploadedImages(uploads);
-			close();
-			// setFormData((prev) => {
-			// 	return { ...formData, [valueName]: uploads };
-			// });
-		}
-		console.log('Upload Images', uploadedImages);
-	};
 	return (
 		<div className="grid grid-cols-2 gap-3 lg:gap-4">
 			<button
@@ -92,7 +95,7 @@ const MiniAddMedia = ({ close }) => {
 				<input
 					ref={inputRef}
 					type="file"
-					multiple
+					multiple={!single}
 					accept=".png,.jpg,.jpeg"
 					className="absolute top-0 left-0 w-[200%] hidden"
 					onChange={onImageChange}

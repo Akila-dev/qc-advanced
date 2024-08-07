@@ -59,8 +59,8 @@ export default function Dashboard() {
 	// ADD STORE VARIABLES
 	const [showAddBusiness, setShowAddBusiness] = useState(false);
 	const [showSelectChecklist, setShowSelectChecklist] = useState(false);
-	const [showAddChecklist, setShowAddChecklist] = useState(false);
-	const [showMyChecklist, setShowMyChecklist] = useState(false);
+	const [showInspectionsList, setShowInspectionsList] = useState(false);
+	const [activeInspection, setActiveInspection] = useState(0);
 
 	// ADD A STORE FUNCTIONS
 	const addBusiness = (i) => {
@@ -68,6 +68,12 @@ export default function Dashboard() {
 	};
 	const updateBusiness = (i) => {
 		setShowAddNote(true);
+	};
+
+	// INSPECTIONS FUNCTION
+	const showInspectionDetails = (i) => {
+		setActiveInspection(i);
+		setShowInspectionsList(true);
 	};
 
 	return (
@@ -107,7 +113,10 @@ export default function Dashboard() {
 				<div className="!hidden md:!flex p-7 pb-0 flex-v-center justify-between">
 					<h1 className="text-[--black]">My Stores</h1>
 
-					<button className="btn-1 gap-2 flex items-center justify-center shadow-md !shadow-[#00000044] !w-auto">
+					<button
+						onClick={() => setShowAddBusiness(true)}
+						className="btn-1 gap-2 flex items-center justify-center shadow-md !shadow-[#00000044] !w-auto"
+					>
 						<span className="pr-1">Add a Store</span>
 					</button>
 				</div>
@@ -123,29 +132,36 @@ export default function Dashboard() {
 						/>
 					))}
 					<div className="md:hidden pt-4">
-						<button className="btn-1">add a store</button>
+						<button className="btn-1" onClick={() => setShowAddBusiness(true)}>
+							add a store
+						</button>
 						<div className="pb" />
 					</div>
 				</div>
 			</div>
 
-			{/* {showAddAction && (
-				<TitlePopupWrapper title="Action" close={() => setShowAddAction(false)}>
-					<MiniAddAction close={() => setShowAddAction(false)} />
-				</TitlePopupWrapper>
-			)} */}
+			{showAddBusiness && (
+				<AddBusiness
+					close={() => setShowAddBusiness(false)}
+					nextPopup={() => setShowSelectChecklist(true)}
+				/>
+			)}
+			{showSelectChecklist && (
+				<SelectChecklist
+					back={() => setShowSelectChecklist(false)}
+					close={() => {
+						setShowAddBusiness(false);
+						setShowSelectChecklist(false);
+					}}
+				/>
+			)}
+
+			{showInspectionsList && (
+				<InspectionsList
+					close={() => setShowInspectionsList(false)}
+					title={businessData[activeInspection].name}
+				/>
+			)}
 		</div>
 	);
-}
-
-{
-	/* <InspectionCard
-							key={i}
-							title={inspection.title}
-							percentage={0}
-							completed={0}
-							total={2}
-							toggled={activeInspection === i}
-							onClick={() => showInspectionDetails(i)}
-						/> */
 }

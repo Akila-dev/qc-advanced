@@ -11,205 +11,28 @@ import {
 	MiniAddAction,
 	MiniAddMedia,
 	MiniAddNote,
+	SelectChecklist,
+	AddInvitee,
+	InspectionsArchive,
 } from '../../components';
 import { SidePopupWrapper, TitlePopupWrapper } from '../../wrappers';
+import { inspectionData } from '../../dummyData/inspectionData';
 
 import { SideNavIcons } from '../../components/svgs';
 
-const overview = [
+const invitedUsers = [
 	{
-		label: 'Pending Inspections',
-		value: 2,
-	},
-	{
-		label: 'Pending Actions',
-		value: 1,
-	},
-	{
-		label: 'Archive',
-		value: 1,
+		img: images.profile,
 	},
 ];
 
-const colors = ['#2d2d2b08', '#2d2d2b08', '#f5edc7'];
-
-const inspections = [
-	'Food',
-	'Customer Service',
-	'Communication',
-	'Atmosphere',
-	'flooring',
-	'Tray Service',
-];
-
-const inspectionData = [
-	{
-		title: 'Food',
-		archived: false,
-		data: [
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [images.food1, images.food2],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-		],
-	},
-	{
-		title: 'Customer Service',
-		archived: false,
-		data: [
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [images.food1, images.food2],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-		],
-	},
-	{
-		title: 'Communication',
-		archived: false,
-		data: [
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [images.food1, images.food2],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-		],
-	},
-	{
-		title: 'Atmosphere',
-		archived: false,
-		data: [
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [images.food1, images.food2],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-		],
-	},
-	{
-		title: 'flooring',
-		archived: false,
-		data: [
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [images.food1, images.food2],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-		],
-	},
-	{
-		title: 'Tray Service',
-		archived: false,
-		data: [
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [images.food1, images.food2],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-		],
-	},
-];
-
-export default function InspectionsList() {
+export default function InspectionsList({ close, title }) {
 	const [activeInspection, setActiveInspection] = useState(0);
 	const [toggleInspectionDetails, setToggleInspectionDetails] = useState(false);
+	const [showSelectChecklist, setShowSelectChecklist] = useState(false);
+	const [showArchive, setShowArchive] = useState(false);
+	const [invitees, setInvitees] = useState(invitedUsers);
+	const [showAddInvitee, setShowAddInvitee] = useState(false);
 
 	const showInspectionDetails = async (i) => {
 		await setActiveInspection(i);
@@ -231,63 +54,51 @@ export default function InspectionsList() {
 		setShowAddAction(true);
 	};
 	return (
-		<div className="md:p-10 h-screen overflow-auto">
-			<h1 className="h-[15vh] lg:h-auto flex-center text-center">
-				QC Advanced
-			</h1>
-			{/* OVERVIEW */}
-			<div className="hidden lg:block w-full bg-white rounded-[--rounding] p-7 my-7">
-				<div className="w-full h-full space-y-5">
-					{/* <div className="flex justify-end gap-3">
-						<button
-							// onClick={() => setAddAction(true)}
-							className="btn-1 gap-2 flex items-center justify-center shadow-md !shadow-[#00000044]  !w-auto"
-						>
-							<Image src={icons.archive} alt="archive" className="w-[px]" />
-							<span className="pr-1 hidden lg:block">open archives</span>
-						</button>
-						<button
-							// onClick={() => setAddAction(true)}
-							className="btn-1 gap-2 flex items-center justify-center shadow-md !shadow-[#00000044]  !w-auto"
-						>
-							<Image src={icons.archive} alt="archive" className="w-[px]" />
-							<span className="pr-1 hidden lg:block">open archives</span>
-						</button>
-					</div> */}
-					<h1 className="text-[--black]">Overview</h1>
-					<div className="grid grid-cols-3 gap-5">
-						{overview.map(({ label, value }, i) => (
+		<>
+			<SidePopupWrapper
+				title={title}
+				close={close}
+				otherIcon={icons.edit}
+				otherFunc={() => setShowSelectChecklist(true)}
+			>
+				{/* DASHBOARD CONTENT */}
+				<div className="w-full px-4 py-5 md:p-5 grid grid-cols-1 gap-3">
+					<h2>Invite</h2>
+					<div className="flex gap-3 w-full overflow-auto flex-nowrap no-scrollbar pb-2">
+						{invitees.map(({ img }, i) => (
 							<div
 								key={i}
-								className={`p-5 rounded-xl`}
-								style={{ background: colors[i] }}
+								className={`w-[50px] min-w-[50px] max-w-[50px] h-[50px]`}
 							>
-								{i === 0 && (
-									<RiGlassesLine className="text-[2.8rem] bg-[--tag] rounded-full p-[6px] mb-[-6px]" />
-								)}
-								{i === 1 && <SideNavIcons i={1} color={'#2d2d2b'} w={35} />}
-								{i === 2 && (
-									<Image src={icons.trash} alt="archive" className="w-[35px]" />
-								)}
-								<p className="text-[--black] !font-semibold pt-5 pb-1">
-									{label}
-								</p>
-								<h1 className="text-[--brand]">{value}</h1>
+								<Image
+									src={img}
+									alt={'invited user ' + (i + 1)}
+									className={`w-full h-full object-cover rounded-full`}
+								/>
 							</div>
 						))}
+						<button
+							onClick={() => setShowAddInvitee(true)}
+							className={`w-[50px] min-w-[50px] max-w-[50px] h-[50px] p-[10px] rounded-full border-2 border-dashed bg-[--highlight-bg-2]`}
+						>
+							<Image
+								src={icons.user2}
+								alt={'invite new user'}
+								className={`w-full h-full object-cover`}
+							/>
+						</button>
 					</div>
-				</div>
-			</div>
-			{/* DASHBOARD CONTENT */}
-			<div className="dashboard-content-box">
-				<div className="!hidden md:!flex p-7 pb-0 flex-v-center justify-between">
-					<h1 className="text-[--black]">Inspections</h1>
-
-					<button className="btn-1 gap-2 flex items-center justify-center shadow-md !shadow-[#00000044] !w-auto">
-						<span className="pr-1">Complete Inspection</span>
+					<button
+						onClick={() => setShowArchive(true)}
+						className="flex-v-center py-3 px-[10px] md:px-2 !gap-2 bg-[--highlight-bg] border border-[--brand] rounded-lg"
+					>
+						<Image
+							src={icons.archive}
+							alt={'invite new user'}
+							className={`w-[18px] min-w-[18px] max-w-[18px] h-auto object-cover md:w-[20px] md:min-w-[20px] md:max-w-[20px]`}
+						/>
+						<p className="black-text">Archive</p>
 					</button>
-				</div>
-				<div className="w-full px-4 py-5 md:p-7 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3">
 					{inspectionData.map((inspection, i) => (
 						<InspectionCard
 							key={i}
@@ -297,25 +108,11 @@ export default function InspectionsList() {
 							total={2}
 							toggled={activeInspection === i}
 							onClick={() => showInspectionDetails(i)}
+							sidebar
 						/>
 					))}
 				</div>
-			</div>
-
-			{toggleInspectionDetails && (
-				<SidePopupWrapper
-					close={() => setToggleInspectionDetails(false)}
-					title={inspections[activeInspection]}
-				>
-					<InspectionDetails
-						data={inspectionData[activeInspection].data}
-						addNote={openAddNote}
-						addMedia={openAddMedia}
-						addAction={openAddAction}
-					/>
-				</SidePopupWrapper>
-			)}
-
+			</SidePopupWrapper>
 			{showAddNote && (
 				<TitlePopupWrapper title="Add Note" close={() => setShowAddNote(false)}>
 					<MiniAddNote close={() => setShowAddNote(false)} />
@@ -334,6 +131,41 @@ export default function InspectionsList() {
 					<MiniAddAction close={() => setShowAddAction(false)} />
 				</TitlePopupWrapper>
 			)}
-		</div>
+			{toggleInspectionDetails && (
+				<SidePopupWrapper
+					close={() => setToggleInspectionDetails(false)}
+					title={inspectionData[activeInspection].title}
+					noBg
+				>
+					<InspectionDetails
+						data={inspectionData[activeInspection].data}
+						addNote={openAddNote}
+						addMedia={openAddMedia}
+						addAction={openAddAction}
+					/>
+				</SidePopupWrapper>
+			)}
+			{showSelectChecklist && (
+				<SelectChecklist
+					back={() => setShowSelectChecklist(false)}
+					close={() => {
+						setShowSelectChecklist(false);
+					}}
+				/>
+			)}
+			{showAddInvitee && (
+				<TitlePopupWrapper
+					title="Invite"
+					close={() => setShowAddInvitee(false)}
+				>
+					<AddInvitee close={() => setShowAddInvitee(false)} />
+				</TitlePopupWrapper>
+			)}
+			{showArchive && (
+				<TitlePopupWrapper title="Invite" close={() => setShowArchive(false)}>
+					<InspectionsArchive close={() => setShowArchive(false)} />
+				</TitlePopupWrapper>
+			)}
+		</>
 	);
 }

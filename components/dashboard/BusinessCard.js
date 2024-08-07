@@ -18,10 +18,11 @@ const BusinessCard = ({ img, name, email, location, onClick }) => {
 				/>
 			</div>
 			<div className="flex flex-col gap-[5px] w-full flex-1 relative overflow-hidden">
-				<h2 className="md:text-base">{name}</h2>
+				<h3>{name}</h3>
 				<p className="flex-v-center !gap-1 truncate">
 					<Image
 						src={icons.envelope}
+						alt="email"
 						className="w-[16px] min-w-[16px] max-w-[16px]"
 					/>{' '}
 					<span className="truncate">
@@ -32,6 +33,7 @@ const BusinessCard = ({ img, name, email, location, onClick }) => {
 				<p className="flex-v-center !gap-1">
 					<Image
 						src={icons.location}
+						alt="location"
 						className="w-[16px] min-w-[16px] max-w-[16px]"
 					/>{' '}
 					{location}
