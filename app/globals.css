@@ -214,7 +214,7 @@ input,
 }
 
 .h1 {
-	@apply text-[--black] font-bold  text-[7vw] leading-[9vw] md:text-[2rem] md:leading-[2.5rem] xl:text-[2.25rem] xl:leading-[2.75rem];
+	@apply text-[--black] font-bold  text-[7vw] leading-[9vw] md:text-[2rem] md:leading-[2.5rem] xl:text-[2.1rem] xl:leading-[2.65rem];
 }
 
 .navlinks {

@@ -44,7 +44,7 @@ const StepContent = ({ step, desc, id, position }) => (
 			)}
 			<motion.p
 				variants={popIn}
-				className="absolute bottom-[90%] right-0 md:left-[70%] lg:bottom-[20%] text-[--black] opacity-[3%] lg:opacity-5 text-[65px] lg:text-[100px] !font-black leading-none thick-text lg:px-2"
+				className="absolute bottom-[90%] right-0 md:left-[70%] lg:bottom-[20%] text-[--black] opacity-5 text-[65px] lg:text-[100px] !font-black leading-none thick-text lg:px-2"
 			>
 				{id + 1}
 			</motion.p>
@@ -66,7 +66,10 @@ const About = () => {
 	});
 
 	return (
-		<div className="w-full lg:overflow-hidden lg:min-h-[610px]" ref={container}>
+		<div
+			className="w-full overflow-hidden pb-3 lg:min-h-[610px]"
+			ref={container}
+		>
 			<div className="container">
 				<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-2">
 					<SectionBlock

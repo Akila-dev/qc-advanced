@@ -103,7 +103,7 @@ const Header = () => {
 						initial="initial"
 						whileInView="animate"
 						transition={{ staggerChildren: 0.2 }}
-						className="w-full h-[70vh] max-w-[400px] max-h-[600px] lg:h-screen lg:max-w-[50vw] lg:max-h-[100vh] place-content-center"
+						className="w-full relative h-[70vh] max-w-[400px] max-h-[600px] lg:h-screen lg:max-w-[50vw] lg:max-h-[100vh] place-content-center"
 					>
 						{/* Circle */}
 						<motion.div
@@ -115,35 +115,35 @@ const Header = () => {
 							<Image
 								src={landingImages.heroCirle}
 								alt="QC Advanced"
-								className="absolute object-contain top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-auto h-[50vh] max-h-[400px] lg:h-[calc(100vh-200px)] lg:max-h-[500px]"
+								className="absolute object-contain top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-auto h-[45vh] max-h-[400px] lg:h-[calc(100vh-200px)] lg:max-h-[500px]"
 							/>
 						</motion.div>
 						<motion.div variants={popIn}>
 							<Image
 								src={landingImages.phone2}
 								alt="QC Advanced"
-								className="absolute object-contain top-[50%] left-[40%] translate-x-[-50%] translate-y-[-50%] w-auto h-[50vh] max-h-[400px] lg:w-auto lg:h-[calc(100vh-200px)] lg:max-h-[500px]"
+								className="absolute object-contain top-[50%] left-[40%] translate-x-[-50%] translate-y-[-50%] w-auto h-[45vh] max-h-[400px] lg:w-auto lg:h-[calc(100vh-200px)] lg:max-h-[500px]"
 							/>
 						</motion.div>
 						<motion.div variants={popIn}>
 							<Image
 								src={landingImages.phone1}
 								alt="QC Advanced"
-								className="absolute object-contain top-[50%] left-[60%] translate-x-[-50%] translate-y-[-50%] w-auto h-[60vh] max-h-[500px] lg:w-auto lg:h-[calc(100vh-160px)] lg:max-h-[600px]"
+								className="absolute object-contain top-[50%] left-[60%] translate-x-[-50%] translate-y-[-50%] w-auto h-[50vh] max-h-[500px] lg:w-auto lg:h-[calc(100vh-160px)] lg:max-h-[600px]"
 							/>
 						</motion.div>
 						<motion.div variants={popIn}>
 							<Image
 								src={landingImages.kit2}
 								alt="QC Advanced"
-								className="absolute object-contain top-[50%] left-[15%] translate-x-[-50%] translate-y-[-50%] w-auto h-[20vh] max-h-[200px] lg:w-auto lg:max-h-[calc(52vh-160px)] lg:h-[200px]"
+								className="absolute object-contain top-[50%] left-[18%]  translate-x-[-50%] translate-y-[-50%] w-auto h-[18vh] max-h-[150px] lg:left-[15%] lg:w-auto lg:max-h-[calc(52vh-160px)] lg:h-[200px]"
 							/>
 						</motion.div>
 						<motion.div variants={popIn}>
 							<Image
 								src={landingImages.kit1}
 								alt="QC Advanced"
-								className="absolute object-contain top-[50%] left-[80%] translate-x-[-50%] translate-y-[-50%] w-auto h-[20vh] max-h-[200px] lg:w-auto lg:h-[calc(52vh-160px)] lg:max-h-[200px]"
+								className="absolute object-contain top-[50%] left-[78%] translate-x-[-50%] translate-y-[-50%] w-auto h-[18vh] max-h-[150px] lg:left-[80%] lg:w-auto lg:h-[calc(52vh-160px)] lg:max-h-[200px]"
 							/>
 						</motion.div>
 					</motion.div>

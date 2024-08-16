@@ -29,6 +29,7 @@ import reviewStars from '../assets/imgs/landing/reviewStars.png';
 import solutionsBg from '../assets/imgs/landing/solutions-bg.png';
 import star from '../assets/imgs/landing/star.svg';
 import testimonialBg from '../assets/imgs/landing/testimonial-bg.png';
+import cardCta from '../assets/imgs/landing/cardCta.png';
 
 export default {
 	apple,
@@ -61,4 +62,5 @@ export default {
 	solutionsBg,
 	star,
 	testimonialBg,
+	cardCta,
 };
