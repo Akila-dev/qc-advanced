@@ -45,3 +45,17 @@ export { default as MyChecklist } from './popups/MyChecklist';
 export { default as InspectionsList } from './popups/InspectionsList';
 export { default as AddInvitee } from './popups/AddInvitee';
 export { default as InspectionsArchive } from './popups/InspectionsArchive';
+
+// landing Pages
+export { default as Navbar } from './landing/Navbar';
+export { default as Hero } from './landing/Hero';
+export { default as Steps } from './landing/Steps';
+export { default as SectionBlock } from './landing/SectionBlock';
+export { default as CardCTA } from './landing/CardCTA';
+export { default as SoultionsCard } from './landing/SoultionsCard';
+export { default as TextButtonCard } from './landing/TextButtonCard';
+export { default as AppCTA } from './landing/AppCTA';
+export { default as BlogCard } from './landing/BlogCard';
+export { default as Footer } from './landing/Footer';
+export { default as Logo } from './landing/Logo';
+export { default as WavyLine } from './landing/WavyLine';

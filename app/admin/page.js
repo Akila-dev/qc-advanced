@@ -111,7 +111,7 @@ export default function Dashboard() {
 			{/* DASHBOARD CONTENT */}
 			<div className="dashboard-content-box">
 				<div className="!hidden md:!flex p-7 pb-0 flex-v-center justify-between">
-					<h1 className="text-[--black]">My Stores</h1>
+					<h2 className="text-[--black]">My Stores</h2>
 
 					<button
 						onClick={() => setShowAddBusiness(true)}

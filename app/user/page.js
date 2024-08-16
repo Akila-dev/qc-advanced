@@ -281,7 +281,7 @@ export default function Dashboard() {
 			{/* DASHBOARD CONTENT */}
 			<div className="dashboard-content-box">
 				<div className="!hidden md:!flex p-7 pb-0 flex-v-center justify-between">
-					<h1 className="text-[--black]">Inspections</h1>
+					<h2 className="text-[--black]">Inspections</h2>
 
 					<button className="btn-1 gap-2 flex items-center justify-center shadow-md !shadow-[#00000044] !w-auto">
 						<span className="pr-1">Complete Inspection</span>

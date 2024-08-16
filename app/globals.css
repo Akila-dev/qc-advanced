@@ -60,7 +60,8 @@ h3 {
 p,
 .black-text,
 .p,
-.options-btn {
+.options-btn,
+a {
 	@apply text-[3.9vw] md:text-sm text-[--text] font-normal !leading-relaxed;
 }
 textarea {
@@ -76,10 +77,17 @@ input:-webkit-autofill {
 }
 
 .btn-1 {
-	@apply p-[0.75rem] bg-[--brand] w-full text-[--white] uppercase rounded-lg text-[4.5vw] md:text-base shadow-[--shadow] text-center;
+	@apply p-[0.75rem] px-[1rem] bg-[--brand] w-full text-[--white] uppercase rounded-lg text-[4vw] md:text-sm shadow-[--shadow] text-center;
+}
+.btn-1-v2 {
+	@apply p-[0.65rem] px-[1.5rem] bg-[--brand] w-full text-[--white] rounded-lg text-[3.9vw] md:text-sm shadow-[--shadow] text-center;
 }
 .btn-2 {
-	@apply p-[0.75rem] bg-[--highlight-bg-2] w-full text-[--black] uppercase rounded-lg text-[4.5vw] md:text-base shadow-[--shadow] text-center;
+	@apply p-[0.75rem] px-[1rem] bg-[--highlight-bg-2] w-full text-[--black] uppercase rounded-lg text-[4vw] md:text-sm shadow-[--shadow] text-center;
+}
+
+.btn-2-v2 {
+	@apply p-[0.65rem] px-[1.5rem] bg-[--highlight-bg-2] w-full text-[--black] rounded-lg text-[3.9vw] md:text-sm shadow-[--shadow] text-center;
 }
 
 .btn-group {
@@ -194,4 +202,21 @@ input,
 /* ! DATE PICKER CUSTOMIZATION */
 .rdp-root {
 	--rdp-accent-color: ;
+}
+
+/* ! LANDING PAGE */
+.container {
+	@apply px-4 md:px-[3rem] lg:px-[4rem] max-w-[1240px] mx-auto;
+}
+
+.header {
+	@apply text-[--black] font-bold  text-[9vw] leading-[11vw] md:text-[3rem] md:leading-[3.3rem] xl:text-[3.7rem] xl:leading-[4rem];
+}
+
+.h1 {
+	@apply text-[--black] font-bold  text-[7vw] leading-[9vw] md:text-[2rem] md:leading-[2.5rem] xl:text-[2.25rem] xl:leading-[2.75rem];
+}
+
+.navlinks {
+	@apply text-[--black] text-sm font-medium hover:!text-[--brand] active:!text-[--brand];
 }
