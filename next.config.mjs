@@ -7,6 +7,7 @@ const nextConfig = {
 			'cdn.pixabay.com',
 			'p16-amd-va.tiktokcdn.com',
 			'image.shutterstock.com',
+			'dev.appmania.co.in',
 		],
 	},
 };

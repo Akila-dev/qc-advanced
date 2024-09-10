@@ -38,12 +38,11 @@ export const slideInBottom2 = {
 	},
 	exit: {
 		opacity: 0,
-		x: [0, 10],
-		y: [0, 10],
+		// x: [0, 10],
+		y: [0, 50],
 		transition: {
 			type: 'spring',
-			stiffness: 800,
-			damping: 25,
+			duration: 0.5,
 		},
 	},
 };
@@ -68,3 +67,18 @@ export const popIn = {
 		},
 	},
 };
+
+// USED BY BUTTONS
+export const buttonClick = {
+	tap: { scale: 0.9 },
+	hover: {
+		scale: 1.05,
+		transition: {
+			type: 'spring',
+			duration: 1,
+			bounce: 0.8,
+		},
+	},
+};
+
+export default { buttonClick, popIn, slideInBottom, slideInBottom2 };

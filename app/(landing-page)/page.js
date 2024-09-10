@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { icons, images } from '../../constants';
-import { SmoothScroll } from '../../wrappers';
+import { icons, images } from '@/constants';
+import { SmoothScroll } from '@/wrappers';
 
 import {
 	Header,
@@ -11,8 +11,8 @@ import {
 	Testimonials,
 	Blogs,
 	Contact,
-} from '../../containers';
-import { AppCTA, CardCTA } from '../../components';
+} from '@/containers';
+import { AppCTA, CardCTA } from '@/components';
 
 export default function Home() {
 	return (

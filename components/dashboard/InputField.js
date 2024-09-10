@@ -11,6 +11,7 @@ const InputField = ({
 	formData,
 	setFormData,
 	nameValue,
+	defaultValue,
 	additionalClassName,
 }) => {
 	const [value] = useState('');
@@ -20,7 +21,7 @@ const InputField = ({
 	};
 	return (
 		<div
-			className={`input-block ${
+			className={`slide-animated-children input-block ${
 				additionalClassName ? additionalClassName : ''
 			}`}
 		>
@@ -57,6 +58,7 @@ const InputField = ({
 					<input
 						type={type ? type : 'text'}
 						name={nameValue}
+						defaultValue={defaultValue}
 						placeholder={placeholder}
 						onChange={handleChangeInput}
 						className="input"

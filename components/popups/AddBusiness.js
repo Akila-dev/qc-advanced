@@ -1,49 +1,83 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { images, icons } from '../../constants';
 import {
 	DragDropFile,
 	SelectInput,
 	InputField,
+	InputFieldRHF,
 	MiniAddMedia,
+	SubmitButton,
+	FormError,
+	FormSuccess,
+	DragAndDrop,
 } from '../../components';
 import { SidePopupWrapper, TitlePopupWrapper } from '../../wrappers';
 
-const AddBusiness = ({ close, nextPopup }) => {
+// SERVER COMPONENT
+import { addBusiness } from '@/config/addBusinessAndChecklist';
+import { BusinessSchema } from '@/schemas';
+
+const AddBusiness = ({ close, nextPopup, setBusinessId, userId }) => {
+	const [isPending, setIsPending] = useState();
+	const [error, setError] = useState('');
+	const [success, setSuccess] = useState('');
+	const [imageName, setImageName] = useState('');
+
+	// UI
 	const [showAddMedia, setShowAddMedia] = useState(false);
-	const [formData, setFormData] = useState({
-		businessImage: '',
-		businessName: '',
-		businessEmail: '',
-		businessLocation: '',
+
+	const {
+		setValue,
+		register,
+		handleSubmit,
+		formState: { errors },
+		control,
+	} = useForm({
+		resolver: zodResolver(BusinessSchema),
 	});
 
-	const { businessImage, businessName, businessEmail, businessLocation } =
-		formData;
+	const onSubmit = (values) => {
+		setError('');
+		setSuccess('');
 
-	const handleChangeInput = (e) => {
-		const { name, value } = e.target;
-		setFormData({ ...formData, [name]: value });
-	};
+		setIsPending(true);
 
-	const submitForm = (type) => {
-		// Should add this to redux or zustnd
-		console.log(formData);
-		nextPopup();
+		// console.log(values);
+
+		addBusiness(values, userId).then((data) => {
+			setIsPending(false);
+			setError(data.error);
+			setSuccess(data.success);
+			setBusinessId(data.business_id);
+
+			if (data.success) {
+				close();
+				nextPopup();
+			}
+		});
 	};
 
 	return (
 		<SidePopupWrapper title="Add Business" close={close}>
-			<div className={'h-full w-full py-5 px-4 lg:p-7 space-y-8'}>
+			<form
+				onSubmit={handleSubmit((d) => onSubmit(d))}
+				className={`h-full w-full py-5 px-4 lg:p-7 space-y-8 ${
+					isPending && 'pending'
+				}`}
+			>
 				<div className="w-full space-y-4">
 					{/* Upload Document */}
 					<div className="input-block">
 						<label>Business Image</label>
 						<button
+							type="button"
 							onClick={() => setShowAddMedia(true)}
 							className="flex-center !gap-1 flex-col border-2 border-dashed  border-[--border] rounded-lg p-6 lg:p-8"
 						>
@@ -53,47 +87,51 @@ const AddBusiness = ({ close, nextPopup }) => {
 								className="min-w-[25px] max-w-[25px] h-[25px] object-contain"
 							/>
 							<p className="black-text">Upload image of your business</p>
+							{imageName && (
+								<p className="black-text">
+									Uploaded: <span className="text-[--brand]">{imageName}</span>
+								</p>
+							)}
 						</button>
+						<p className="text-[--brand] text-xs">
+							{errors.business_img?.message}
+						</p>
 					</div>
 					{/* Business Name */}
-					<InputField
+					<InputFieldRHF
 						label="Business Name"
 						icon={icons.user1}
 						type="text"
-						placeholder="Enter Business Name"
-						formData={formData}
-						setFormData={setFormData}
-						nameValue="businessName"
+						placeholder="Business Name"
+						rhf={{ ...register('business_name') }}
+						error={errors.business_name?.message}
 					/>
 					{/* Business Email */}
-					<InputField
+					<InputFieldRHF
 						label="Business Email"
 						icon={icons.envelope}
-						type="text"
-						placeholder="Enter Business Email"
-						formData={formData}
-						setFormData={setFormData}
-						nameValue="businessEmail"
+						type="mail"
+						placeholder="Business Email"
+						rhf={{ ...register('business_email') }}
+						error={errors.business_email?.message}
 					/>
 					{/* Business location */}
-					<InputField
+					<InputFieldRHF
 						label="Business Location"
-						icon={icons.envelope}
+						icon={icons.location}
 						type="text"
-						placeholder="Enter Business Location"
-						formData={formData}
-						setFormData={setFormData}
-						nameValue="businessLocation"
+						placeholder="e.g Istabul"
+						rhf={{ ...register('location') }}
+						error={errors.location?.message}
 					/>
 				</div>
-
+				{error && <FormError message={error} />}
+				{success && <FormSuccess message={success} />}
 				<div className="w-full">
-					<button onClick={() => submitForm()} className="btn-1 block">
-						add
-					</button>
+					<SubmitButton text="register" submitting={isPending} />
 				</div>
 				<div className="popup-pb" />
-			</div>
+			</form>
 
 			{showAddMedia && (
 				<TitlePopupWrapper
@@ -101,11 +139,12 @@ const AddBusiness = ({ close, nextPopup }) => {
 					close={() => setShowAddMedia(false)}
 				>
 					<MiniAddMedia
-						close={() => setShowAddMedia(false)}
+						rhf={{ ...register('business_img') }}
+						setValue={setValue}
+						name="business_img"
 						single
-						formData={formData}
-						setFormData={setFormData}
-						valueName="businessImage"
+						close={() => setShowAddMedia(false)}
+						setImageName={setImageName}
 					/>
 				</TitlePopupWrapper>
 			)}

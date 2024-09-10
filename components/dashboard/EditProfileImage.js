@@ -5,23 +5,35 @@ import Image from 'next/image';
 
 import { images, icons } from '../../constants';
 
-const EditProfileImage = ({ formData, setFormData, valueName }) => {
+const EditProfileImage = ({ rhf, error, register, setValue, name }) => {
 	const [image, setImage] = useState(null);
 	const inputRef = useRef();
 
-	const onImageChange = (event) => {
-		if (event.target.files && event.target.files[0]) {
-			setImage(URL.createObjectURL(event.target.files[0]));
-			setFormData({ ...formData, [valueName]: event.target.files[0] });
+	// const onImageChange = (event) => {
+	// 	console.log('Hi');
+	// 	if (event.target.files && event.target.files[0]) {
+	// 		// console.log(event.target.files[0]);
+	// 		setImage(URL.createObjectURL(event.target.files[0]));
+	// 		setValue(name, URL.createObjectURL(event.target.files[0]));
+	// 		// setValue(name, event.target.files[0]);
+	// 		console.log(image);
+	// 	}
+	// };
+
+	const onImageChange = async (event) => {
+		if (event.target.files && event.target.files) {
+			const file = event.target.files[0];
+			setImage(URL.createObjectURL(file));
+
+			if (file) {
+				setValue(name, file);
+			}
 		}
 	};
-	// const handleChangeInput = (e) => {
-	// 	const { name, value } = e.target;
-	// 	setFormData({ ...formData, [name]: value });
-	// };
+
 	return (
 		<div
-			className={`bg-white w-[100px] md:w-[110px] h-[100px] md:h-[110px] rounded-full flex items-center justify-center border-[5px] border-[--gray] mb-[-50px] md:mb-[-55px] z-10 relative`}
+			className={`popup-animated-children bg-white w-[100px] md:w-[110px] h-[100px] md:h-[110px] rounded-full flex items-center justify-center border-[5px] border-[--gray] mb-[-50px] md:mb-[-55px] z-10 relative`}
 		>
 			<div
 				className={`w-full h-full object-cover rounded-full overflow-hidden`}
@@ -34,13 +46,23 @@ const EditProfileImage = ({ formData, setFormData, valueName }) => {
 					className={`w-full h-full object-cover`}
 				/>
 			</div>
+
 			<input
 				ref={inputRef}
 				type="file"
+				name={name}
 				multiple={false}
 				accept=".png,.jpg,.jpeg"
 				className="absolute top-0 left-0 w-[200%] hidden"
 				onChange={onImageChange}
+			/>
+			<input
+				type="file"
+				name={name}
+				multiple={false}
+				accept=".png,.jpg,.jpeg"
+				className="absolute top-0 left-0 w-[200%] hidden"
+				{...rhf}
 			/>
 			<button
 				onClick={() => inputRef.current.click()}

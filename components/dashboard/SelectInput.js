@@ -45,7 +45,7 @@ const SelectInput = ({
 	};
 
 	return (
-		<div className="input-block !space-y-0 flex flex-col gap-2">
+		<div className="slide-animated-children input-block !space-y-0 flex flex-col gap-2">
 			<label className="">{label}</label>
 			<button
 				className="icon-input flex-v-center w-full !text-left "

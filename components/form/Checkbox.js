@@ -4,6 +4,7 @@ import { FaCheck } from 'react-icons/fa';
 const Checkbox = ({ toggle, toggled }) => {
 	return (
 		<button
+			type="button"
 			onClick={() => toggle((prev) => !prev)}
 			className={`min-w-[25px] max-w-[25px] min-h-[25px] max-h-[25px] w-[25px] h-[25px] border-2  ${
 				toggled

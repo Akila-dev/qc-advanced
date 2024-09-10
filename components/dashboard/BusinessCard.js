@@ -14,6 +14,8 @@ const BusinessCard = ({ img, name, email, location, onClick }) => {
 				<Image
 					src={img}
 					alt={name}
+					width={90}
+					height={90}
 					className="min-w-[80px] max-w-[80px] h-[80px] object-cover rounded-lg md:min-w-[90px] md:max-w-[90px] md:h-[90px]"
 				/>
 			</div>
@@ -23,10 +25,11 @@ const BusinessCard = ({ img, name, email, location, onClick }) => {
 					<Image
 						src={icons.envelope}
 						alt="email"
+						width={16}
 						className="w-[16px] min-w-[16px] max-w-[16px]"
 					/>{' '}
 					<span className="truncate">
-						{email}mmmmmmmmmmmmmmmm
+						{email}
 						{/* {email.length > 12 ? email.slice(0, 12) + '...' : email} */}
 					</span>
 				</p>

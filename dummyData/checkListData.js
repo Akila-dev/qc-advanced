@@ -1,67 +1,67 @@
 export const checklistData = [
 	{
-		checklist: 'Cleanliness',
+		name: 'Cleanliness',
 		selected: true,
 		assignee: '',
-		subChecklist: [
+		sub_checklist: [
 			{
 				question: 'Do you ...',
-				mediaType: 2,
+				media_upload_type: 'both',
 			},
 		],
 	},
 	{
-		checklist: 'Customer Service',
+		name: 'Customer Service',
 		selected: true,
 		assignee: '',
-		subChecklist: [
+		sub_checklist: [
 			{
 				question: 'Do you ...',
-				mediaType: 0,
+				media_upload_type: 'both',
 			},
 		],
 	},
 	{
-		checklist: 'Atmosphere',
+		name: 'Atmosphere',
 		selected: false,
 		assignee: '',
-		subChecklist: [
+		sub_checklist: [
 			{
 				question: 'Do you ...',
-				mediaType: 0,
+				media_upload_type: 'both',
 			},
 		],
 	},
 	{
-		checklist: 'Communication',
+		name: 'Communication',
 		selected: true,
 		assignee: '',
-		subChecklist: [
+		sub_checklist: [
 			{
 				question: 'ICT Utilities ...',
-				mediaType: 0,
+				media_upload_type: 'both',
 			},
 		],
 	},
 	{
-		checklist: 'Flooring',
+		name: 'Flooring',
 		selected: false,
 		assignee: '',
-		subChecklist: [
+		sub_checklist: [
 			{
 				question: 'Do you ...',
-				mediaType: 0,
+				media_upload_type: 'both',
 			},
 		],
 	},
 	{
-		checklist: 'Tray Service',
+		name: 'Tray Service',
 		selected: false,
 		assignee: '',
-		subChecklist: [
+		sub_checklist: [
 			{
 				question: 'Do you ...',
-				mediaType: 0,
+				media_upload_type: 'both',
 			},
 		],
 	},

@@ -1,24 +1,48 @@
 'use client';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { IconBoxWrapper } from '../../../../wrappers';
 import { images, icons } from '../../../../constants';
-import { InputField } from '../../../../components';
+import {
+	InputFieldRHF,
+	FormError,
+	FormSuccess,
+	SubmitButton,
+} from '../../../../components';
+
+// SERVER COMPONENTE
+import { adminLogin } from '@/actions/adminLogin';
+import { LoginSchema } from '@/schemas';
 
 export default function LogIn() {
-	const [formData, setFormData] = useState({
-		email: '',
-		password: '',
-	});
-	const { email, password } = formData;
+	const [isPending, startTransition] = useTransition();
+	const [error, setError] = useState('');
+	const [success, setSuccess] = useState('');
 
-	const router = useRouter();
-	const submitForm = () => {
-		console.log(formData);
-		router.push('/admin');
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		resolver: zodResolver(LoginSchema),
+	});
+
+	const onSubmit = (values) => {
+		setError('');
+		setSuccess('');
+
+		console.log(values);
+		startTransition(() => {
+			adminLogin(values).then((data) => {
+				setError(data.error);
+				setSuccess(data.success);
+			});
+		});
 	};
 
 	return (
@@ -28,28 +52,29 @@ export default function LogIn() {
 			text="Please login to continue"
 			className=""
 		>
-			<div className="flex flex-col items-center justify-center w-full max-w-[350px] gap-5">
-				<div className="w-full space-y-3 py-[15px]">
+			<form
+				onSubmit={handleSubmit((d) => onSubmit(d))}
+				className="flex flex-col items-center justify-center w-full max-w-[350px] gap-3"
+			>
+				<div className="w-full space-y-3 py-[5px]">
 					{/* Email */}
-					<InputField
+					<InputFieldRHF
 						label="Email"
 						icon={icons.envelope}
 						type="mail"
 						placeholder="mail@mail.com"
-						formData={formData}
-						setFormData={setFormData}
-						nameValue="email"
+						rhf={{ ...register('email') }}
+						error={errors.email?.message}
 					/>
 					{/* Password */}
 					<div className="input-block">
-						<InputField
+						<InputFieldRHF
 							label="Password"
 							icon={icons.lock}
 							type="password"
 							placeholder="password"
-							formData={formData}
-							setFormData={setFormData}
-							nameValue="password"
+							rhf={{ ...register('password') }}
+							error={errors.password?.message}
 						/>
 						<div className="flex justify-end w-full">
 							<Link
@@ -61,20 +86,17 @@ export default function LogIn() {
 						</div>
 					</div>
 				</div>
-				<button onClick={() => submitForm()} className="btn-1">
-					login
-				</button>
-				<div className="pb-[50px] md:pb-[15px]" />
-				<p className="text-[--black] absolute bottom-0 left-0 p-4 w-full text-center">
+				{error && <FormError message={error} />}
+				{success && <FormSuccess message={success} />}
+				<SubmitButton text="login" />
+
+				<p className="auth/user/about text-[--black] p-4 w-full text-center">
 					{"Don't have an account?"}{' '}
-					<Link
-						href="/auth/admin/register"
-						className="text-[--brand] font-semibol"
-					>
+					<Link href="/auth/admin/register" className="text-[--brand]">
 						Register
 					</Link>
 				</p>
-			</div>
+			</form>
 		</IconBoxWrapper>
 	);
 }

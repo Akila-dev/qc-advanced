@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { HiOutlinePlusSm } from 'react-icons/hi';
@@ -9,24 +9,14 @@ import {
 	TrainingCard,
 	TrainingDetails,
 	TrainingMaterial,
+	Loading,
+	Empty,
 } from '../../../components';
 import { SidePopupWrapper, TitlePopupWrapper } from '../../../wrappers';
 import { SideNavIcons } from '../../../components/svgs';
 
-const overview = [
-	{
-		label: 'Training Materials',
-		value: 2,
-	},
-	{
-		label: 'Due Soon',
-		value: 1,
-	},
-	{
-		label: 'Exceeded Due Date',
-		value: 1,
-	},
-];
+// SERVER ACTIONS/COMPONENTS
+import { getTrainingMaterials } from '@/actions/trainingMaterials';
 
 const trainings = [
 	{
@@ -51,11 +41,43 @@ const colors = ['#2d2d2b08', '#2d2d2b08', '#f5edc7'];
 const tags = ['all', 'due soon', 'exceeded due date'];
 
 export default function Training() {
+	const [isPending, startTransition] = useTransition();
+	const [trainingMaterialsList, setTrainingMaterialsList] = useState();
+	const [overview, setOverview] = useState();
+	// startTransition(() => {
+	// 	getTrainingMaterials().then((data) => {
+	// 		console.log(data);
+	// 	});
+	// });
+	// console.log(dat);
+
 	const [activeTraining, setActiveTraining] = useState(0);
 	const [showDetails, setShowDetails] = useState(false);
 	const [showEdit, setShowEdit] = useState(false);
 	const [showDelete, setShowDelete] = useState(false);
 	const [showAddMaterial, setShowAddMaterial] = useState(false);
+
+	useEffect(() => {
+		startTransition(() => {
+			getTrainingMaterials().then((data) => {
+				setTrainingMaterialsList(data?.data?.data);
+				setOverview([
+					{
+						label: 'Training Materials',
+						value: data?.data?.total_record,
+					},
+					{
+						label: 'Limit',
+						value: '∞',
+					},
+					{
+						label: 'Businesses',
+						value: '1',
+					},
+				]);
+			});
+		});
+	}, []);
 
 	const showTrainingDetails = (i) => {
 		setActiveTraining(i);
@@ -103,9 +125,9 @@ export default function Training() {
 							</span>
 						</button>
 					</div>
-
+					{/* {!isPending ? ( */}
 					<div className="grid grid-cols-3 gap-5">
-						{overview.map(({ label, value }, i) => (
+						{overview?.map(({ label, value }, i) => (
 							<div
 								key={i}
 								className={`p-5 rounded-xl`}
@@ -119,6 +141,8 @@ export default function Training() {
 							</div>
 						))}
 					</div>
+					{/* ) : ( // <Loading />
+					)} */}
 				</div>
 			</div>
 			{/* DASHBOARD CONTENT */}
@@ -128,21 +152,29 @@ export default function Training() {
 						<h2 className="hidden lg:block">Training Materials</h2>
 					</div>
 				</div>
-				<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 px-4 py-5 md:pt-0  lg:p-8 lg:pt-5">
-					{trainings.map(({ title, text }, i) => (
-						<TrainingCard
-							key={i}
-							title={title}
-							text={text[0]}
-							onClick={() => showTrainingDetails(i)}
-							admin
-							remove={() => deleteMaterial(i)}
-							edit={() => showEditTraining(i)}
-						/>
-					))}
-				</div>
+				{isPending ? (
+					<Loading />
+				) : trainingMaterialsList?.data?.length > 0 ? (
+					<>
+						<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 px-4 py-5 md:pt-0  lg:p-8 lg:pt-5">
+							{trainings.map(({ title, text }, i) => (
+								<TrainingCard
+									key={i}
+									title={title}
+									text={text[0]}
+									onClick={() => showTrainingDetails(i)}
+									admin
+									remove={() => deleteMaterial(i)}
+									edit={() => showEditTraining(i)}
+								/>
+							))}
+						</div>
 
-				<div className="pb" />
+						<div className="pb" />
+					</>
+				) : (
+					<Empty text="No material added" />
+				)}
 			</div>
 
 			{showDetails && (

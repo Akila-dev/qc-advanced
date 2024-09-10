@@ -4,12 +4,27 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { IconBoxWrapper, IconPopupWrapper } from '../../../../wrappers';
-import { OTPInput } from '../../../../components';
+import {
+	OTPInput,
+	FormError,
+	FormSuccess,
+	Button,
+} from '../../../../components';
 import { images, icons } from '../../../../constants';
 
+// BACKEND RELATED
+import { useRegisterStore } from '@/config/store';
+import { registerAdmin } from '@/config/registerAdmin';
+
 export default function Verification() {
+	const cookie_data = useRegisterStore((state) => state.pendingData); // To store data of the
+	const [error, setError] = useState('');
+	const [success, setSuccess] = useState('');
+
 	const [isDone, setIsDone] = useState(false);
-	const [formData, setFormDaformData] = useState({
+	const [isSuccessful, setIsSuccessful] = useState(false);
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [formData, setFormData] = useState({
 		input1: '',
 		input2: '',
 		input3: '',
@@ -17,15 +32,26 @@ export default function Verification() {
 	});
 
 	const handleInputChange = (inputId, value) => {
-		setFormDaformData((prevFormDaformData) => ({
-			...prevFormDaformData,
+		setFormData((prevFormData) => ({
+			...prevFormData,
 			[inputId]: value,
 		}));
 	};
 
 	const handleSubmit = () => {
+		setIsSubmitting(true);
 		console.log(formData);
-		setIsDone(true);
+
+		const otp = `${formData.input1}${formData.input2}${formData.input3}${formData.input4}`;
+
+		registerAdmin(cookie_data, otp).then((data) => {
+			setError(data.error);
+			setSuccess(data.success);
+			setIsSubmitting(false);
+			if (data?.response === 1) {
+				setIsDone(true);
+			}
+		});
 	};
 
 	return (
@@ -36,7 +62,11 @@ export default function Verification() {
 			className=""
 			back="/auth/admin/register"
 		>
-			<div className="flex flex-col items-center justify-center w-full max-w-[350px] gap-5">
+			<div
+				className={`flex flex-col items-center justify-center w-full max-w-[350px] gap-5 ${
+					isSubmitting && 'pending'
+				}`}
+			>
 				<div className="w-full space-y-3 py-[25px]">
 					{/* OTP */}
 					<div
@@ -77,9 +107,15 @@ export default function Verification() {
 						/>
 					</div>
 				</div>
-				<button onClick={() => handleSubmit()} className="btn-1">
-					verify
-				</button>
+				{error && <FormError message={error} center />}
+				{success && <FormSuccess message={success} center />}
+
+				<Button
+					onClick={() => handleSubmit()}
+					text="verify"
+					submitting={isSubmitting}
+				/>
+
 				<div className="pb-[50px] md:pb-[25px]" />
 				<p className="text-[--black] absolute bottom-0 left-0 p-4 w-full text-center">
 					{"Didn't receive the code?"}{' '}
@@ -95,7 +131,7 @@ export default function Verification() {
 					text="You have created your account successfully"
 					smallIcon
 				>
-					<Link href="/auth/admin/purchase" className="btn-1 mt-5">
+					<Link href="/admin" className="btn-1 mt-5">
 						OK
 					</Link>
 				</IconPopupWrapper>

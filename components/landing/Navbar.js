@@ -5,11 +5,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// ICONS
 import { CgMenuLeftAlt } from 'react-icons/cg';
 import { MdClose } from 'react-icons/md';
 
+// COMPONENTS AND UTILS
 import { Logo } from '../../components';
 import { slideInBottom } from '../../constants/variants';
+
+// BACKEND AND APIS
+import { useSession } from 'next-auth/react';
 
 const navigation = [
 	{
@@ -30,12 +35,14 @@ const navigation = [
 	},
 ];
 
-const Navbar = () => {
+const Navbar = ({ loginButton }) => {
 	const [menuToggled, setMenuToggled] = useState(false);
 	const [scrolledOffTop, setScrolledOffTop] = useState(false);
 	const popupClickable = useRef();
 	const clickable = useRef();
 	const path = usePathname();
+
+	const { data: session } = useSession();
 
 	// When scrolled off top
 	useEffect(() => {
@@ -70,6 +77,7 @@ const Navbar = () => {
 			document.removeEventListener('click', handleClickOutside, true);
 		};
 	}, []);
+
 	return (
 		<div
 			className={`fixed top-0 left-0 flex flex-col justify-center w-full transition-all duration-500  ${
@@ -91,17 +99,38 @@ const Navbar = () => {
 						</Link>
 					))}
 				</div>
-				<div className="flex-v-center justify-end min-w-[220px] !gap-2 !hidden lg:!flex">
-					<Link
-						href="/auth"
-						className="btn-2-v2 !bg-transparent hover:!bg-[--card] !capitalize"
-					>
-						Sign In
-					</Link>
-					<Link href="/auth" className="btn-1-v2 !capitalize">
-						Sign Up
-					</Link>
-				</div>
+				{/* <div className="!hidden lg:!block">{loginButton}</div> */}
+
+				{session ? (
+					<div className="!hidden lg:!flex flex-v-center flex-row justify-end min-w-[220px] !gap-2">
+						<p className="!text-[--black] !leading-[120%] btn-1-v2 !bg-transparent pointer-events-none">
+							Logged In As{' '}
+							<span className="inline-block capitalize text-[--brand]">
+								{session?.user?.role}
+							</span>
+						</p>
+						<div>
+							<Link
+								href="/api/auth/signout?callbackUrl=/"
+								className="btn-1-v2 !capitalize"
+							>
+								Logout
+							</Link>
+						</div>
+					</div>
+				) : (
+					<div className="flex-v-center justify-end min-w-[220px] !gap-2 !hidden lg:!flex">
+						<Link
+							href="/auth"
+							className="btn-2-v2 !bg-transparent hover:!bg-[--card] !capitalize"
+						>
+							Sign In
+						</Link>
+						<Link href="/auth/admin/about" className="btn-1-v2 !capitalize">
+							Sign Up
+						</Link>
+					</div>
+				)}
 				<button className="lg:hidden" onClick={() => setMenuToggled(true)}>
 					{menuToggled ? (
 						<MdClose className="text-[--black] text-2xl" />
@@ -146,7 +175,66 @@ const Navbar = () => {
 										</motion.p>
 									</Link>
 								))}
-								<motion.a
+								{/* {loginButton} */}
+								{session ? (
+									<div className="flex-v-center flex-col !gap-[1.5vh] mt-[2vh]">
+										<motion.p
+											variants={slideInBottom}
+											className="!text-[--black] !leading-[120%] btn-1-v2 !bg-transparent pointer-events-none !px-0"
+										>
+											Logged In As{' '}
+											<span className="inline-block capitalize text-[--brand]">
+												{session?.user?.role}
+											</span>
+										</motion.p>
+										<motion.a
+											href="/api/auth/signout?callbackUrl=/"
+											variants={slideInBottom}
+											whileHover={{ scale: 1.1 }}
+											whileTap={{ scale: 0.9 }}
+											transition={{
+												type: 'spring',
+												stiffness: 400,
+												damping: 10,
+											}}
+											className="btn-1-v2 !capitalize"
+										>
+											Logout
+										</motion.a>
+									</div>
+								) : (
+									<div className="flex-v-center flex-col !gap-[1.5vh] mt-[2vh]">
+										<motion.a
+											href="/auth"
+											variants={slideInBottom}
+											whileHover={{ scale: 1.1 }}
+											whileTap={{ scale: 0.9 }}
+											transition={{
+												type: 'spring',
+												stiffness: 400,
+												damping: 10,
+											}}
+											className="btn-2-v2 !bg-[--card] !capitalize min-w-[100px]"
+										>
+											Sign In
+										</motion.a>
+										<motion.a
+											href="/auth/admin/about"
+											variants={slideInBottom}
+											whileHover={{ scale: 1.1 }}
+											whileTap={{ scale: 0.9 }}
+											transition={{
+												type: 'spring',
+												stiffness: 400,
+												damping: 10,
+											}}
+											className="btn-1-v2 !capitalize min-w-[100px]"
+										>
+											Sign Up
+										</motion.a>
+									</div>
+								)}
+								{/* <motion.a
 									href="/auth"
 									variants={slideInBottom}
 									whileHover={{ scale: 1.1 }}
@@ -159,21 +247,7 @@ const Navbar = () => {
 									className="btn-2-v2 !bg-[--card] !capitalize min-w-[100px] mt-[2vh]"
 								>
 									Sign In
-								</motion.a>
-								<motion.a
-									href="/auth"
-									variants={slideInBottom}
-									whileHover={{ scale: 1.1 }}
-									whileTap={{ scale: 0.9 }}
-									transition={{
-										type: 'spring',
-										stiffness: 400,
-										damping: 10,
-									}}
-									className="btn-1-v2 !capitalize mt-[-1.5vh] min-w-[100px]"
-								>
-									Sign Up
-								</motion.a>
+								</motion.a> */}
 							</motion.div>
 						</motion.div>
 

@@ -1,45 +1,70 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { IconBoxWrapper, IconPopupWrapper } from '../../../../wrappers';
 import { images, icons } from '../../../../constants';
-import { SelectInput, InputField, Checkbox } from '../../../../components';
+import {
+	SelectInputRHF,
+	InputFieldRHF,
+	Checkbox,
+	FormError,
+	FormSuccess,
+	SubmitButton,
+	Loading,
+} from '../../../../components';
+
+// SERVER COMPONENTE
+import { getOTP } from '@/actions/getOTP';
+import { RegisterSchema } from '@/schemas';
+import { useRegisterStore } from '@/config/store';
 
 export default function Register() {
 	const [acceptedTO, setAcceptedTO] = useState(false);
-	const [formData, setFormData] = useState({
-		profileImg: '',
-		fName: '',
-		lName: '',
-		email: '',
-		phoneNumber: '',
-		businessName: '',
-		businessType: '',
-		address: '',
-		password: '',
-		confirmPassword: '',
-	});
-	const {
-		profileImg,
-		fName,
-		lName,
-		email,
-		phoneNumber,
-		businessName,
-		businessType,
-		address,
-		password,
-		confirmPassword,
-	} = formData;
-
+	const storePendingData = useRegisterStore((state) => state.storePendingData); // To store data of the
 	const router = useRouter();
-	const submitForm = () => {
-		console.log(formData);
-		router.push('/auth/admin/verify-register');
+
+	const [isPending, setIsPending] = useState();
+	const [error, setError] = useState('');
+	const [success, setSuccess] = useState('');
+
+	const {
+		setValue,
+		register,
+		handleSubmit,
+		formState: { errors },
+		control,
+	} = useForm({
+		resolver: zodResolver(RegisterSchema),
+	});
+
+	const onSubmit = (values) => {
+		setError('');
+		setSuccess('');
+
+		setIsPending(true);
+
+		storePendingData(values);
+		const otpVals = {
+			email: values.email,
+			ccode: values.ccode,
+			phone: values.phone,
+			business_name: values.business_name,
+		};
+
+		getOTP(otpVals).then((data) => {
+			setError(data.error);
+			setSuccess(data.success);
+			setIsPending(false);
+			if (data?.response === 1) {
+				router.push('/auth/admin/verify-otp');
+			}
+		});
 	};
 
 	return (
@@ -48,65 +73,80 @@ export default function Register() {
 			text="Enter your details below"
 			className=""
 			profile
-			formData={formData}
-			setFormData={setFormData}
-			valueName="profileImg"
+			setValue={setValue}
+			name="profile"
+			register={register}
+			rhf={{ ...register('profile') }}
+			error={errors.profile?.message}
 		>
-			<div className="flex flex-col items-center justify-center w-full md:min-w-[600px] lg:min-w-[650px] gap-5">
+			<form
+				onSubmit={handleSubmit((d) => onSubmit(d))}
+				className={`flex flex-col items-center justify-center w-full md:min-w-[600px] lg:min-w-[650px] gap-5 ${
+					isPending && 'pending'
+				}`}
+			>
 				<div className="grid grid-cols-1 md:grid-cols-2 w-full gap-3 py-5">
-					<div className="hidden md:block h-[50px] bg-[--white] absolute top-[50px] left-0 w-full rounded-t-[--rounding]" />
 					{/* First Name */}
-					<InputField
+					<InputFieldRHF
 						label="First Name"
 						icon={icons.user1}
 						type="text"
 						placeholder="John"
-						formData={formData}
-						setFormData={setFormData}
-						nameValue="fName"
+						rhf={{ ...register('fname') }}
+						error={errors.fname?.message}
 					/>
 					{/* Last Name */}
-					<InputField
+					<InputFieldRHF
 						label="Last Name"
 						icon={icons.user1}
 						type="text"
 						placeholder="Doe"
-						formData={formData}
-						setFormData={setFormData}
-						nameValue="lName"
+						rhf={{ ...register('lname') }}
+						error={errors.lname?.message}
 					/>
 					{/* Email */}
-					<InputField
+					<InputFieldRHF
 						label="Email"
 						icon={icons.envelope}
 						type="mail"
 						placeholder="user@mail.com"
-						formData={formData}
-						setFormData={setFormData}
-						nameValue="email"
+						rhf={{ ...register('email') }}
+						error={errors.email?.message}
 					/>
 					{/* Phone Number */}
-					<InputField
-						label="Phone Number"
-						icon={icons.mobile}
-						type="text"
-						placeholder="00000 00000"
-						formData={formData}
-						setFormData={setFormData}
-						nameValue="phoneNumber"
-					/>
+					<div className="flex gap-2">
+						<div className="!max-w-[80px]">
+							<InputFieldRHF
+								label="Code"
+								icon={icons.mobile}
+								type="text"
+								placeholder="+1"
+								rhf={{ ...register('ccode') }}
+								error={errors.ccode?.message}
+							/>
+						</div>
+						<div className="w-full">
+							<InputFieldRHF
+								label="Phone Number"
+								// icon={icons.mobile}
+								type="text"
+								placeholder="00000 00000"
+								rhf={{ ...register('phone') }}
+								error={errors.phone?.message}
+							/>
+						</div>
+					</div>
 					{/* Business Name */}
-					<InputField
+					<InputFieldRHF
 						label="Business Name"
 						icon={icons.details}
 						type="text"
 						placeholder="Business Name"
-						formData={formData}
-						setFormData={setFormData}
-						nameValue="businessName"
+						rhf={{ ...register('business_name') }}
+						error={errors.business_name?.message}
 					/>
 					{/* Business Type */}
-					<SelectInput
+					<SelectInputRHF
 						icon={icons.details}
 						label="Business Type"
 						options={[
@@ -116,43 +156,45 @@ export default function Register() {
 							'Food Truck',
 							'Pop-up Station',
 						]}
-						valueName="businessType"
-						setFormData={setFormData}
-						formData={formData}
+						setValue={setValue}
+						name="business_type_id"
+						rhf={{ ...register('business_type_id') }}
+						error={errors.business_type_id?.message}
 						darkBg
 					/>
 					{/* Address */}
-					<InputField
+					<InputFieldRHF
 						label="Address"
 						icon={icons.location}
 						type="textarea"
 						placeholder="Enter your Address"
-						formData={formData}
-						setFormData={setFormData}
-						nameValue="address"
+						rhf={{ ...register('address') }}
+						error={errors.address?.message}
 						additionalClassName="md:col-span-2"
 					/>
 
 					{/* Password */}
-					<InputField
+					<InputFieldRHF
 						label="Password"
 						icon={icons.lock}
 						type="password"
 						placeholder="Enter Password"
-						formData={formData}
-						setFormData={setFormData}
-						nameValue="password"
+						rhf={{ ...register('password') }}
+						error={errors.password?.message}
 					/>
 					{/* Confirm Password */}
-					<InputField
+					<InputFieldRHF
 						label="Confirm Password"
 						icon={icons.lock}
 						type="password"
 						placeholder="Confirm Password"
-						formData={formData}
-						setFormData={setFormData}
-						nameValue="confirmPassword"
+						rhf={{ ...register('confirm_password') }}
+						error={errors.confirm_password?.message}
 					/>
+				</div>
+				<div className="w-full max-w-[300px]">
+					{error && <FormError message={error} center />}
+					{success && <FormSuccess message={success} center />}
 				</div>
 				{/* T & C */}
 				<div className="flex md:items-center md:justify-center gap-2 w-full">
@@ -161,18 +203,21 @@ export default function Register() {
 						I agree to <b>Privacy Policy</b> and <b>Terms & Conditions</b>
 					</p>
 				</div>
-				<button
-					onClick={() => submitForm()}
-					className={`btn-1 mb-5 !max-w-[300px] ${
+				<SubmitButton
+					text="register"
+					submitting={isPending}
+					additionalClass={`mb-5 !max-w-[300px] ${
 						acceptedTO
 							? 'opacity-100 pointer-events-auto'
 							: 'opacity-70 pointer-events-none'
 					}`}
-				>
-					register
-				</button>
-				<div className="h-[20px] bg-[--white] absolute bottom-0 left-0 w-full rounded-b-[--rounding]" />
-			</div>
+				/>
+				{/* <div className="hidden md:block h-[50px] bg-[--white] absolute top-[50px] left-0 w-full rounded-t-[--rounding]" /> */}
+				<div className="h-[20px] lg:h-0 bg-[--white] absolute bottom-0 left-0 w-full rounded-b-[--rounding]" />
+				{/* <div className="h-screen w-full fixed top-0 left-0 z-10">
+					<Loading />
+				</div> */}
+			</form>
 		</IconBoxWrapper>
 	);
 }

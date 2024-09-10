@@ -6,9 +6,27 @@ import Image from 'next/image';
 
 import { icons } from '../../constants';
 
-const SubChecklistBlock = ({ id, subChecklist, setSubChecklist, remove }) => {
-	const [radioValue, setRadioValue] = useState(subChecklist[id].mediaType);
+const SubChecklistBlock = ({
+	id,
+	subChecklist,
+	setSubChecklist,
+	remove,
+	setErrorMessage,
+}) => {
+	const [radioValue, setRadioValue] = useState(
+		subChecklist[id].media_upload_type
+			? subChecklist[id].media_upload_type
+			: 'both'
+	);
 	const [questionValue, setQuestionValue] = useState(subChecklist[id].question);
+
+	useEffect(() => {
+		if (questionValue.length <= 0 && !questionValue) {
+			setErrorMessage('Please Name your Subchecklists');
+		} else {
+			setErrorMessage('');
+		}
+	}, [questionValue]);
 
 	// Handle change question
 	const handleChangeInput = (e) => {
@@ -18,12 +36,17 @@ const SubChecklistBlock = ({ id, subChecklist, setSubChecklist, remove }) => {
 		newData[id].question = value;
 		// console.log(value);
 		setSubChecklist(newData);
+		// if (value.length <= 0 && !value) {
+		// 	setErrorMessage('Please Name your Subchecklists');
+		// } else {
+		// 	setErrorMessage('');
+		// }
 	};
 
 	// handle media type change
 	useEffect(() => {
 		let newVal = [...subChecklist];
-		newVal[id].mediaType = radioValue;
+		newVal[id].media_upload_type = radioValue;
 		// console.log(radioValue);
 		setSubChecklist(newVal);
 	}, [radioValue, id]);
@@ -55,19 +78,19 @@ const SubChecklistBlock = ({ id, subChecklist, setSubChecklist, remove }) => {
 				{['camera', 'gallery', 'both'].map((option, i) => (
 					<button
 						key={i}
-						onClick={() => setRadioValue(i)}
+						onClick={() => setRadioValue(option)}
 						className="flex-v-center !gap-2"
 					>
 						<div
 							className={`w-[13px] h-[13px] max-w-[13px] min-w-[13px] border  p-[2px] rounded-full flex-center ${
-								radioValue === i
+								radioValue === option
 									? 'border-[--brand] bg-transparent'
 									: 'bg-[--gray] border-[--gray]'
 							}`}
 						>
 							<span
 								className={`${
-									radioValue === i ? 'bg-[--brand]' : 'bg-[--gray]'
+									radioValue === option ? 'bg-[--brand]' : 'bg-[--gray]'
 								} rounded-full w-full h-full`}
 							/>
 						</div>
@@ -79,10 +102,16 @@ const SubChecklistBlock = ({ id, subChecklist, setSubChecklist, remove }) => {
 	);
 };
 
-const SubChecklist = ({ formData, setFormData, nameValue, edit }) => {
+const SubChecklist = ({
+	formData,
+	setFormData,
+	nameValue,
+	edit,
+	setErrorMessage,
+}) => {
 	const [subChecklist, setSubChecklist] = useState(
 		edit
-			? formData.subChecklist
+			? formData.sub_checklist
 			: [
 					{
 						question: '',
@@ -116,7 +145,7 @@ const SubChecklist = ({ formData, setFormData, nameValue, edit }) => {
 	}, [subChecklist]);
 
 	return (
-		<div className="w-full flex flex-col gap-3">
+		<div className="slide-animated-children w-full flex flex-col gap-3">
 			<div className="flex-v-center !w-full">
 				<label className="flex-1">Sub Checklist</label>
 				<button
@@ -137,6 +166,7 @@ const SubChecklist = ({ formData, setFormData, nameValue, edit }) => {
 					subChecklist={subChecklist}
 					setSubChecklist={setSubChecklist}
 					remove={() => deleteSubChecklist(i)}
+					setErrorMessage={setErrorMessage}
 				/>
 			))}
 		</div>
