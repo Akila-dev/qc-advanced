@@ -154,6 +154,7 @@ export default function AppWrap({
 					{children}
 				</div>
 			</div>
+			<div className="popup-animated-children slide-animated-children absolute hidden" />
 		</div>
 	);
 }

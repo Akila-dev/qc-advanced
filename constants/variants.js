@@ -47,6 +47,24 @@ export const slideInBottom2 = {
 	},
 };
 
+//
+export const slideInRight = {
+	initial: {
+		opacity: 0,
+		x: 50,
+	},
+	animate: {
+		opacity: [0, 1],
+		x: [50, 0],
+		transition: { type: 'spring', duration: 1, bounce: 0.5 },
+	},
+	exit: {
+		opacity: 0,
+		x: 50,
+		transition: { type: 'spring', duration: 1, bounce: 0.5 },
+	},
+};
+
 // USED BY HERO IMAGES
 export const popIn = {
 	initial: { scale: 0 },

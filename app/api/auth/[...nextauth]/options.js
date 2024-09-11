@@ -55,11 +55,11 @@ export const options = {
 								userRole = 'user';
 							}
 
-							if (user?.data?.is_subscription === '1') {
-								subscribedUser = true;
-							} else {
-								subscribedUser = false;
-							}
+							// if (user?.data?.is_subscription === '1') {
+							// 	subscribedUser = true;
+							// } else {
+							// 	subscribedUser = false;
+							// }
 
 							return {
 								...user,
@@ -68,7 +68,7 @@ export const options = {
 								name: user?.data?.fname + ' ' + user?.data?.lname,
 								image: user?.data?.profile,
 								role: userRole,
-								subscribed: subscribedUser,
+								// subscribed: subscribedUser,
 							};
 						} else {
 							console.log(user.ResponseMsg);
@@ -89,7 +89,7 @@ export const options = {
 				token.name = user.name;
 				token.email = user.email;
 				token.image = user.image;
-				token.subscribed = user.subscribed;
+				// // token.subscribed = user.subscribed;
 			}
 			return token;
 		},
@@ -100,7 +100,7 @@ export const options = {
 				session.user.name = token.name;
 				session.user.email = token.email;
 				session.user.image = token.image;
-				session.user.subscribed = token.subscribed;
+				// // session.user.subscribed = token.subscribed;
 			}
 			return session;
 		},

@@ -81,3 +81,16 @@ export const ChecklistSchema = z.object({
 		})
 	),
 });
+
+// ! INVITEE SCHEMA
+export const InviteSchema = z
+	.object({
+		username: z.string().min(1, { message: 'Name is required' }),
+		email: z.string().email().min(5, { message: 'Email is required' }),
+		password: z.string().min(1, { message: 'Password' }),
+		confirm_password: z.string().min(1, { message: 'Password' }),
+	})
+	.refine((data) => data.password === data.confirm_password, {
+		message: "Passwords don't match",
+		path: ['confirm_password'],
+	});

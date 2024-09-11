@@ -52,9 +52,6 @@ export default function SelectChecklist({ back, close, businessId, userId }) {
 			if (data.response) {
 				// setPendingRequest(false);
 				setTimeout(() => {
-					console.log('Doee');
-					// router.refresh();
-					// router.replace('/admin');
 					window.location.reload();
 				}, 500);
 			}

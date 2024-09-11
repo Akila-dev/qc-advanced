@@ -124,6 +124,7 @@ export default function SidePopupWrapper({
 					</div>
 				</div>
 			</div>
+			<div className="popup-animated-children slide-animated-children absolute hidden" />
 		</div>
 	);
 }

@@ -5,8 +5,6 @@ import { options } from '@/app/api/auth/[...nextauth]/options';
 import { getTrainingMaterials } from '@/actions/trainingMaterials';
 import { BusinessSchema } from '@/schemas';
 
-import { promises as fs } from 'fs';
-
 export const getBusinessList = async () => {
 	const session = await getServerSession(options);
 	const user_id = session?.user?.id;
@@ -31,6 +29,76 @@ export const getBusinessList = async () => {
 		if (res.ok && businesses) {
 			return { data: businesses };
 			// console.log(materials);
+		}
+	} catch (error) {
+		return { errorMsg: "Couldn't Find Businesses" };
+	}
+};
+
+export const deleteBusiness = async (business_id) => {
+	const session = await getServerSession(options);
+	const user_id = session?.user?.id;
+
+	try {
+		const res = await fetch(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/deleteBusiness`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
+				body: JSON.stringify({ user_id: user_id, business_id: business_id }),
+			}
+		);
+
+		const deleted = await res.json();
+
+		if (res.ok && deleted.ResponseCode === 1) {
+			return { success: deleted.ResponseMsg, response: deleted.ResponseCode };
+		} else {
+			return {
+				error: deleted.ResponseMsg,
+			};
+		}
+	} catch (error) {
+		return { errorMsg: "Couldn't Find Businesses" };
+	}
+};
+
+export const completeInspection = async (business_id) => {
+	const session = await getServerSession(options);
+	const user_id = session?.user?.id;
+
+	try {
+		const res = await fetch(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/completeInspection`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
+				body: JSON.stringify({ user_id: user_id, business_id: business_id }),
+			}
+		);
+
+		const report = await res.json();
+
+		if (res.ok && report.ResponseCode === 1) {
+			return {
+				success: report.ResponseMsg,
+				response: report.ResponseCode,
+				report: report.data.inspection_pdf,
+			};
+		} else {
+			return {
+				error: report.ResponseMsg,
+			};
 		}
 	} catch (error) {
 		return { errorMsg: "Couldn't Find Businesses" };

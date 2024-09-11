@@ -4,7 +4,10 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { RiGlassesLine } from 'react-icons/ri';
+import { GoTrash } from 'react-icons/go';
 import { AnimatePresence } from 'framer-motion';
+import { RWebShare } from 'react-web-share';
+import { Document, Page } from 'react-pdf';
 
 import { images, icons } from '../../constants';
 import {
@@ -19,13 +22,24 @@ import {
 	LoadingFailed,
 	Button,
 	Purchase,
+	FormError,
+	FormSuccess,
 } from '../../components';
-import { SidePopupWrapper, TitlePopupWrapper } from '../../wrappers';
+import {
+	SidePopupWrapper,
+	TitlePopupWrapper,
+	IconPopupWrapper,
+} from '../../wrappers';
 
 import { SideNavIcons } from '../../components/svgs';
+const defaultPDF = '/qc-advanced.pdf';
 
 // SERVER ACTIONS/COMPONENTS
-import { getBusinessList } from '@/actions/getBusiness';
+import {
+	getBusinessList,
+	deleteBusiness,
+	completeInspection,
+} from '@/actions/getBusiness'; //GET BUSINESS, DELETE BUSINESS, GET REPORT/COMPLETE INSPECTION
 
 const overviewCardColors = ['#2d2d2b08', '#2d2d2b08', '#f5edc7'];
 
@@ -53,13 +67,24 @@ export default function Dashboard() {
 	const { data: session } = useSession();
 	const userId = session?.user?.id;
 	const isSubscribed = session?.user?.subscribed;
+	const [pendingDelete, setPendingDelete] = useState(false);
+	const [error, setError] = useState('');
+	const [success, setSuccess] = useState('');
+	// VIEW REPORT
+	const [showReport, setShowReport] = useState(false);
+	const [loadingReport, setLoadingReport] = useState(false);
+	const [reportPDF, setReportPDF] = useState();
+	const [pageNumber, setPageNumber] = useState(1);
 
 	// UI VARIABLES, as their names suggest
 	const [showAddBusiness, setShowAddBusiness] = useState(false);
 	const [showSelectChecklist, setShowSelectChecklist] = useState(false);
 	const [showInspectionsList, setShowInspectionsList] = useState(false);
-	const [activeInspection, setActiveInspection] = useState(0);
+	const [activeBusiness, setActiveBusiness] = useState(0);
 	const [showPurchase, setShowPurchase] = useState(!isSubscribed);
+	const [showOptions, setShowOptions] = useState(false);
+	const [activeBusinessName, setActiveBusinessName] = useState('');
+	const [isDeleting, setIsDeleting] = useState(false);
 
 	useEffect(() => {
 		getBusinessList(userId).then((data) => {
@@ -71,20 +96,57 @@ export default function Dashboard() {
 				setSuccessfullyLoaded(true);
 			}
 		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	// ADD A STORE FUNCTIONS
-	const addBusiness = (i) => {
-		setShowAddNote(true);
-	};
-	const updateBusiness = (i) => {
-		setShowAddNote(true);
+	// // ADD A STORE FUNCTIONS
+
+	// SHOW OPTIONS FUNCTION
+	const optionsPopup = (id, i) => {
+		//id=business_is,i=list map's ndex
+		setActiveBusiness(id);
+		setActiveBusinessName(businessList[i].business_name);
+		setShowOptions(true);
 	};
 
 	// INSPECTIONS FUNCTION
-	const showInspectionDetails = (i) => {
-		setActiveInspection(i);
+	const showInspection = () => {
+		setShowOptions(false);
 		setShowInspectionsList(true);
+	};
+
+	// DELETE BUSINESS
+	const viewReport = () => {
+		setShowReport(true);
+		setLoadingReport(true);
+		setShowOptions(false);
+
+		completeInspection(activeBusiness).then((data) => {
+			if (data?.response === 1) {
+				setTimeout(() => {
+					setLoadingReport(false);
+					setReportPDF(data.report);
+				}, 500);
+			}
+		});
+	};
+
+	// DELETE BUSINESS
+	const requestDeleteBusiness = () => {
+		setError('');
+		setSuccess('');
+		setPendingDelete(true);
+
+		deleteBusiness(activeBusiness).then((data) => {
+			setError(data.error);
+			setSuccess(data.success);
+			if (data?.response === 1) {
+				setTimeout(() => {
+					setPendingDelete(false);
+					window.location.reload();
+				}, 500);
+			}
+		});
 	};
 
 	return isLoading ? (
@@ -142,7 +204,7 @@ export default function Dashboard() {
 										name={business_name}
 										email={business_email}
 										location={location}
-										// onClick={() => showInspectionDetails(i)}
+										onClick={() => optionsPopup(business_id, i)}
 									/>
 								)
 							)}
@@ -179,16 +241,135 @@ export default function Dashboard() {
 					/>
 				)}
 			</AnimatePresence>
+			{showOptions && (
+				<TitlePopupWrapper darkBg options close={() => setShowOptions(false)}>
+					<div className="bg-[--card] border border-[--border] rounded-2xl flex flex-col w-full overflow-hidden">
+						{/* INSPECTIONS */}
+						<button
+							type="button"
+							className="options-btn group"
+							onClick={() => viewReport()}
+						>
+							<span className="group-hover:scale-110 group-hover:text-[--brand] inline-block transition duration-700">
+								view report
+							</span>
+						</button>
+						<button
+							type="button"
+							className="options-btn group"
+							onClick={() => showInspection()}
+						>
+							<span className="group-hover:scale-110 group-hover:text-[--brand] inline-block transition duration-700">
+								Inspection
+							</span>
+						</button>
+						{/* DELETE */}
+						<button
+							type="button"
+							className="options-btn group"
+							onClick={() => setIsDeleting(true)}
+						>
+							<div className="group-hover:scale-110 group-hover: text-[--brand] inline-flex items-center gap-[6px] transition duration-700 ">
+								<GoTrash className="scale-110" />
+								<span>Delete Business</span>
+							</div>
+						</button>
+					</div>
+				</TitlePopupWrapper>
+			)}
 			{showPurchase && <Purchase close={() => setShowPurchase(false)} />}
 
-			{/* {showInspectionsList && (
+			{/* DELETE PROMPT */}
+			{isDeleting && (
+				<IconPopupWrapper
+					icon={
+						success
+							? images.congratulations
+							: error
+							? images.error
+							: images.query
+					}
+					title={`Delete Business`}
+					text={
+						success
+							? ''
+							: error
+							? ''
+							: `Are you sure you want to delete ${activeBusinessName}`
+					}
+					smallIcon
+					className={pendingDelete && 'pointer-events-none'}
+				>
+					<div className={`space-y-3 pt-3 ${pendingDelete && 'pending'}`}>
+						{error && <FormError message={error} />}
+						{success && <FormSuccess message={success} />}
+
+						<div className="grid grid-cols-2 gap-3">
+							<Button onClick={() => setIsDeleting(false)} text="no" noBg />
+							<Button
+								onClick={() => requestDeleteBusiness()}
+								text="Yes"
+								sm
+								// submitting={pendingDelete}
+							/>
+						</div>
+					</div>
+				</IconPopupWrapper>
+			)}
+			{/* VIEW REPORT */}
+			{showReport && (
+				<SidePopupWrapper close={() => setShowReport(false)} title="Report">
+					{loadingReport ? (
+						<Loading inner />
+					) : (
+						<div className="h-full w-full py-5 px-4 lg:p-5 relative">
+							<iframe
+								// data={reportPDF}
+								// type="application/pdf"
+								// width="100%"
+								// height="100%"
+								src={reportPDF ? reportPDF : defaultPDF}
+								title="Report"
+								className="w-full h-full overflow-auto pb-[65px]"
+							>
+								<p>{`Can't view report on this device`}</p>
+							</iframe>
+							{/* <Document file={reportPDF}>
+								<Page pageNumber={pageNumber} />
+							</Document> */}
+							<div className="absolute bottom-0 right-0 w-full py-4 px-4 lg:p-x7 grid grid-cols-2 gap-2 bg-[--white]">
+								<Button
+									noBg
+									text="Download"
+									// link={reportPDF ? reportPDF : defaultPDF}
+									// newPage
+									onClick={() =>
+										window.open(reportPDF ? reportPDF : defaultPDF)
+									}
+								/>
+								<RWebShare
+									data={{
+										url: reportPDF ? reportPDF : defaultPDF,
+										title: `Report on ${activeBusinessName}`,
+									}}
+									onClick={() => console.log('shared successfully!')}
+								>
+									<Button text="Share" noClick />
+								</RWebShare>
+							</div>
+						</div>
+					)}
+				</SidePopupWrapper>
+			)}
+
+			{showInspectionsList && (
 				<InspectionsList
 					close={() => setShowInspectionsList(false)}
-					title={businessData[activeInspection].name}
+					title={activeBusinessName}
 					userId={userId}
-					businessId={businessId}
+					businessId={activeBusiness}
 				/>
-			)} */}
+			)}
 		</>
 	) : (
 		<LoadingFailed />

@@ -1,77 +1,100 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { images, icons } from '../../constants';
 import { IconPopupWrapper } from '../../wrappers';
-import { InputField } from '../../components';
+import {
+	InputFieldRHF,
+	FormError,
+	FormSuccess,
+	SubmitButton,
+	Button,
+} from '../../components';
 
-const AddInvitee = ({ close }) => {
-	const [formData, setFormData] = useState({
-		name: '',
-		email: '',
-		password: '',
-		confirmPassword: '',
-	});
+// SERVER COMPONENTE
+import { addInvitee } from '@/actions/getInvitee';
+import { InviteSchema } from '@/schemas';
+
+const AddInvitee = ({ close, invitees, setInvitees, businessId }) => {
 	const [inviteSent, setInviteSent] = useState(false);
+	const [isPending, setIsPending] = useState();
+	const [error, setError] = useState('');
+	const [success, setSuccess] = useState('');
 
-	const { currentPassword, newPassword, confirmPassword } = formData;
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		resolver: zodResolver(InviteSchema),
+	});
 
-	const submitForm = () => {
-		setInviteSent(true);
-		console.log(formData);
+	const onSubmit = (values) => {
+		setError('');
+		setSuccess('');
+
+		setIsPending(true);
+
+		addInvitee(values, businessId).then((data) => {
+			setError(data.error);
+			setSuccess(data.success);
+			setIsPending(false);
+			if (data?.response === 1) {
+				setInvitees([...invitees, data?.data?.data]);
+				setInviteSent(true);
+			}
+		});
 	};
 
 	return (
-		<div className="flex flex-col gap-3">
+		<form
+			onSubmit={handleSubmit((d) => onSubmit(d))}
+			className={`flex flex-col gap-3 ${isPending && 'pending'}`}
+		>
 			{/* Name */}
-			<InputField
+			<InputFieldRHF
 				label="Name"
-				icon={icons.lock}
-				type="text"
-				placeholder="Enter your name"
-				formData={formData}
-				setFormData={setFormData}
-				nameValue="name"
+				icon={icons.user}
+				type="mail"
+				placeholder="Enter Invitee Username"
+				rhf={{ ...register('username') }}
+				error={errors.username?.message}
 			/>
 			{/* Email */}
-			<InputField
+			<InputFieldRHF
 				label="Email"
-				icon={icons.lock}
-				type="email"
-				placeholder="Enter User Email"
-				formData={formData}
-				setFormData={setFormData}
-				nameValue="email"
+				icon={icons.envelope}
+				type="mail"
+				placeholder="Enter Invitee Email"
+				rhf={{ ...register('email') }}
+				error={errors.email?.message}
 			/>
-			{/* New Password */}
-			<InputField
+			{/* Password */}
+			<InputFieldRHF
 				label="Password"
 				icon={icons.lock}
 				type="password"
-				placeholder="Password"
-				formData={formData}
-				setFormData={setFormData}
-				nameValue="password"
+				placeholder="Enter Password"
+				rhf={{ ...register('password') }}
+				error={errors.password?.message}
 			/>
 			{/* Confirm Password */}
-			<InputField
+			<InputFieldRHF
 				label="Confirm Password"
 				icon={icons.lock}
 				type="password"
 				placeholder="Confirm Password"
-				formData={formData}
-				setFormData={setFormData}
-				nameValue="confirmPassword"
+				rhf={{ ...register('confirm_password') }}
+				error={errors.confirm_password?.message}
 			/>
 			<div className="pt-5">
-				<button
-					type="button"
-					onClick={() => submitForm()}
-					className="btn-1 !max-w-[300px]"
-				>
-					save
-				</button>
+				{error && <FormError message={error} center />}
+				{success && <FormSuccess message={success} center />}
+
+				<SubmitButton text="save" submitting={isPending} />
 			</div>
 			{inviteSent && (
 				<IconPopupWrapper
@@ -81,12 +104,12 @@ const AddInvitee = ({ close }) => {
 					smallIcon
 					className="!bg-transparent"
 				>
-					<button onClick={close} className="btn-1 mt-5">
-						OK
-					</button>
+					<div className="mt-5 min-w-[80px]">
+						<Button onClick={close} text="ok" />
+					</div>
 				</IconPopupWrapper>
 			)}
-		</div>
+		</form>
 	);
 };
 

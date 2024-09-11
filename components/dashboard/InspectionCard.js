@@ -15,7 +15,7 @@ const InspectionCard = ({
 }) => {
 	return (
 		<div
-			className={`flex justify-between items-center w-full bg-[--card] border border-[--border] rounded-lg gap-4 ${
+			className={`slide-animated-children flex justify-between items-center w-full bg-[--card] border border-[--border] rounded-lg gap-4 ${
 				sidebar ? '' : 'lg:flex-col lg:items-start lg:p-[14px]'
 			}`}
 		>

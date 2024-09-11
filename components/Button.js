@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { variants } from '@/constants';
 
-const Button = ({ onClick, text, link, submitting }) => {
+const Button = ({ onClick, text, link, submitting, noBg, noClick, sm }) => {
 	const variantsP = {
 		initial: (i) => ({
 			height: [5 + i * 0.5],
@@ -32,7 +32,7 @@ const Button = ({ onClick, text, link, submitting }) => {
 				animate="animate"
 				className="overflow-hidden text-[--white] flex-center !gap-2"
 			>
-				<span>Please Wait</span>
+				<span className={sm && 'hidden'}>Please Wait</span>
 				<div className="flex-center !w-auto !gap-1">
 					<motion.span
 						variants={variantsP}
@@ -57,8 +57,17 @@ const Button = ({ onClick, text, link, submitting }) => {
 			whileTap="tap"
 			whileHover="hover"
 			variants={variants.buttonClick}
-			className="btn-1"
+			className={noBg ? 'btn-2' : 'btn-1'}
 			onClick={onClick}
+		>
+			{text}
+		</motion.button>
+	) : noClick ? (
+		<motion.button
+			whileTap="tap"
+			whileHover="hover"
+			variants={variants.buttonClick}
+			className={noBg ? 'btn-2' : 'btn-1'}
 		>
 			{text}
 		</motion.button>
@@ -67,8 +76,8 @@ const Button = ({ onClick, text, link, submitting }) => {
 			whileTap="tap"
 			whileHover="hover"
 			variants={variants.buttonClick}
-			className="btn-1"
-			onClick={onClick}
+			className={noBg ? 'btn-2' : 'btn-1'}
+			// onClick={onClick}
 		>
 			<Link href={link}>{text}</Link>
 		</motion.div>
