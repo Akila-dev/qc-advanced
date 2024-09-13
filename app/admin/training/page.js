@@ -208,12 +208,24 @@ export default function Training() {
 				{showDetails && (
 					<SidePopupWrapper
 						close={() => setShowDetails(false)}
-						title={trainings[activeTraining].title}
+						title={
+							trainingMaterialsList.filter((list) => {
+								return list.training_id === activeTraining;
+							})[0].title
+						}
 						otherIcon={icons.download}
 					>
 						<TrainingDetails
-							img={trainings[activeTraining].img}
-							text={trainings[activeTraining].text}
+							img={
+								trainingMaterialsList.filter((list) => {
+									return list.training_id === activeTraining;
+								})[0].image
+							}
+							text={
+								trainingMaterialsList.filter((list) => {
+									return list.training_id === activeTraining;
+								})[0].description
+							}
 							userId={userId}
 							// title={trainings[activeTraining].title}
 						/>

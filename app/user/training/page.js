@@ -109,7 +109,7 @@ export default function Training() {
 				>
 					<TrainingDetails
 						img={trainings[activeTraining].img}
-						text={trainings[activeTraining].text}
+						text={trainings[activeTraining].text.toString()}
 						// title={trainings[activeTraining].title}
 					/>
 				</SidePopupWrapper>

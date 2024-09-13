@@ -8,16 +8,17 @@ const TrainingDetails = ({ img, text }) => {
 			<div>
 				<Image
 					src={img}
-					w={300}
-					h={300}
+					width={400}
+					height={300}
 					alt="mail"
 					className="w-full h-[200px] object-cover rounded-xl"
 				/>
 			</div>
 			<div className="space-y-4">
-				{text.map((p, i) => (
+				{/* {text.map((p, i) => (
 					<p key={i}>{p}</p>
-				))}
+				))} */}
+				<p>{text}</p>
 			</div>
 		</div>
 	);
