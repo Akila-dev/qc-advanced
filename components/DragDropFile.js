@@ -5,36 +5,47 @@ import Image from 'next/image';
 
 import { icons } from '../constants';
 
-const DragDropFile = ({ formData, setFormData, valueName }) => {
-	const [materialImages, setMaterialImages] = useState([]);
+const DragDropFile = ({ rhf, error, setValue, name, single, defaultValue }) => {
+	const [materialImages, setMaterialImages] = useState(
+		defaultValue ? (single ? [defaultValue] : [...defaultValue]) : []
+	); // STORES THE BLOB URL FOR THE IMAGE TO BE DISPLAYED
+	const [rawImageFiles, setRawImageFiles] = useState(
+		defaultValue ? (single ? [defaultValue] : [...defaultValue]) : []
+	); // STORES THE IMAGE FILE TO BE UPLOADED
 	// const [showImages, setShowImages] = useState(false);
 	const [dragActive, setDragActive] = useState(false);
 	const inputRef = useRef();
 
 	const removeImage = (i) => {
 		let res = [...materialImages];
+		let raw = [...rawImageFiles];
+
 		let removed = res.splice(i, 1);
+		let removedRaw = raw.splice(i, 1);
 		setMaterialImages(res);
-		setFormData((prev) => {
-			return { ...formData, [valueName]: res };
-		});
-		console.log('Material Images', materialImages);
+		setRawImageFiles(raw);
+		setValue(name, raw);
 	};
 
 	const onImageChange = (event) => {
-		console.log(event.target.files);
-
-		if (event.target.files) {
-			let uploads = [...materialImages];
-			for (let i = 0; i < event.target.files.length; i++) {
-				uploads.push(URL.createObjectURL(event.target.files[i]));
+		if (event.target.files && event.target.files[0]) {
+			if (!single) {
+				let uploads = [...materialImages];
+				let files = [...rawImageFiles];
+				for (let i = 0; i < event.target.files.length; i++) {
+					uploads.push(URL.createObjectURL(event.target.files[i]));
+					files.push(event.target.files[i]);
+				}
+				setMaterialImages(uploads);
+				setRawImageFiles(files);
+				setValue(name, files);
+			} else {
+				setMaterialImages([URL.createObjectURL(event.target.files[0])]);
+				setRawImageFiles([event.target.files[0]]);
+				setValue(name, event.target.files[0]);
 			}
-			setMaterialImages(uploads);
-			setFormData((prev) => {
-				return { ...formData, [valueName]: uploads };
-			});
 		}
-		console.log('Material Images', materialImages);
+		// console.log('Material Images', materialImages);
 	};
 
 	const handleDrag = function (e) {
@@ -51,20 +62,28 @@ const DragDropFile = ({ formData, setFormData, valueName }) => {
 		e.preventDefault();
 		e.stopPropagation();
 		setDragActive(false);
+
 		if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-			let uploads = [...materialImages];
-			for (let i = 0; i < e.dataTransfer.files.length; i++) {
-				uploads.push(URL.createObjectURL(e.dataTransfer.files[i]));
+			if (!single) {
+				let uploads = [...materialImages];
+				let files = [...rawImageFiles];
+				for (let i = 0; i < e.dataTransfer.files.length; i++) {
+					uploads.push(URL.createObjectURL(e.dataTransfer.files[i]));
+					files.push(e.dataTransfer.files[i]);
+				}
+				setMaterialImages(uploads);
+				setRawImageFiles(files);
+				setValue(name, files);
+			} else {
+				setMaterialImages([URL.createObjectURL(e.dataTransfer.files[0])]);
+				setRawImageFiles([e.dataTransfer.files[i]]);
+				setValue(name, e.dataTransfer.files[i]);
 			}
-			setMaterialImages(uploads);
-			setFormData((prev) => {
-				return { ...formData, [valueName]: uploads };
-			});
 		}
 	};
 
 	return (
-		<form
+		<div
 			onDragEnter={handleDrag}
 			onDragLeave={handleDrag}
 			onDragOver={handleDrag}
@@ -74,10 +93,18 @@ const DragDropFile = ({ formData, setFormData, valueName }) => {
 				<input
 					ref={inputRef}
 					type="file"
-					multiple
+					multiple={!single}
 					accept=".png,.jpg,.jpeg"
 					className="absolute top-0 left-0 w-[200%] hidden"
 					onChange={onImageChange}
+				/>
+				<input
+					type="file"
+					name={name}
+					multiple={!single}
+					accept=".png,.jpg,.jpeg"
+					className="absolute top-0 left-0 w-[200%] hidden"
+					{...rhf}
 				/>
 				<button
 					type="button"
@@ -90,6 +117,14 @@ const DragDropFile = ({ formData, setFormData, valueName }) => {
 					<span className="text-[--brand]">Browse</span>
 				</button>
 			</div>
+			{error ? (
+				<p className="text-[--brand] text-xs pt-1">
+					{'Please Add an Image (png,jpg or jpeg)'}
+					{/* {error} */}
+				</p>
+			) : (
+				<p></p>
+			)}
 
 			{materialImages && (
 				<div className="grid grid-cols-3 md:grid-cols-4 gap-2 pt-5">
@@ -120,7 +155,7 @@ const DragDropFile = ({ formData, setFormData, valueName }) => {
 					))}
 				</div>
 			)}
-		</form>
+		</div>
 	);
 };
 

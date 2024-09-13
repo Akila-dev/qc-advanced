@@ -5,9 +5,12 @@ import { icons } from '../../constants';
 
 const TrainingCard = ({ title, text, onClick, admin, edit, remove }) => {
 	return admin ? (
-		<button className="bg-[--card] rounded-lg p-5 space-y-2 w-full text-start cursor-default">
-			<div className="flex-v-center justify-between">
-				<div className="flex-center !justify-start">
+		<button className="bg-[--card] rounded-lg p-5 w-full text-start cursor-default flex flex-col gap-2">
+			<div className="flex-v-center justify-between w-full">
+				<div
+					onClick={onClick}
+					className="flex-center !justify-start cursor-pointer group"
+				>
 					<Image
 						src={icons.docs}
 						w={20}
@@ -16,8 +19,8 @@ const TrainingCard = ({ title, text, onClick, admin, edit, remove }) => {
 						className="input-img scale-125"
 					/>
 					<h3
-						className={admin ? 'hover:text-[--text] cursor-pointer' : ''}
-						onClick={onClick}
+						className={'group-hover:text-[--brand] transition duration-700'}
+						// onClick={onClick}
 					>
 						{title}
 					</h3>
@@ -29,7 +32,7 @@ const TrainingCard = ({ title, text, onClick, admin, edit, remove }) => {
 							w={20}
 							h={20}
 							alt="mail"
-							className="input-img scale-110 cursor-pointer"
+							className="input-img scale-110 cursor-pointer hover:scale-150 transition duration-700"
 							onClick={edit}
 						/>
 						<Image
@@ -37,7 +40,7 @@ const TrainingCard = ({ title, text, onClick, admin, edit, remove }) => {
 							w={20}
 							h={20}
 							alt="mail"
-							className="input-img scale-110 cursor-pointer"
+							className="input-img scale-110 cursor-pointer hover:scale-150 transition duration-700"
 							onClick={remove}
 						/>
 					</div>

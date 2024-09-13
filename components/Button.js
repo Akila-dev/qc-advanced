@@ -4,7 +4,16 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { variants } from '@/constants';
 
-const Button = ({ onClick, text, link, submitting, noBg, noClick, sm }) => {
+const Button = ({
+	onClick,
+	text,
+	link,
+	submitting,
+	noBg,
+	noClick,
+	sm,
+	icon,
+}) => {
 	const variantsP = {
 		initial: (i) => ({
 			height: [5 + i * 0.5],
@@ -30,7 +39,9 @@ const Button = ({ onClick, text, link, submitting, noBg, noClick, sm }) => {
 			<motion.div
 				initial="initial"
 				animate="animate"
-				className="overflow-hidden text-[--white] flex-center !gap-2"
+				className={`overflow-hidden text-[--white] flex-center !gap-2 ${
+					sm && 'pt-1'
+				}`}
 			>
 				<span className={sm && 'hidden'}>Please Wait</span>
 				<div className="flex-center !w-auto !gap-1">
@@ -57,29 +68,31 @@ const Button = ({ onClick, text, link, submitting, noBg, noClick, sm }) => {
 			whileTap="tap"
 			whileHover="hover"
 			variants={variants.buttonClick}
-			className={noBg ? 'btn-2' : 'btn-1'}
+			className={`flex-center !gap-2 ${noBg ? 'btn-2' : 'btn-1'}`}
 			onClick={onClick}
 		>
-			{text}
+			{icon && icon} {text}
 		</motion.button>
 	) : noClick ? (
 		<motion.button
 			whileTap="tap"
 			whileHover="hover"
 			variants={variants.buttonClick}
-			className={noBg ? 'btn-2' : 'btn-1'}
+			className={`flex-center !gap-2 ${noBg ? 'btn-2' : 'btn-1'}`}
 		>
-			{text}
+			{icon && icon} {text}
 		</motion.button>
 	) : (
 		<motion.div
 			whileTap="tap"
 			whileHover="hover"
 			variants={variants.buttonClick}
-			className={noBg ? 'btn-2' : 'btn-1'}
+			className={`flex-center !gap-2 ${noBg ? 'btn-2' : 'btn-1'}`}
 			// onClick={onClick}
 		>
-			<Link href={link}>{text}</Link>
+			<Link href={link}>
+				{icon && icon} {text}
+			</Link>
 		</motion.div>
 	);
 };

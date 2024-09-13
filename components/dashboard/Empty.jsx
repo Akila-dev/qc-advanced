@@ -4,7 +4,7 @@ import { images } from '@/constants';
 
 const Empty = ({ text }) => {
 	return (
-		<div className="flex-center flex-col h-[60vw] md:h-[300px] w-full !gap-0">
+		<div className="flex-center flex-col h-[calc(100%-100px)] w-full !gap-0">
 			<Image
 				src={images.empty}
 				alt="Empty"

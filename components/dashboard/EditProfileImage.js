@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 import { images, icons } from '../../constants';
 
-const EditProfileImage = ({ rhf, error, register, setValue, name }) => {
+const EditProfileImage = ({ rhf, error, setValue, name }) => {
 	const [image, setImage] = useState(null);
 	const inputRef = useRef();
 

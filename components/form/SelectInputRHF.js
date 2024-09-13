@@ -18,27 +18,44 @@ const SelectInputRHF = ({
 	error,
 	colors,
 	darkBg,
+	businessList,
+	defaultValue,
 }) => {
 	const [showOptions, setShowOptions] = useState(false);
 	const [selectedId, setSelectedId] = useState(0);
 	const [selectedOption, setSelectedOption] = useState(
-		placeholder ? placeholder : options[0]
+		placeholder
+			? placeholder
+			: defaultValue
+			? options.filter((option) => {
+					return option.business_id === defaultValue;
+			  })[0]
+			: options[0]
 	);
 
 	const selectRef = useRef(null);
 
-	const selectOption = (e, i) => {
+	const selectOption = (e, i, value) => {
 		// e.preventDefault();
 		setSelectedId(i);
 		setSelectedOption(options[i]);
 		setShowOptions(false);
-
-		setValue(name, i.toString());
+		console.log(value.toString());
+		if (value) {
+			setValue(name, value);
+		} else {
+			setValue(name, i.toString());
+		}
 	};
 
 	return (
 		<div className="slide-animated-children input-block !space-y-0 flex flex-col gap-2">
-			<input id={label} {...rhf} defaultValue={0} className="hidden" />
+			<input
+				id={label}
+				{...rhf}
+				defaultValue={businessList ? selectedOption.business_id : 0}
+				className="hidden"
+			/>
 
 			<label className="">{label}</label>
 			<button
@@ -64,7 +81,7 @@ const SelectInputRHF = ({
 						}
 						className={'input truncate w-full max-w-[200px]'}
 					>
-						{selectedOption}
+						{businessList ? selectedOption.business_name : selectedOption}
 					</p>
 				</div>
 				<Image
@@ -87,13 +104,15 @@ const SelectInputRHF = ({
 								type="button"
 								key={i}
 								className="options-btn group"
-								onClick={(e) => selectOption(e, i)}
+								onClick={(e) =>
+									selectOption(e, i, businessList && option.business_id)
+								}
 							>
 								<span
 									style={colors ? { color: colors[i] } : { color: '' }}
 									className="group-hover:scale-110 group-hover:text-[--brand] inline-block transition duration-700"
 								>
-									{option}
+									{businessList ? option.business_name : option}
 								</span>
 							</button>
 						))}

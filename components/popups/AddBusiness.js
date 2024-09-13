@@ -8,15 +8,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { images, icons } from '../../constants';
 import {
-	DragDropFile,
 	SelectInput,
-	InputField,
 	InputFieldRHF,
 	MiniAddMedia,
 	SubmitButton,
 	FormError,
 	FormSuccess,
-	DragAndDrop,
 } from '../../components';
 import { SidePopupWrapper, TitlePopupWrapper } from '../../wrappers';
 
@@ -58,8 +55,10 @@ const AddBusiness = ({ close, nextPopup, setBusinessId, userId }) => {
 			setBusinessId(data.business_id);
 
 			if (data.success) {
-				close();
-				nextPopup();
+				setTimeout(() => {
+					close();
+					nextPopup();
+				}, 1000);
 			}
 		});
 	};

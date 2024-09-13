@@ -11,6 +11,7 @@ const InputFieldRHF = ({
 	additionalClassName,
 	rhf,
 	error,
+	defaultValue,
 }) => {
 	return (
 		<div
@@ -36,7 +37,12 @@ const InputFieldRHF = ({
 								className="input-img"
 							/>
 						)}
-						<textarea placeholder={placeholder} {...rhf} className="textarea" />
+						<textarea
+							defaultValue={defaultValue ? defaultValue : ''}
+							placeholder={placeholder}
+							{...rhf}
+							className="textarea"
+						/>
 					</div>
 				) : (
 					<div
@@ -58,6 +64,7 @@ const InputFieldRHF = ({
 						<input
 							type={type ? type : 'text'}
 							placeholder={placeholder}
+							defaultValue={defaultValue ? defaultValue : ''}
 							{...rhf}
 							className="input"
 						/>

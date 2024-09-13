@@ -3,27 +3,103 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { images, icons } from '../../constants';
-import { DragDropFile, SelectInput, InputField } from '../../components';
+import {
+	DragDropFile,
+	SelectInput,
+	InputField,
+	InputFieldRHF,
+	SelectInputRHF,
+	SubmitButton,
+	FormError,
+	FormSuccess,
+} from '../../components';
 
-const TrainingMaterial = ({ close, className, edit, editId }) => {
-	const [formData, setFormData] = useState({
-		title: '',
-		trainingImages: [''],
-		description: '',
-		businessType: '',
+// SERVER COMPONENT
+import {
+	addTrainingMaterial,
+	updateTrainingMaterial,
+} from '@/config/addTrainingMaterials';
+import { TrainingMaterialSchema, EditTrainingMaterialSchema } from '@/schemas';
+
+const TrainingMaterial = ({
+	close,
+	className,
+	edit,
+	editId,
+	userId,
+	businessList,
+	trainingMaterialsList,
+	setTrainingMaterialsList,
+	initialValues,
+}) => {
+	const [isPending, setIsPending] = useState();
+	const [error, setError] = useState('');
+	const [success, setSuccess] = useState('');
+	const [imageName, setImageName] = useState('');
+
+	const {
+		setValue,
+		register,
+		handleSubmit,
+		formState: { errors },
+		control,
+	} = useForm({
+		resolver: edit
+			? zodResolver(EditTrainingMaterialSchema)
+			: zodResolver(TrainingMaterialSchema),
 	});
 
-	const { title, trainingImages, description, businessType } = formData;
+	const onSubmit = (values) => {
+		setError('');
+		setSuccess('');
 
-	const handleChangeInput = (e) => {
-		const { name, value } = e.target;
-		setFormData({ ...formData, [name]: value });
-	};
+		console.log(values);
 
-	const submitForm = (type) => {
-		console.log(formData);
+		setIsPending(true);
+
+		if (edit && editId) {
+			updateTrainingMaterial(values, userId, editId).then((data) => {
+				setIsPending(false);
+				setError(data.error);
+				setSuccess(data.success);
+
+				console.log(data?.data?.data);
+
+				if (data.success) {
+					let prevTrainingMaterials = [...trainingMaterialsList];
+					let editedIndex = prevTrainingMaterials.findIndex(
+						(obj) => obj.training_id === editId
+					);
+					prevTrainingMaterials[editedIndex] = data?.data?.data;
+					setTrainingMaterialsList(prevTrainingMaterials);
+					setTimeout(() => {
+						close();
+					}, 1000);
+				}
+			});
+		} else {
+			addTrainingMaterial(values, userId).then((data) => {
+				setIsPending(false);
+				setError(data.error);
+				setSuccess(data.success);
+
+				console.log(data?.data?.data);
+
+				if (data.success) {
+					setTrainingMaterialsList([
+						data?.data?.data,
+						...trainingMaterialsList,
+					]);
+					setTimeout(() => {
+						close();
+					}, 1000);
+				}
+			});
+		}
 	};
 
 	return (
@@ -32,63 +108,65 @@ const TrainingMaterial = ({ close, className, edit, editId }) => {
 				className ? className : 'h-full w-full py-5 px-4 lg:p-7 space-y-8'
 			}
 		>
-			<div className="w-full space-y-4">
+			<form
+				onSubmit={handleSubmit((d) => onSubmit(d))}
+				className={`w-full space-y-4 ${isPending && 'pending'}`}
+			>
 				{/* Title */}
-				<InputField
+				<InputFieldRHF
 					label="Title"
 					type="text"
-					placeholder="Enter title"
-					formData={formData}
-					setFormData={setFormData}
-					nameValue="title"
+					placeholder="Enter Title"
+					rhf={{ ...register('title') }}
+					error={errors.title?.message}
+					defaultValue={initialValues && initialValues.title}
 				/>
 				{/* Upload Document */}
 				<div className="input-block">
 					<label>Upload Document</label>
 					<DragDropFile
-						formData={formData}
-						setFormData={setFormData}
-						valueName="trainingImages"
+						setValue={setValue}
+						name="image"
+						rhf={{ ...register('image') }}
+						error={errors.image?.message}
+						single
+						defaultValue={initialValues && initialValues.image}
 					/>
 				</div>
 				{/* Description */}
-				<InputField
-					label="Job Description"
-					// icon={icons.location}
+				<InputFieldRHF
+					label="Description"
 					type="textarea"
-					placeholder="Add job description here..."
-					formData={formData}
-					setFormData={setFormData}
-					nameValue="description"
+					placeholder="Add Description..."
+					rhf={{ ...register('description') }}
+					error={errors.description?.message}
+					additionalClassName="md:col-span-2"
+					defaultValue={initialValues && initialValues.description}
 				/>
 				{/* Business */}
-				<SelectInput
+				<SelectInputRHF
 					icon={icons.details}
-					label="Business Type"
-					options={[
-						'Full Service Restaurant',
-						'Quick Service Restaurant',
-						'Cafe/Coffee Shop',
-						'Food Truck',
-						'Pop-up Station',
-					]}
-					valueName="businessType"
-					setFormData={setFormData}
-					formData={formData}
+					label="Business"
+					options={businessList}
+					businessList
+					setValue={setValue}
+					name="business_id"
+					rhf={{ ...register('business_id') }}
+					error={errors.business_id?.message}
+					darkBg
+					defaultValue={initialValues && initialValues.business_id}
 				/>
-			</div>
 
-			<div className="w-full">
-				{edit ? (
-					<button onClick={() => submitForm('save')} className="btn-1 block">
-						save
-					</button>
-				) : (
-					<button onClick={() => submitForm('create')} className="btn-1 block">
-						create
-					</button>
-				)}
-			</div>
+				{error && <FormError message={error} />}
+				{success && <FormSuccess message={success} />}
+
+				<div className="w-full">
+					<SubmitButton
+						text={edit ? 'save' : 'create'}
+						submitting={isPending}
+					/>
+				</div>
+			</form>
 			<div className="pb" />
 		</div>
 	);

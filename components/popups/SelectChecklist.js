@@ -53,7 +53,7 @@ export default function SelectChecklist({ back, close, businessId, userId }) {
 				// setPendingRequest(false);
 				setTimeout(() => {
 					window.location.reload();
-				}, 500);
+				}, 1000);
 			}
 		});
 	};

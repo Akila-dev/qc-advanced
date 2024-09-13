@@ -7,11 +7,6 @@ export const LoginSchema = z.object({
 	password: z.string().min(1, { message: 'Password is required' }),
 });
 
-// const fileSchema = z.instanceof(FileList);
-// const imageSchema = fileSchema.refine(
-// 	(file) => file.size === 0 || file.type.startsWith('image/')
-// );
-
 // ! REGISTER/SIGN UP
 export const RegisterSchema = z
 	.object({
@@ -42,14 +37,6 @@ export const RegisterSchema = z
 		message: "Passwords don't match",
 		path: ['confirm_password'],
 	});
-
-// !TRAINING MATERIALS
-export const TrainingMaterialSchema = z.object({
-	user_id: z.string().email().min(1, { message: 'Password is required' }),
-	business_id: z.string().min(1, { message: 'Password is required' }),
-	title: z.string().min(1, { message: 'Enter Title' }),
-	description: z.string().min(1, { message: 'Enter Description' }),
-});
 
 export const BusinessSchema = zfd.formData({
 	// user_id: z.string().email().min(1, { message: 'Password is required' }),
@@ -94,3 +81,44 @@ export const InviteSchema = z
 		message: "Passwords don't match",
 		path: ['confirm_password'],
 	});
+
+// !TRAINING MATERIALS
+export const TrainingMaterialSchema = z.object({
+	image: zfd
+		.file()
+		.refine((file) => file?.length !== 0, 'Required*')
+		.refine((file) => file.size < 2000000, {
+			message: "File can't be bigger than 2MB.",
+		})
+		.refine(
+			(file) => ['image/jpeg', 'image/png', 'image/jpg'].includes(file.type),
+			{
+				message: 'File format must be either jpg, jpeg or png.',
+			}
+		),
+	// document: z.any(),
+	title: z.string().min(1, { message: 'Enter Title' }),
+	description: z.string().min(1, { message: 'Enter Description' }),
+	business_id: z.string().min(1, { message: 'Select Business' }),
+});
+
+export const EditTrainingMaterialSchema = z.object({
+	image:
+		z.any() ||
+		zfd
+			.file()
+			.refine((file) => file?.length !== 0, 'Required*')
+			.refine((file) => file.size < 2000000, {
+				message: "File can't be bigger than 2MB.",
+			})
+			.refine(
+				(file) => ['image/jpeg', 'image/png', 'image/jpg'].includes(file.type),
+				{
+					message: 'File format must be either jpg, jpeg or png.',
+				}
+			),
+	// document: z.any(),
+	title: z.string().min(1, { message: 'Enter Title' }),
+	description: z.string().min(1, { message: 'Enter Description' }),
+	business_id: z.string().min(1, { message: 'Select Business' }),
+});

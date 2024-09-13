@@ -140,11 +140,12 @@ export default function Dashboard() {
 		deleteBusiness(activeBusiness).then((data) => {
 			setError(data.error);
 			setSuccess(data.success);
+			setPendingDelete(false);
+
 			if (data?.response === 1) {
 				setTimeout(() => {
-					setPendingDelete(false);
 					window.location.reload();
-				}, 500);
+				}, 1000);
 			}
 		});
 	};

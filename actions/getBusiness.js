@@ -2,7 +2,7 @@
 
 import { getServerSession } from 'next-auth';
 import { options } from '@/app/api/auth/[...nextauth]/options';
-import { getTrainingMaterials } from '@/actions/trainingMaterials';
+// import { getTrainingMaterials } from '@/actions/getTrainingMaterials';
 import { BusinessSchema } from '@/schemas';
 
 export const getBusinessList = async () => {
