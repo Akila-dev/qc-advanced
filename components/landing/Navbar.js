@@ -80,7 +80,7 @@ const Navbar = ({ loginButton }) => {
 
 	return (
 		<div
-			className={`fixed top-0 left-0 flex flex-col justify-center w-full transition-all duration-500  ${
+			className={`fixed top-0 left-0 z-[100000] flex flex-col justify-center w-full transition-all duration-500  ${
 				scrolledOffTop
 					? 'bg-[--white] shadow-sm shadow-[--card] h-[60px] md:h-[70px]'
 					: 'bg-transparent h-[80px] md:h-[100px]'
@@ -121,7 +121,7 @@ const Navbar = ({ loginButton }) => {
 				) : (
 					<div className="flex-v-center justify-end min-w-[220px] !gap-2 !hidden lg:!flex">
 						<Link
-							href="/auth"
+							href="/api/auth/signin"
 							className="btn-2-v2 !bg-transparent hover:!bg-[--card] !capitalize"
 						>
 							Sign In

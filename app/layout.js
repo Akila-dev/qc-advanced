@@ -2,8 +2,8 @@ import localFont from 'next/font/local';
 
 import { AuthProvider } from '@/components';
 
-import './globals.css';
 import 'react-day-picker/style.css';
+import './globals.css';
 
 const helix = localFont({ src: '../assets/fonts/Hellix-Regular.woff' });
 

@@ -4,6 +4,7 @@
 
 :root {
 	--brand: #b62e32;
+	--brand-50: #f8ebeb;
 	--highlight-bg: #b62e320a;
 	--highlight-bg-2: #2d2d2b08;
 	--highlight-bg-3: #fcf7f7;
@@ -13,6 +14,7 @@
 	--black: #2d2d2b;
 	--white: #ffffff;
 	--gray: #e1e1e1;
+	--grey: #3c3c4399;
 	--transparent-bg: #111111bf;
 	--shadow: #0f132740;
 	--outline: #2d2d2b0a;
@@ -29,6 +31,8 @@
 
 	--rounding: 24px;
 	--sidebar: 400px;
+
+	--swiper-pagination-color: var(--brand);
 }
 * {
 	scrollbar-color: var(--card) #ffffff00;
@@ -75,7 +79,8 @@ textarea:-webkit-autofill {
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: var(--black) !important;
 }
-input:-webkit-autofill {
+input:-webkit-autofill,
+.input:-webkit-autofill {
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: var(--black) !important;
 }
@@ -227,4 +232,20 @@ input,
 
 .navlinks {
 	@apply text-[--black] text-sm font-medium hover:!text-[--brand] active:!text-[--brand];
+}
+/* 
+.react-time-picker__inputGroup {
+	@apply !border-none !h-[50px];
+}
+
+.react-time-picker__inputGroup input {
+	@apply !h-[50px] !bg-[--card] !rounded-lg !w-[50px] min-w-[50px] max-w-[50px] text-center tracking-wider;
+}
+
+.react-time-picker__wrapper {
+	@apply !border-none;
+} */
+
+.mySwiper .swiper-slide {
+	@apply w-full md:w-[calc(50%-10px)];
 }

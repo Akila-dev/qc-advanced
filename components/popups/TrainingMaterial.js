@@ -121,9 +121,9 @@ const TrainingMaterial = ({
 					error={errors.title?.message}
 					defaultValue={initialValues && initialValues.title}
 				/>
-				{/* Upload Document */}
+				{/* Upload Image */}
 				<div className="input-block">
-					<label>Upload Document</label>
+					<label>Upload Image</label>
 					<DragDropFile
 						setValue={setValue}
 						name="image"
@@ -131,6 +131,19 @@ const TrainingMaterial = ({
 						error={errors.image?.message}
 						single
 						defaultValue={initialValues && initialValues.image}
+					/>
+				</div>
+				{/* Upload Document */}
+				<div className="input-block">
+					<label>Upload Document</label>
+					<DragDropFile
+						setValue={setValue}
+						name="document"
+						rhf={{ ...register('document') }}
+						error={errors.document?.message}
+						single
+						document
+						defaultValue={initialValues && initialValues.document}
 					/>
 				</div>
 				{/* Description */}

@@ -325,10 +325,6 @@ export default function Dashboard() {
 					) : (
 						<div className="h-full w-full py-5 px-4 lg:p-5 relative">
 							<iframe
-								// data={reportPDF}
-								// type="application/pdf"
-								// width="100%"
-								// height="100%"
 								src={reportPDF ? reportPDF : defaultPDF}
 								title="Report"
 								className="w-full h-full overflow-auto pb-[65px]"

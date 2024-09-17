@@ -1,29 +1,104 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { images, icons } from '../../constants';
-import { SelectInput, DateTimePicker, InputField } from '../../components';
+import {
+	DateTimePicker,
+	InputField,
+	InputFieldRHF,
+	SelectInputRHF,
+	SelectInputLabelValueRHF,
+	SelectAssignee,
+	SubmitButton,
+	FormError,
+	FormSuccess,
+	Button,
+} from '../../components';
 
-const AddAction = ({ close, className, mini, admin }) => {
-	const [formData, setFormData] = useState({
-		title: '',
-		description: '',
-		priority: '',
-		dueDate: '',
-		assignees: '',
-		business: '',
-		status: '',
+// SERVER COMPONENT
+import { addAction } from '@/config/addAction';
+import { getBusinessAssignees } from '@/actions/getBusiness';
+import { AdminActionSchema } from '@/schemas';
+
+const AddAction = ({
+	close,
+	className,
+	mini,
+	admin,
+	businessList,
+	actionsList,
+	setActionsList,
+}) => {
+	const [isPending, setIsPending] = useState();
+	const [error, setError] = useState('');
+	const [success, setSuccess] = useState('');
+
+	const [showInvitees, setShowInvitees] = useState(false);
+	const [inviteesList, setInviteesList] = useState();
+
+	const {
+		watch,
+		getValues,
+		setValue,
+		register,
+		handleSubmit,
+		formState: { errors },
+		control,
+	} = useForm({
+		resolver: zodResolver(AdminActionSchema),
 	});
 
-	const { title, description, priority, dueDate, assignees, business, status } =
-		formData;
+	useEffect(() => {
+		let values = getValues();
+		if (values.business_id.length > 0) {
+			getBusinessAssignees(values.business_id).then((data) => {
+				console.log(data?.data);
+				setInviteesList(data?.data?.data);
+			});
+		}
+	}, []);
 
-	// FORM FUNCTIONS
-	const submitForm = () => {
-		console.log(formData);
+	// show invitees tab only when a business has been selected
+	// look for list invitees for that particular business
+	useEffect(() => {
+		const subscription = watch((value, { name, type }) => {
+			if (value.business_id.length > 0) {
+				getBusinessAssignees(value.business_id).then((data) => {
+					console.log(data?.data);
+					setInviteesList(data?.data);
+				});
+			}
+		});
+		return () => subscription.unsubscribe();
+	}, [watch]);
+
+	const onSubmit = (values) => {
+		setError('');
+		setSuccess('');
+
+		console.log(values);
+
+		setIsPending(true);
+
+		addAction(values, userId).then((data) => {
+			setIsPending(false);
+			setError(data.error);
+			setSuccess(data.success);
+
+			console.log(data?.data?.data);
+
+			if (data.success) {
+				setActionsList([data?.data?.data, ...actionsList]);
+				setTimeout(() => {
+					close();
+				}, 1000);
+			}
+		});
 	};
 
 	return (
@@ -32,45 +107,47 @@ const AddAction = ({ close, className, mini, admin }) => {
 				className ? className : 'h-full w-full py-5 px-4 lg:p-7 space-y-8'
 			}
 		>
-			<div className="w-full space-y-4">
+			<form
+				onSubmit={handleSubmit((d) => onSubmit(d))}
+				className={`w-full space-y-4 ${isPending && 'pending'}`}
+			>
 				{/* Title */}
-				<InputField
+				<InputFieldRHF
 					label="Title"
 					type="text"
-					placeholder="Add Title"
-					formData={formData}
-					setFormData={setFormData}
-					nameValue="title"
+					placeholder="Enter Title"
+					rhf={{ ...register('title') }}
+					error={errors.title?.message}
 				/>
 				{/* Description */}
-				<InputField
-					label="Description"
+				<InputFieldRHF
+					label="Descriptiom"
 					type="text"
-					placeholder="Add Description"
-					formData={formData}
-					setFormData={setFormData}
-					nameValue="description"
+					placeholder="Enter Description"
+					rhf={{ ...register('desc') }}
+					error={errors.desc?.message}
 				/>
 				{/* Priority */}
-				<SelectInput
-					// icon={icons.details}
+				<SelectInputRHF
 					label="Priority"
-					options={['Low', 'Medium', 'High']}
-					colors={['#177EC1', '#2d2d2b', '#b62e32']}
-					valueName="priority"
-					setFormData={setFormData}
-					formData={formData}
-					darkBg={mini}
+					options={['High', 'Medium', 'Low', 'None']}
+					colors={['#b62e32', '#2d2d2b', '#177EC1', '#777E90']}
+					setValue={setValue}
+					name="priority"
+					rhf={{ ...register('priority') }}
+					error={errors.priority?.message}
 				/>
 				{/* DueDate */}
 				<DateTimePicker
 					label="Due Date"
-					valueName="dueDate"
-					setFormData={setFormData}
-					formData={formData}
+					setValue={setValue}
+					name="due_date"
+					rhf={{ ...register('due_date') }}
+					error={errors.due_date?.message}
 				/>
+
 				{/* Assignees */}
-				<SelectInput
+				{/* <SelectInput
 					// icon={icons.details}
 					label="Assignees"
 					placeholder="Choose Assignees"
@@ -79,50 +156,82 @@ const AddAction = ({ close, className, mini, admin }) => {
 					setFormData={setFormData}
 					formData={formData}
 					darkBg={mini}
-				/>
+				/> */}
 				{admin && (
 					<>
 						{/* Business */}
-						<SelectInput
-							// icon={icons.details}
+						<SelectInputRHF
 							label="Business"
-							placeholder="Choose Business"
-							options={['Sigmandom', 'Rhemadom']}
-							valueName="business"
-							setFormData={setFormData}
-							formData={formData}
-							darkBg={mini}
+							options={businessList}
+							businessList
+							setValue={setValue}
+							name="business_id"
+							rhf={{ ...register('business_id') }}
+							error={errors.business_id?.message}
 						/>
+						{/* Assignees */}
+						{inviteesList ? (
+							inviteesList.length > 0 ? (
+								<SelectAssignee
+									label="Assignees"
+									options={inviteesList}
+									setValue={setValue}
+									name="assignee_id"
+									rhf={{ ...register('assignee_id') }}
+									error={errors.assignee_id?.message}
+								/>
+							) : (
+								<div>
+									<div className={`input-block `}>
+										<div className="flex">
+											<label>Assignees</label>
+										</div>
+										<div className={`icon-input`}>
+											<p className="input">--No Assignees--</p>
+										</div>
+									</div>
+								</div>
+							)
+						) : (
+							<div className={`input-block `}>
+								<div className="flex">
+									<label>Assignees</label>
+								</div>
+								<div className={`icon-input`}>
+									<p className="input">--Getting Assignees--</p>
+								</div>
+							</div>
+						)}
+
 						{/* Status */}
-						<SelectInput
-							// icon={icons.details}
+						<SelectInputLabelValueRHF
 							label="Status"
-							options={['In Progress', 'Completed']}
-							valueName="status"
-							setFormData={setFormData}
-							formData={formData}
-							darkBg={mini}
+							options={['In Progress', 'Complete', "Can't Do"]}
+							valueList={['in_progress', 'complete', 'cant_do']}
+							setValue={setValue}
+							name="to_do_list"
+							rhf={{ ...register('to_do_list') }}
+							error={errors.to_do_list?.message}
+							darkBg
 						/>
 					</>
 				)}
-			</div>
 
-			{mini ? (
-				<div className="w-full grid grid-cols-2 gap-4 lg:gap-5">
-					<button onClick={close} className="btn-2">
-						close
-					</button>
-					<button onClick={() => submitForm()} className="btn-1">
-						create
-					</button>
-				</div>
-			) : (
-				<div className="w-full">
-					<button onClick={() => submitForm()} className="btn-1 block">
-						create
-					</button>
-				</div>
-			)}
+				{error && <FormError message={error} />}
+				{success && <FormSuccess message={success} />}
+
+				{mini ? (
+					<div className="w-full grid grid-cols-2 gap-4 lg:gap-5">
+						<Button text="close" noBg onClick={close} />
+						<SubmitButton text={'create'} submitting={isPending} />
+					</div>
+				) : (
+					<div className="w-full">
+						<SubmitButton text={'create'} submitting={isPending} />
+					</div>
+				)}
+			</form>
+
 			<div className={mini ? '' : 'popup-pb'} />
 		</div>
 	);

@@ -1,90 +1,142 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-import { DayPicker } from 'react-day-picker';
-import 'react-day-picker/style.css';
+import { DayPicker, getDefaultClassNames } from 'react-day-picker';
+import { setHours, setMinutes } from 'date-fns';
 
 import { icons } from '../../constants';
 import { TitlePopupWrapper } from '../../wrappers';
-import { Tabs } from '../../components';
+import { Tabs, SelectInput, Button } from '../../components';
 
-const DatePicker = ({ setDate }) => {
-	const [selected, setSelected] = useState();
-	useEffect(() => {
-		if (selected) {
-			setDate(
-				selected.toLocaleDateString(undefined, {
-					// weekday: 'long',
-					year: 'numeric',
-					month: 'long',
-					day: 'numeric',
-				})
-			);
-			console.log(selected.toLocaleDateString());
-		}
-	}, [selected]);
+const DatePicker = ({ selected, handleDaySelect }) => {
+	const defaultClassNames = getDefaultClassNames();
 
 	return (
-		<DayPicker
-			mode="single"
-			selected={selected}
-			onSelect={setSelected}
-			showOutsideDays
-			//   footer={
-			//     selected ? `Selected: ${selected.toLocaleDateString()}` : "Pick a day."
-			//   }
-		/>
-	);
-};
-const TimePicker = ({ setTime }) => {
-	const [selected, setSelected] = useState();
-	return (
-		<DayPicker
-			mode="single"
-			selected={selected}
-			onSelect={setSelected}
-			showOutsideDays
-			//   footer={
-			//     selected ? `Selected: ${selected.toLocaleDateString()}` : "Pick a day."
-			//   }
-		/>
+		<>
+			{/* <style>{css}</style> */}
+			<DayPicker
+				mode="single"
+				selected={selected}
+				onSelect={handleDaySelect}
+				showOutsideDays
+				classNames={{
+					today: `text-[--brand]`, // Add a border to today's date
+					selected: `bg-[--brand-50] rounded-lg border-[--brand] text-[--brand]`, // Highlight the selected day
+					root: `${defaultClassNames.root} !w-full p-0 !text-sm sm:!text-sm !h-[300px]`, // Add a shadow to the root element
+					chevron: `${defaultClassNames.chevron} !fill-[--brand] !h-[20px] hover:scale-125 transition duration-700`, // Change the color of the chevron
+					day_button: `!w-[20px] transition duration-700 hover:text-[--brand] hover:drop-shadow-md`,
+					month_caption: `${defaultClassNames.month_caption} !text-lg sm:!text-md md:!text-lg !font-semibold`,
+					weekday: `${defaultClassNames.weekday} !text-[--grey] !text-xs !font-regular`,
+					outside: `text-[--grey]`,
+				}}
+			/>
+		</>
 	);
 };
 
-const DateTimePicker = ({ label, valueName, setFormData, formData }) => {
+const TimePickerTab = ({ timeValue, handleTimeChange }) => {
+	return (
+		<div className="py-5 flex-center">
+			<input
+				type="time"
+				value={timeValue}
+				onChange={handleTimeChange}
+				className="tracking-widest text-lg bg-[--card] p-2 rounded-lg"
+			/>
+		</div>
+	);
+};
+
+const DateTimePicker = ({
+	label,
+	rhf,
+	setValue,
+	name,
+	error,
+	defaultValue,
+}) => {
 	const [showSelector, setShowSelector] = useState(false);
 	const [activeTab, setActiveTab] = useState(0);
 	const [selectedDate, setSelectedDate] = useState();
-	const [selectedTime, setSelectedTime] = useState();
+	// const [selectedTime, setSelectedTime] = useState('00:00:00');
 
-	const selectOption = (i) => {
-		setFormData((prev) => ({
-			...prev,
-			[valueName]: selectedDate,
-		}));
-		setShowSelector(false);
+	const [selected, setSelected] = useState();
+	const [timeValue, setTimeValue] = useState('00:00');
+
+	const handleTimeChange = (e) => {
+		const time = e.target.value;
+		if (!selected) {
+			setTimeValue(time);
+			return;
+		}
+		const [hours, minutes] = time.split(':').map((str) => parseInt(str, 10));
+		const newSelectedDate = setHours(setMinutes(selected, minutes), hours);
+		setSelected(newSelectedDate);
+		setTimeValue(time);
 	};
+
+	const handleDaySelect = (date) => {
+		if (!timeValue || !date) {
+			setSelected(date);
+			return;
+		}
+		const [hours, minutes] = timeValue
+			.split(':')
+			.map((str) => parseInt(str, 10));
+		const newDate = new Date(
+			date.getFullYear(),
+			date.getMonth(),
+			date.getDate(),
+			hours,
+			minutes
+		);
+		setSelected(newDate);
+	};
+
+	useEffect(() => {
+		if (selected) {
+			console.log(selected);
+			setSelectedDate(
+				selected
+					.toLocaleString()
+					.replace('/', '-')
+					.replace('/', '-')
+					.replace(',', '')
+			);
+			setValue(
+				name,
+				selected
+					.toLocaleString()
+					.replace('/', '-')
+					.replace('/', '-')
+					.replace(',', '')
+			);
+		}
+	}, [selected]);
+
+	// const selectOption = (i) => {
+	// 	setValue(name, selectedDate);
+	// 	console.log(selectedDate);
+	// 	setShowSelector(false);
+	// };
 
 	return (
 		<div>
 			<div className="input-block">
 				<label>{label}</label>
+				<input
+					id={label}
+					{...rhf}
+					defaultValue={defaultValue && defaultValue}
+					className="hidden"
+				/>
 				<button
 					className="icon-input block w-full"
+					type="button"
 					onClick={() => setShowSelector(true)}
 				>
-					{/* <input
-						type="text"
-						name="dueDate"
-						placeholder="dueDate"
-						value={dueDate}
-						onChange={handleChangeInput}
-						className="input placeholder:capitalize"
-					/> */}
-
 					<p className="w-full text-left">{selectedDate}</p>
 					<Image
 						src={icons.calendar}
@@ -94,29 +146,47 @@ const DateTimePicker = ({ label, valueName, setFormData, formData }) => {
 						className="input-img !p-0"
 					/>
 				</button>
+				{error && <p className="text-[--brand] text-xs">{error}*</p>}
 			</div>
 
 			{showSelector && (
 				<TitlePopupWrapper options close={() => setShowSelector(false)}>
-					<div className="bg-[--white] rounded-[--rounding] p-4 md:p-5 flex flex-col gap-1">
-						<div className=" border-b border-[--border] pb-3">
-							<Tabs
-								tabs={['Date', 'Time']}
-								active={activeTab}
-								onClick={setActiveTab}
-							/>
-						</div>
-						<div className="w-full overflow-hidden">
-							{activeTab === 0 ? (
-								<DatePicker setDate={setSelectedDate} />
-							) : (
-								<TimePicker setTime={setSelectedTime} />
-							)}
-						</div>
-						<div className=" border-t border-[--border] pt-3">
-							<div className="w-full grid grid-cols-2 gap-4 lg:gap-5">
-								<button className="btn-2">cancel</button>
-								<button className="btn-1">create</button>
+					<div className="flex-center">
+						<div className="bg-[--white] rounded-[--rounding] p-4 md:p-5 flex flex-col gap-1 max-w-[310px]">
+							<div className=" border-b border-[--border] pb-3">
+								<Tabs
+									tabs={['Date', 'Time']}
+									active={activeTab}
+									onClick={setActiveTab}
+								/>
+							</div>
+							<div className="w-full overflow-hidden">
+								{activeTab === 0 ? (
+									<DatePicker
+										selected={selected}
+										handleDaySelect={handleDaySelect}
+									/>
+								) : (
+									<TimePickerTab
+										timeValue={timeValue}
+										handleTimeChange={handleTimeChange}
+									/>
+								)}
+							</div>
+							<div className=" border-t border-[--border] pt-3">
+								<div className="w-full grid grid-cols-2 gap-4 lg:gap-5">
+									<Button
+										text="cancel"
+										noBg
+										onClick={() => setShowSelector(false)}
+									/>
+									<Button
+										text="create"
+										onClick={() =>
+											activeTab === 0 ? setActiveTab(1) : setShowSelector(false)
+										}
+									/>
+								</div>
 							</div>
 						</div>
 					</div>

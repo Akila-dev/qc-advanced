@@ -30,7 +30,7 @@ export default function TitlePopupWrapper({
 			className={`fixed top-0 right-0 bottom-0 h-full w-full  ${
 				darkBg
 					? 'bg-[--transparent-bg]'
-					: 'bg-[--transparent-bg] lg:bg-[#0000000a]'
+					: 'bg-[--transparent-bg] lg:bg-[#00000005]'
 			} backdrop-blur-sm !z-10 flex items-center justify-center p-5 lg:p-7`}
 		>
 			{options ? (

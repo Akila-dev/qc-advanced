@@ -20,7 +20,8 @@ export default function AboutAdminAccess() {
 				'	7.	Training and Communication: Utilize the app to provide training materials and resources to staff members, communicate important updates or changes in procedures, and foster a culture of accountability and continuous improvement.',
 				'By following these steps, you can effectively use QC Advanced as an admin to maintain high standards of quality and ensure the success of your restaurant.',
 			]}
-			link="/api/auth/signin?callbackUrl=/admin"
+			link="/auth/admin/register"
+			// link="/api/auth/signin?callbackUrl=/admin"
 			linkText="OK"
 		/>
 	);

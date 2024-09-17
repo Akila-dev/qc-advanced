@@ -2,7 +2,7 @@ import axios from 'axios';
 import { TrainingMaterialSchema, EditTrainingMaterialSchema } from '@/schemas';
 import FormData from 'form-data';
 
-export const addTrainingMaterial = async (values, id) => {
+export const addAction = async (values, id) => {
 	const validatedFields = TrainingMaterialSchema.parse(values);
 
 	if (!validatedFields) {
@@ -12,15 +12,18 @@ export const addTrainingMaterial = async (values, id) => {
 	const formData = new FormData();
 
 	formData.append('title', values.title);
-	formData.append('image', values.image);
-	formData.append('document', values.document);
-	formData.append('description', values.description);
+	formData.append('desc', values.desc);
+	formData.append('priority', values.priority);
+	formData.append('due_date', values.due_date);
+	formData.append('assignee_id', values.assignee_id);
+	formData.append('to_do_list', values.to_do_list);
 	formData.append('business_id', values.business_id);
+
 	formData.append('user_id', id);
 
 	try {
 		const { data } = await axios.post(
-			`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/addTrainingMaterial`,
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/addAction`,
 			formData,
 			{
 				headers: {

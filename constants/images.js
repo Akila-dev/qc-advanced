@@ -17,6 +17,7 @@ import logoFull from '../assets/imgs/logo-full.png';
 import noting from '../assets/imgs/noting.png';
 import order from '../assets/imgs/order.png';
 import profile from '../assets/imgs/profile.jpg';
+import pdf from '../assets/imgs/pdf.png';
 import query from '../assets/imgs/query.png';
 import woman from '../assets/imgs/woman.png';
 
@@ -39,6 +40,7 @@ export default {
 	noting,
 	order,
 	profile,
+	pdf,
 	query,
 	woman,
 };

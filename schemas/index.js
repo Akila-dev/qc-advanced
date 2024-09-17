@@ -5,6 +5,7 @@ import { zfd } from 'zod-form-data';
 export const LoginSchema = z.object({
 	email: z.string().email(),
 	password: z.string().min(1, { message: 'Password is required' }),
+	user_type: z.string().min(1, { message: '' }),
 });
 
 // ! REGISTER/SIGN UP
@@ -117,8 +118,37 @@ export const EditTrainingMaterialSchema = z.object({
 					message: 'File format must be either jpg, jpeg or png.',
 				}
 			),
+	document:
+		z.any() ||
+		zfd
+			.file()
+			.refine((file) => file?.length !== 0, 'Required*')
+			.refine((file) => file.size < 10000000, {
+				message: "File can't be bigger than 10MB.",
+			})
+			.refine(
+				(file) =>
+					['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'].includes(
+						file.type
+					),
+				{
+					message: 'File format must be either pdf, jpg, jpeg or png.',
+				}
+			),
 	// document: z.any(),
 	title: z.string().min(1, { message: 'Enter Title' }),
 	description: z.string().min(1, { message: 'Enter Description' }),
 	business_id: z.string().min(1, { message: 'Select Business' }),
+});
+
+export const AdminActionSchema = z.object({
+	business_id: z.string().min(1, { message: 'Select Business' }),
+	title: z.string().min(1, { message: 'Enter Title' }),
+	desc: z.string().min(1, { message: 'Enter Description' }),
+	priority: z.string().min(1, { message: 'Select Priority*' }),
+	due_date: z.string().min(1, { message: 'Pick a Date*' }),
+	assignee_id:
+		z.number().min(1, { message: 'Choose Assignee*' }) ||
+		z.string().min(1, { message: 'Choose Assignee*' }),
+	to_do_list: z.string().min(1, { message: 'Required*' }),
 });

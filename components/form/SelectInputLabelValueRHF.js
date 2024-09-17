@@ -7,45 +7,34 @@ import Image from 'next/image';
 import { icons } from '../../constants';
 import { TitlePopupWrapper } from '../../wrappers';
 
-const SelectInputRHF = ({
+const SelectInputLabelValueRHF = ({
 	icon,
 	label,
-	placeholder,
 	options,
+	valueList,
 	rhf,
 	setValue,
 	name,
 	error,
 	colors,
 	darkBg,
-	businessList,
 	defaultValue,
 }) => {
 	const [showOptions, setShowOptions] = useState(false);
 	const [selectedId, setSelectedId] = useState(0);
 	const [selectedOption, setSelectedOption] = useState(
-		placeholder
-			? placeholder
-			: defaultValue
-			? options.filter((option) => {
-					return option.business_id === defaultValue;
-			  })[0]
-			: options[0]
+		defaultValue ? options[valueList.indexOf(defaultValue)] : options[0]
 	);
 
 	const selectRef = useRef(null);
 
-	const selectOption = (e, i, value) => {
-		// e.preventDefault();
+	const selectOption = (e, i) => {
 		setSelectedId(i);
 		setSelectedOption(options[i]);
 		setShowOptions(false);
-		if (value) {
-			setValue(name, value);
-		} else {
-			console.log(options[i]);
-			setValue(name, options[i]);
-		}
+
+		console.log(valueList[i]);
+		setValue(name, valueList[i]);
 	};
 
 	return (
@@ -53,7 +42,7 @@ const SelectInputRHF = ({
 			<input
 				id={label}
 				{...rhf}
-				defaultValue={businessList ? selectedOption.business_id : 0}
+				defaultValue={defaultValue ? defaultValue : valueList[0]}
 				className="hidden"
 			/>
 
@@ -81,7 +70,7 @@ const SelectInputRHF = ({
 						}
 						className={'input truncate w-full max-w-[200px]'}
 					>
-						{businessList ? selectedOption.business_name : selectedOption}
+						{selectedOption}
 					</p>
 				</div>
 				<Image
@@ -104,15 +93,13 @@ const SelectInputRHF = ({
 								type="button"
 								key={i}
 								className="options-btn group"
-								onClick={(e) =>
-									selectOption(e, i, businessList && option.business_id)
-								}
+								onClick={(e) => selectOption(e, i)}
 							>
 								<span
 									style={colors ? { color: colors[i] } : { color: '' }}
 									className="group-hover:scale-110 group-hover:text-[--brand] inline-block transition duration-700"
 								>
-									{businessList ? option.business_name : option}
+									{option}
 								</span>
 							</button>
 						))}
@@ -124,4 +111,4 @@ const SelectInputRHF = ({
 	);
 };
 
-export default SelectInputRHF;
+export default SelectInputLabelValueRHF;

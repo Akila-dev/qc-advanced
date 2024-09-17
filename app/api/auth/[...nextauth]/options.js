@@ -2,6 +2,9 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import md5 from 'md5';
 
 export const options = {
+	pages: {
+		signIn: '/auth/signin',
+	},
 	providers: [
 		CredentialsProvider({
 			name: 'Credentials',

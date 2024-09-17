@@ -11,7 +11,7 @@ const TrainingDetails = ({ img, text }) => {
 					width={400}
 					height={300}
 					alt="mail"
-					className="w-full h-[200px] object-cover rounded-xl"
+					className="w-full h-[200px] object-cover rounded-xl bg-[--card]"
 				/>
 			</div>
 			<div className="space-y-4">

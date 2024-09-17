@@ -65,6 +65,7 @@ const Button = ({
 		</div>
 	) : onClick ? (
 		<motion.button
+			type="button"
 			whileTap="tap"
 			whileHover="hover"
 			variants={variants.buttonClick}
@@ -75,6 +76,7 @@ const Button = ({
 		</motion.button>
 	) : noClick ? (
 		<motion.button
+			type="button"
 			whileTap="tap"
 			whileHover="hover"
 			variants={variants.buttonClick}
@@ -87,10 +89,13 @@ const Button = ({
 			whileTap="tap"
 			whileHover="hover"
 			variants={variants.buttonClick}
-			className={`flex-center !gap-2 ${noBg ? 'btn-2' : 'btn-1'}`}
 			// onClick={onClick}
+			className="w-full"
 		>
-			<Link href={link}>
+			<Link
+				href={link}
+				className={`flex-center !gap-2 ${noBg ? 'btn-2' : 'btn-1'}`}
+			>
 				{icon && icon} {text}
 			</Link>
 		</motion.div>

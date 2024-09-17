@@ -7,10 +7,9 @@ import Image from 'next/image';
 import { icons } from '../../constants';
 import { TitlePopupWrapper } from '../../wrappers';
 
-const SelectInputRHF = ({
+const SelectAssignee = ({
 	icon,
 	label,
-	placeholder,
 	options,
 	rhf,
 	setValue,
@@ -18,19 +17,19 @@ const SelectInputRHF = ({
 	error,
 	colors,
 	darkBg,
-	businessList,
 	defaultValue,
 }) => {
 	const [showOptions, setShowOptions] = useState(false);
-	const [selectedId, setSelectedId] = useState(0);
+	`Since getInvitees include also the admin's id, set a condition to check if the first item of the list has a username (which basically means its and admin), if it does, skip it and move to the next ite on the list`;
+	const [selectedId, setSelectedId] = useState(options[0].username ? 0 : 1);
 	const [selectedOption, setSelectedOption] = useState(
-		placeholder
-			? placeholder
-			: defaultValue
+		defaultValue
 			? options.filter((option) => {
-					return option.business_id === defaultValue;
+					return option.user_id === defaultValue;
 			  })[0]
-			: options[0]
+			: options[0].username
+			? options[0].username
+			: options[1].username
 	);
 
 	const selectRef = useRef(null);
@@ -40,12 +39,7 @@ const SelectInputRHF = ({
 		setSelectedId(i);
 		setSelectedOption(options[i]);
 		setShowOptions(false);
-		if (value) {
-			setValue(name, value);
-		} else {
-			console.log(options[i]);
-			setValue(name, options[i]);
-		}
+		setValue(name, value);
 	};
 
 	return (
@@ -53,7 +47,7 @@ const SelectInputRHF = ({
 			<input
 				id={label}
 				{...rhf}
-				defaultValue={businessList ? selectedOption.business_id : 0}
+				defaultValue={defaultValue ? defaultValue : options[selectedId].user_id}
 				className="hidden"
 			/>
 
@@ -79,9 +73,9 @@ const SelectInputRHF = ({
 										color: 'inherit',
 								  }
 						}
-						className={'input truncate w-full max-w-[200px]'}
+						className={'input truncate w-full max-w-[200px] capitalize'}
 					>
-						{businessList ? selectedOption.business_name : selectedOption}
+						{selectedOption}
 					</p>
 				</div>
 				<Image
@@ -99,23 +93,24 @@ const SelectInputRHF = ({
 					close={() => setShowOptions(false)}
 				>
 					<div className="bg-[--card] border border-[--border] rounded-2xl flex flex-col w-full overflow-hidden">
-						{options.map((option, i) => (
-							<button
-								type="button"
-								key={i}
-								className="options-btn group"
-								onClick={(e) =>
-									selectOption(e, i, businessList && option.business_id)
-								}
-							>
-								<span
-									style={colors ? { color: colors[i] } : { color: '' }}
-									className="group-hover:scale-110 group-hover:text-[--brand] inline-block transition duration-700"
-								>
-									{businessList ? option.business_name : option}
-								</span>
-							</button>
-						))}
+						{options.map(
+							(option, i) =>
+								option.username && (
+									<button
+										type="button"
+										key={i}
+										className="options-btn group"
+										onClick={(e) => selectOption(e, i, option.user_id)}
+									>
+										<span
+											style={colors ? { color: colors[i] } : { color: '' }}
+											className="group-hover:scale-110 group-hover:text-[--brand] inline-block transition duration-700"
+										>
+											{option.username}
+										</span>
+									</button>
+								)
+						)}
 					</div>
 				</TitlePopupWrapper>
 			)}
@@ -124,4 +119,4 @@ const SelectInputRHF = ({
 	);
 };
 
-export default SelectInputRHF;
+export default SelectAssignee;

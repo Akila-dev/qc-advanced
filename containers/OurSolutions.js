@@ -20,7 +20,7 @@ const OurSolutions = () => {
 			{/* CONTENT */}
 			<div className="relative container flex-center flex-col !gap-[50px] lg:gap-[70px]">
 				<SectionBlock
-					tag="ABOUT QC"
+					tag="Our Solutions"
 					heading="We help your business grow faster."
 					text="With Comprehensive Checklists, Digital Integration, Expert Guidance  and Continuous Improvement."
 					wrapperClasses="max-w-[525px] items-center text-center"

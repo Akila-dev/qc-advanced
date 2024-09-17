@@ -1,5 +1,5 @@
 'use client';
-import { useState, useTransition, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -46,6 +46,18 @@ export default function Training() {
 	const [showEdit, setShowEdit] = useState(false);
 	const [showDelete, setShowDelete] = useState(false);
 	const [showAddMaterial, setShowAddMaterial] = useState(false);
+	const [activeTrainingData, setActiveTrainingData] = useState();
+
+	useEffect(() => {
+		if (trainingMaterialsList && activeTraining) {
+			setActiveTrainingData(
+				trainingMaterialsList.filter((list) => {
+					return list.training_id === activeTraining;
+				})[0]
+			);
+			console.log(trainingMaterialsList);
+		}
+	}, [activeTraining, trainingMaterialsList]);
 
 	useEffect(() => {
 		getTrainingMaterials().then((data) => {
@@ -208,24 +220,13 @@ export default function Training() {
 				{showDetails && (
 					<SidePopupWrapper
 						close={() => setShowDetails(false)}
-						title={
-							trainingMaterialsList.filter((list) => {
-								return list.training_id === activeTraining;
-							})[0].title
-						}
+						title={activeTrainingData?.title}
 						otherIcon={icons.download}
+						otherFunc={() => window.open(activeTrainingData?.document)}
 					>
 						<TrainingDetails
-							img={
-								trainingMaterialsList.filter((list) => {
-									return list.training_id === activeTraining;
-								})[0].image
-							}
-							text={
-								trainingMaterialsList.filter((list) => {
-									return list.training_id === activeTraining;
-								})[0].description
-							}
+							img={activeTrainingData?.image}
+							text={activeTrainingData?.description}
 							userId={userId}
 							// title={trainings[activeTraining].title}
 						/>
@@ -241,11 +242,7 @@ export default function Training() {
 							close={() => setShowEdit(false)}
 							className=""
 							edit
-							initialValues={
-								trainingMaterialsList.filter((list) => {
-									return list.training_id === activeTraining;
-								})[0]
-							}
+							initialValues={activeTrainingData}
 							editId={activeTraining}
 							userId={userId}
 							businessList={businessList}
@@ -297,11 +294,7 @@ export default function Training() {
 									<span>
 										Are you sure you want to delete{' '}
 										<i className="text-[--brand]">
-											{
-												trainingMaterialsList.filter((list) => {
-													return list.training_id === activeTraining;
-												})[0].title
-											}
+											{activeTrainingData?.title}
 										</i>
 									</span>
 								)}

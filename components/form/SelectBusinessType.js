@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { icons } from '../../constants';
 import { TitlePopupWrapper } from '../../wrappers';
 
-const SelectInputRHF = ({
+const SelectBusinessType = ({
 	icon,
 	label,
 	placeholder,
@@ -18,17 +18,14 @@ const SelectInputRHF = ({
 	error,
 	colors,
 	darkBg,
-	businessList,
 	defaultValue,
 }) => {
 	const [showOptions, setShowOptions] = useState(false);
 	const [selectedId, setSelectedId] = useState(0);
 	const [selectedOption, setSelectedOption] = useState(
-		placeholder
-			? placeholder
-			: defaultValue
+		defaultValue
 			? options.filter((option) => {
-					return option.business_id === defaultValue;
+					return option.business_type_id === defaultValue;
 			  })[0]
 			: options[0]
 	);
@@ -40,12 +37,7 @@ const SelectInputRHF = ({
 		setSelectedId(i);
 		setSelectedOption(options[i]);
 		setShowOptions(false);
-		if (value) {
-			setValue(name, value);
-		} else {
-			console.log(options[i]);
-			setValue(name, options[i]);
-		}
+		setValue(name, value);
 	};
 
 	return (
@@ -53,7 +45,7 @@ const SelectInputRHF = ({
 			<input
 				id={label}
 				{...rhf}
-				defaultValue={businessList ? selectedOption.business_id : 0}
+				defaultValue={selectedOption.business_type_id}
 				className="hidden"
 			/>
 
@@ -81,7 +73,7 @@ const SelectInputRHF = ({
 						}
 						className={'input truncate w-full max-w-[200px]'}
 					>
-						{businessList ? selectedOption.business_name : selectedOption}
+						{selectedOption.business_type}
 					</p>
 				</div>
 				<Image
@@ -104,15 +96,13 @@ const SelectInputRHF = ({
 								type="button"
 								key={i}
 								className="options-btn group"
-								onClick={(e) =>
-									selectOption(e, i, businessList && option.business_id)
-								}
+								onClick={(e) => selectOption(e, i, option.business_type_id)}
 							>
 								<span
 									style={colors ? { color: colors[i] } : { color: '' }}
 									className="group-hover:scale-110 group-hover:text-[--brand] inline-block transition duration-700"
 								>
-									{businessList ? option.business_name : option}
+									{option.business_type}
 								</span>
 							</button>
 						))}
@@ -124,4 +114,4 @@ const SelectInputRHF = ({
 	);
 };
 
-export default SelectInputRHF;
+export default SelectBusinessType;

@@ -3,9 +3,17 @@
 import { useState, useRef } from 'react';
 import Image from 'next/image';
 
-import { icons } from '../constants';
+import { icons, images } from '../constants';
 
-const DragDropFile = ({ rhf, error, setValue, name, single, defaultValue }) => {
+const DragDropFile = ({
+	rhf,
+	error,
+	setValue,
+	name,
+	single,
+	defaultValue,
+	document,
+}) => {
 	const [materialImages, setMaterialImages] = useState(
 		defaultValue ? (single ? [defaultValue] : [...defaultValue]) : []
 	); // STORES THE BLOB URL FOR THE IMAGE TO BE DISPLAYED
@@ -15,6 +23,7 @@ const DragDropFile = ({ rhf, error, setValue, name, single, defaultValue }) => {
 	// const [showImages, setShowImages] = useState(false);
 	const [dragActive, setDragActive] = useState(false);
 	const inputRef = useRef();
+	const [fileName, setFileName] = useState();
 
 	const removeImage = (i) => {
 		let res = [...materialImages];
@@ -40,6 +49,7 @@ const DragDropFile = ({ rhf, error, setValue, name, single, defaultValue }) => {
 				setRawImageFiles(files);
 				setValue(name, files);
 			} else {
+				setFileName(event.target.files[0].name);
 				setMaterialImages([URL.createObjectURL(event.target.files[0])]);
 				setRawImageFiles([event.target.files[0]]);
 				setValue(name, event.target.files[0]);
@@ -75,6 +85,7 @@ const DragDropFile = ({ rhf, error, setValue, name, single, defaultValue }) => {
 				setRawImageFiles(files);
 				setValue(name, files);
 			} else {
+				setFileName(e.dataTransfer.files[i].name);
 				setMaterialImages([URL.createObjectURL(e.dataTransfer.files[0])]);
 				setRawImageFiles([e.dataTransfer.files[i]]);
 				setValue(name, e.dataTransfer.files[i]);
@@ -89,12 +100,12 @@ const DragDropFile = ({ rhf, error, setValue, name, single, defaultValue }) => {
 			onDragOver={handleDrag}
 			onDrop={handleDrop}
 		>
-			<div className="w-full flex icon-input !rounded-xl overflow-hidden border">
+			<div className="slide-animated-children w-full flex icon-input !rounded-xl overflow-hidden border">
 				<input
 					ref={inputRef}
 					type="file"
 					multiple={!single}
-					accept=".png,.jpg,.jpeg"
+					accept={!document ? '.png,.jpg,.jpeg' : '.png,.jpg,.jpeg,.pdf'}
 					className="absolute top-0 left-0 w-[200%] hidden"
 					onChange={onImageChange}
 				/>
@@ -102,7 +113,7 @@ const DragDropFile = ({ rhf, error, setValue, name, single, defaultValue }) => {
 					type="file"
 					name={name}
 					multiple={!single}
-					accept=".png,.jpg,.jpeg"
+					accept={!document ? '.png,.jpg,.jpeg' : '.png,.jpg,.jpeg,.pdf'}
 					className="absolute top-0 left-0 w-[200%] hidden"
 					{...rhf}
 				/>
@@ -114,7 +125,10 @@ const DragDropFile = ({ rhf, error, setValue, name, single, defaultValue }) => {
 					<Image src={icons.upload} alt="Drop image here" />
 					<span>Drag and drop your file here</span>
 					<span>or</span>
-					<span className="text-[--brand]">Browse</span>
+					<span className="text-[--brand]">
+						Browse
+						{/* ({document && 'pdf, '}png, jpg and jpeg) */}
+					</span>
 				</button>
 			</div>
 			{error ? (
@@ -126,7 +140,7 @@ const DragDropFile = ({ rhf, error, setValue, name, single, defaultValue }) => {
 				<p></p>
 			)}
 
-			{materialImages && (
+			{materialImages && !document ? (
 				<div className="grid grid-cols-3 md:grid-cols-4 gap-2 pt-5">
 					{materialImages.map((img, i) => (
 						<div
@@ -140,6 +154,41 @@ const DragDropFile = ({ rhf, error, setValue, name, single, defaultValue }) => {
 								height={110}
 								className={`w-full h-full object-cover rounded-xl`}
 							/>
+							<button
+								className="p-1 bg-[--transparent-bg] rounded-full absolute top-2 right-2"
+								type="button"
+								onClick={() => removeImage(i)}
+							>
+								<Image
+									src={icons.bin}
+									alt="delete"
+									className="w-[15px] h-[15px]"
+								/>
+							</button>
+						</div>
+					))}
+				</div>
+			) : (
+				<div className="grid grid-cols-3 md:grid-cols-4 gap-2 pt-5">
+					{materialImages.map((img, i) => (
+						<div
+							key={i}
+							className={`w-full h-[90px] object-cover rounded-xl relative py-4 md:py-5 bg-[--card]`}
+						>
+							<Image
+								src={icons.noteList}
+								alt="Training images"
+								width={200}
+								height={200}
+								className={`w-full h-[40px] object-contain rounded-xl`}
+							/>
+							<p className="text-center px-4">
+								{fileName
+									? fileName.length > 5
+										? fileName.slice(0, 5) + '...'
+										: fileName
+									: 'Upload'}
+							</p>
 							<button
 								className="p-1 bg-[--transparent-bg] rounded-full absolute top-2 right-2"
 								type="button"

@@ -59,7 +59,7 @@ const LoginButton = async () => {
 export default function RootLayout({ children }) {
 	return (
 		<div className="relative w-full">
-			<div className="">{children}</div>
+			<div className="relative">{children}</div>
 			<Navbar loginButton={<LoginButton />} />
 			<Footer />
 		</div>
