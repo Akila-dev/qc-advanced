@@ -39,6 +39,20 @@ export const RegisterSchema = z
 		path: ['confirm_password'],
 	});
 
+export const ForgotPasswordSchema = z.object({
+	email: z.string().email(),
+});
+
+export const ResetPasswordSchema = z
+	.object({
+		new_pass: z.string().min(1, { message: 'Password' }),
+		confirm_password: z.string().min(1, { message: 'Password' }),
+	})
+	.refine((data) => data.new_pass === data.confirm_password, {
+		message: "Passwords don't match",
+		path: ['confirm_password'],
+	});
+
 export const BusinessSchema = zfd.formData({
 	// user_id: z.string().email().min(1, { message: 'Password is required' }),
 	business_email: z.string().min(1, { message: 'Enter Business Email*' }),

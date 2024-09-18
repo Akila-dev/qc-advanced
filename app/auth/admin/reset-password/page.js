@@ -2,22 +2,57 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { IconBoxWrapper, IconPopupWrapper } from '../../../../wrappers';
 import { images, icons } from '../../../../constants';
-import { InputField } from '../../../../components';
+import {
+	InputFieldRHF,
+	FormError,
+	FormSuccess,
+	SubmitButton,
+	LinkButton,
+} from '../../../../components';
+
+// SERVER COMPONENT
+import { useForgotPasswordEmailStore } from '@/config/store';
+import { resetPassword } from '@/actions/forgotPassword';
+import { ResetPasswordSchema } from '@/schemas';
 
 export default function ResetPassword() {
+	const router = useRouter();
 	const [isDone, setIsDone] = useState(false);
-	const [formData, setFormData] = useState({
-		password: '',
-		confirmPassword: '',
-	});
-	const { password, confirmPassword } = formData;
+	const cookie_data = useForgotPasswordEmailStore((state) => state.pendingData); // To store data of the
+	// const clear_cookie = useForgotPasswordEmailStore(
+	// 	(state) => state.clearPendingData
+	// );
+	const [isPending, setIsPending] = useState();
+	const [error, setError] = useState('');
+	const [success, setSuccess] = useState('');
 
-	const submitForm = () => {
-		console.log(formData);
-		setIsDone(true);
+	const {
+		setValue,
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		resolver: zodResolver(ResetPasswordSchema),
+	});
+
+	const onSubmit = (values) => {
+		setIsPending(true);
+
+		resetPassword(cookie_data, values).then((data) => {
+			setError(data.error);
+			setSuccess(data.success);
+			setIsPending(false);
+			if (data?.response === 1) {
+				setIsDone(true);
+				// clear_cookie();
+			}
+		});
 	};
 
 	return (
@@ -28,33 +63,37 @@ export default function ResetPassword() {
 			className=""
 			back="/auth/admin/forgot-password"
 		>
-			<div className="flex flex-col items-center justify-center w-full max-w-[350px] gap-5">
+			<form
+				onSubmit={handleSubmit((d) => onSubmit(d))}
+				className={`flex flex-col items-center justify-center w-full max-w-[350px] gap-5 ${
+					isPending && 'pending'
+				}`}
+			>
 				<div className="w-full space-y-3 py-[15px]">
-					{/* Password */}
-					<InputField
+					{/* New Password */}
+					<InputFieldRHF
 						label="New Password"
 						icon={icons.lock}
 						type="password"
-						placeholder="New Password"
-						formData={formData}
-						setFormData={setFormData}
-						nameValue="password"
+						placeholder="Enter Password"
+						rhf={{ ...register('new_pass') }}
+						error={errors.new_pass?.message}
 					/>
 					{/* Confirm Password */}
-					<InputField
+					<InputFieldRHF
 						label="Confirm Password"
 						icon={icons.lock}
 						type="password"
 						placeholder="Confirm Password"
-						formData={formData}
-						setFormData={setFormData}
-						nameValue="confirmPassword"
+						rhf={{ ...register('confirm_password') }}
+						error={errors.confirm_password?.message}
 					/>
 				</div>
-				<button onClick={() => submitForm()} className="btn-1">
-					update
-				</button>
-			</div>
+				{error && <FormError message={error} />}
+				{success && <FormSuccess message={success} />}
+
+				<SubmitButton text="update" submitting={isPending} />
+			</form>
 			{isDone && (
 				<IconPopupWrapper
 					icon={images.checkmark}
@@ -62,9 +101,9 @@ export default function ResetPassword() {
 					text="Your password has been reset"
 					smallIcon
 				>
-					<Link href="/auth/admin/login" className="btn-1 mt-8">
-						OK
-					</Link>
+					<div className="mt-5 w-[80%]">
+						<LinkButton link="/admin" text="ok" />
+					</div>
 				</IconPopupWrapper>
 			)}
 		</IconBoxWrapper>

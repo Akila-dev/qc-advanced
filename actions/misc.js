@@ -21,11 +21,9 @@ export const getBusinessTypes = async () => {
 		const businessTypes = await res.json();
 
 		if (res.ok && businessTypes) {
-			console.log(businessTypes);
 			return {
 				data: businessTypes,
 			};
-			// console.log(materials);
 		}
 	} catch (error) {
 		return { errorMsg: "Couldn't Find Businesses" };

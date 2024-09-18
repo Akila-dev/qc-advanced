@@ -16,7 +16,7 @@ const OTPInput = ({
 			}
 		} else if (
 			(e.keyCode >= 48 && e.keyCode <= 57) || //check if key is numeric keys 0 to 9
-			(e.keyCode >= 65 && e.keyCode <= 90) || //check if key is alphabetical keys A to Z
+			// (e.keyCode >= 65 && e.keyCode <= 90) || //check if key is alphabetical keys A to Z
 			(e.keyCode >= 96 && e.keyCode <= 105) || //check if key is numeric keypad keys 0 to 9
 			e.keyCode === 39 //check if key is right arrow key
 		) {
@@ -30,15 +30,18 @@ const OTPInput = ({
 					handleSubmit();
 				}
 			}
+		} else if (e.keyCode >= 65 && e.keyCode <= 90) {
+			return null;
 		}
 	};
 	return (
 		<input
 			id={id}
 			name={id}
-			type="text"
+			type="number"
 			className="bg-[--card] w-full h-[50px] md:h-[60px] rounded-xl text-center text-lg md:text-xl font-semibold"
 			value={value}
+			pattern="[0-9]"
 			maxLength="1"
 			onChange={(e) => onValueChange(id, e.target.value)}
 			onKeyUp={handleKeyUp}

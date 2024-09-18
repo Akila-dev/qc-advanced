@@ -78,9 +78,10 @@ export default function Register() {
 		getOTP(otpVals).then((data) => {
 			setError(data.error);
 			setSuccess(data.success);
-			setIsPending(false);
 			if (data?.response === 1) {
 				router.push('/auth/admin/verify-otp');
+			} else {
+				setIsPending(false);
 			}
 		});
 	};

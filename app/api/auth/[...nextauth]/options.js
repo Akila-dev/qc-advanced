@@ -27,7 +27,8 @@ export const options = {
 			},
 			async authorize(credentials, req) {
 				try {
-					const { email, password, user_type } = credentials;
+					// const { email, password, user_type } = credentials;
+					credentials.password = md5(credentials.password);
 
 					const res = await fetch(
 						`${process.env.NEXT_PUBLIC_BASE_URL}/api/login`,

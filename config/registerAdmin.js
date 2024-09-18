@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { RegisterSchema } from '@/schemas';
 import FormData from 'form-data';
+import md5 from 'md5';
 
 export const registerAdmin = async (values, otp) => {
 	const validatedFields = RegisterSchema.parse(values);
@@ -20,7 +21,7 @@ export const registerAdmin = async (values, otp) => {
 	formData.append('phone', values.phone);
 	formData.append('business_name', values.business_name);
 	formData.append('business_type_id', values.business_type_id);
-	formData.append('password', values.password);
+	formData.append('password', md5(values.password));
 	formData.append('otp', otp);
 	formData.append('user_type', 'admin');
 

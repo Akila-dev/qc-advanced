@@ -85,6 +85,15 @@ input:-webkit-autofill,
 	-webkit-text-fill-color: var(--black) !important;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+input[type='number'] {
+	-moz-appearance: textfield;
+}
+
 .btn-1 {
 	@apply p-[0.75rem] px-[1rem] bg-[--brand] w-full text-[--white] uppercase cursor-pointer rounded-lg text-[4vw] md:text-sm shadow-[--shadow] text-center;
 }

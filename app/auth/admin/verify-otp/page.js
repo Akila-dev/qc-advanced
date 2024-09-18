@@ -9,6 +9,7 @@ import {
 	FormError,
 	FormSuccess,
 	Button,
+	LinkButton,
 } from '../../../../components';
 import { images, icons } from '../../../../constants';
 
@@ -18,6 +19,7 @@ import { registerAdmin } from '@/config/registerAdmin';
 
 export default function Verification() {
 	const cookie_data = useRegisterStore((state) => state.pendingData); // To store data of the
+	const clear_cookie = useRegisterStore((state) => state.clearPendingData);
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState('');
 
@@ -40,7 +42,7 @@ export default function Verification() {
 
 	const handleSubmit = () => {
 		setIsSubmitting(true);
-		console.log(formData);
+		// console.log(formData);
 
 		const otp = `${formData.input1}${formData.input2}${formData.input3}${formData.input4}`;
 
@@ -50,6 +52,7 @@ export default function Verification() {
 			setIsSubmitting(false);
 			if (data?.response === 1) {
 				setIsDone(true);
+				clear_cookie();
 			}
 		});
 	};
@@ -86,7 +89,7 @@ export default function Verification() {
 							id="input2"
 							value={formData.input2}
 							onValueChange={handleInputChange}
-							previousId={formData.input1}
+							previousId="input1"
 							handleSubmit={handleSubmit}
 							nextId="input3"
 						/>
@@ -94,7 +97,7 @@ export default function Verification() {
 							id="input3"
 							value={formData.input3}
 							onValueChange={handleInputChange}
-							previousId={formData.input2}
+							previousId="input2"
 							handleSubmit={handleSubmit}
 							nextId="input4"
 						/>
@@ -102,7 +105,7 @@ export default function Verification() {
 							id="input4"
 							value={formData.input4}
 							onValueChange={handleInputChange}
-							previousId={formData.input3}
+							previousId="input3"
 							handleSubmit={handleSubmit}
 						/>
 					</div>
@@ -128,12 +131,12 @@ export default function Verification() {
 				<IconPopupWrapper
 					icon={images.congratulations}
 					title="Congratulations"
-					text="You have created your account successfully"
+					text="You have successfully created your account!"
 					smallIcon
 				>
-					<Link href="/admin" className="btn-1 mt-5">
-						OK
-					</Link>
+					<div className="mt-5 w-[80%]">
+						<LinkButton link="/admin" text="ok" />
+					</div>
 				</IconPopupWrapper>
 			)}
 		</IconBoxWrapper>

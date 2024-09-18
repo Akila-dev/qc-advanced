@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,13 +18,16 @@ import {
 } from '@/components';
 
 // SERVER COMPONENTE
-import { adminLogin } from '@/actions/adminLogin';
 import { LoginSchema } from '@/schemas';
 
 export default function LogIn() {
 	const [showOptions, setShowOptions] = useState(true);
 	const [selectedOption, setSelectedOption] = useState('');
 	const router = useRouter();
+	const searchParams = useSearchParams();
+	const [callback, setCallback] = useState(
+		searchParams.get('callbackUrl') || `/${selectedOption}`
+	);
 
 	const [isPending, setIsPending] = useState();
 	const [error, setError] = useState('');
@@ -41,6 +44,7 @@ export default function LogIn() {
 
 	useEffect(() => {
 		setValue('user_type', selectedOption);
+		setCallback(searchParams.get('callbackUrl') || `/${selectedOption}`);
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedOption]);
@@ -54,21 +58,26 @@ export default function LogIn() {
 
 		setIsPending(true);
 		// signIn('credentials', { redirectTo: `/${selectedOption}` });
-		signIn('credentials', { ...values, redirect: false }).then(
-			({ ok, error }) => {
-				setIsPending(false);
-
-				if (ok) {
-					setSuccess('Logged In Successfully!');
-					setTimeout(() => {
+		signIn('credentials', {
+			...values,
+			redirect: false,
+			callbackUrl: callback,
+		}).then(({ ok, error }) => {
+			if (ok) {
+				setSuccess('Logged In Successfully!');
+				setTimeout(() => {
+					if (callback === '/') {
 						router.push(`/${selectedOption}`);
-					}, 1000);
-				} else {
-					console.log(error);
-					setError('Invalid Login details!');
-				}
+					} else {
+						router.push(callback);
+					}
+				}, 500);
+			} else {
+				setIsPending(false);
+				console.log(error);
+				setError('Invalid Login details!');
 			}
-		);
+		});
 	};
 
 	return (

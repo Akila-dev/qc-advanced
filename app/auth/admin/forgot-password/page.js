@@ -3,47 +3,94 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { IconBoxWrapper } from '../../../../wrappers';
 import { images, icons } from '../../../../constants';
-import { InputField } from '../../../../components';
+import {
+	InputFieldRHF,
+	SubmitButton,
+	FormError,
+	FormSuccess,
+} from '../../../../components';
+
+// SERVER COMPONENTE
+import { getForgotPasswordOTP } from '@/actions/forgotPassword';
+import { ForgotPasswordSchema } from '@/schemas';
+import { useForgotPasswordEmailStore } from '@/config/store';
 
 export default function ForgotPassword() {
-	const [formData, setFormData] = useState({
-		email: '',
-	});
-	const { email } = formData;
-
+	const storePendingData = useForgotPasswordEmailStore(
+		(state) => state.storePendingData
+	);
 	const router = useRouter();
-	const submitForm = () => {
-		console.log(formData);
-		router.push('/auth/admin/verification');
+	const [isPending, setIsPending] = useState();
+	const [error, setError] = useState('');
+	const [success, setSuccess] = useState('');
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		control,
+	} = useForm({
+		resolver: zodResolver(ForgotPasswordSchema),
+	});
+
+	const onSubmit = (values) => {
+		setError('');
+		setSuccess('');
+
+		setIsPending(true);
+		if (values && values.email && values.email.length > 0) {
+			storePendingData(values);
+		}
+
+		getForgotPasswordOTP(values).then((data) => {
+			setError(data.error);
+			setSuccess(data.success);
+			if (data?.response === 1) {
+				router.push('/auth/admin/verification');
+			} else {
+				setIsPending(false);
+			}
+		});
 	};
+
 	return (
 		<IconBoxWrapper
 			icon={images.lockQuery}
 			title="Forgot Password?"
 			text="No worries, we will help you to reset your password."
 			className=""
-			back="/auth/admin/login"
+			back="/auth/sign-in"
 		>
-			<div className="flex flex-col items-center justify-center w-full max-w-[350px] gap-10">
-				<div className="w-full space-y-0 pt-[15px]">
+			<form
+				onSubmit={handleSubmit((d) => onSubmit(d))}
+				className={`flex flex-col items-center justify-center w-full max-w-[350px] gap-7 ${
+					isPending && 'pending'
+				}`}
+			>
+				<div className="w-full space-y-0 pt-[25px]">
 					{/* Email */}
-					<InputField
+					<InputFieldRHF
 						label="Email"
 						icon={icons.envelope}
 						type="mail"
-						placeholder="mail@mail.com"
-						formData={formData}
-						setFormData={setFormData}
-						nameValue="email"
+						placeholder="user@mail.com"
+						rhf={{ ...register('email') }}
+						error={errors.email?.message}
 					/>
 				</div>
-				<button onClick={() => submitForm()} className="btn-1">
-					send
-				</button>
-			</div>
+
+				<div className="space-y-5 w-full">
+					{error && <FormError message={error} center />}
+					{success && <FormSuccess message={success} center />}
+
+					<SubmitButton text="send" submitting={isPending} />
+				</div>
+			</form>
 		</IconBoxWrapper>
 	);
 }
