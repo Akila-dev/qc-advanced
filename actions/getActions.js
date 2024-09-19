@@ -37,11 +37,33 @@ export const getActions = async () => {
 			}
 		);
 
+		const overview_res = await fetch(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/getUserExtraDtl`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
+				body: JSON.stringify({ user_id: session?.user?.id }),
+			}
+		);
+
 		const actions = await res.json();
 		const businessList = await b_res.json();
+		const overview = await overview_res.json();
 
-		if (res.ok && b_res.ok && actions && businessList) {
-			return { data: actions, businessList: businessList };
+		if (
+			res.ok &&
+			b_res.ok &&
+			overview_res.ok &&
+			actions &&
+			businessList &&
+			overview
+		) {
+			return { data: actions, businessList: businessList, overview: overview };
 		}
 	} catch (error) {
 		return { errorMsg: "Couldn't Access Database" };

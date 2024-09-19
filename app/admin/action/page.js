@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { HiOutlinePlusSm } from 'react-icons/hi';
+import { RiGlassesLine } from 'react-icons/ri';
 
 import { images, icons } from '../../../constants';
 import {
@@ -12,6 +13,7 @@ import {
 	ActionDetails,
 	Loading,
 	LoadingFailed,
+	Empty,
 } from '../../../components';
 import { SidePopupWrapper, TitlePopupWrapper } from '../../../wrappers';
 import { SideNavIcons } from '../../../components/svgs';
@@ -20,21 +22,6 @@ import {
 	getActions,
 	// deleteAction,
 } from '@/actions/getActions';
-
-const actions = [
-	{
-		title: 'Maintenance',
-		time: 'In 7 days',
-		assignee: 'John',
-		tag: 'Todo',
-	},
-	{
-		title: 'Repair',
-		time: '4 days ago',
-		assignee: 'John',
-		tag: 'Todo',
-	},
-];
 
 const colors = ['#2d2d2b08', '#2d2d2b08', '#f5edc7'];
 const tags = ['all', 'due soon', 'exceeded due date'];
@@ -52,7 +39,7 @@ export default function Action() {
 	const [success, setSuccess] = useState('');
 
 	const [activeAction, setActiveAction] = useState(0);
-	const [addAction, setAddAction] = useState(true);
+	const [addAction, setAddAction] = useState(false);
 	const [showDetails, setShowDetails] = useState(false);
 	const [optionsVisible, setOptionsVisible] = useState(false);
 	const [filteredActionsList, setFilteredActionsList] = useState();
@@ -67,15 +54,15 @@ export default function Action() {
 			setOverview([
 				{
 					label: 'Pending Actions',
-					value: data?.data?.total_record || '_',
+					value: data?.overview?.data?.no_of_actions,
 				},
 				{
 					label: 'Due Soon',
-					value: '∞',
+					value: data?.overview?.data?.no_of_pending_actions,
 				},
 				{
 					label: 'Businesses',
-					value: data?.businessList?.total_record || '_',
+					value: data?.overview?.data?.no_of_business,
 				},
 			]);
 			setIsLoading(false);
@@ -125,7 +112,11 @@ export default function Action() {
 									className={`p-5 rounded-xl`}
 									style={{ background: colors[i] }}
 								>
-									<SideNavIcons i={2} color={'#2d2d2b'} w={35} />
+									{i === 2 ? (
+										<RiGlassesLine className="text-[2.8rem] bg-[--highlight-bg] rounded-full p-[6px] mb-[-6px]" />
+									) : (
+										<SideNavIcons i={1} color={'#2d2d2b'} w={35} />
+									)}
 									<p className="text-[--black] !font-semibold pt-5 pb-1">
 										{label}
 									</p>
@@ -160,23 +151,27 @@ export default function Action() {
 							</div>
 						</div>
 					</div>
-					<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 px-4 py-5 md:pt-0  lg:p-8 lg:pt-5">
-						{filteredActionsList?.map(
-							({ desc, title, asignee_dtl, business_dtl, to_do_list }, i) => (
-								<ActionCard
-									key={i}
-									title={title}
-									time={'5 days'}
-									assignee={asignee_dtl.username}
-									admin
-									businessName={business_dtl.business_name}
-									businessId={business_dtl.business_id}
-									tag={to_do_list}
-									onClick={() => showActionDetails(i)}
-								/>
-							)
-						)}
-					</div>
+					{filteredActionsList.length > 0 ? (
+						<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 px-4 py-5 md:pt-0  lg:p-8 lg:pt-5">
+							{filteredActionsList?.map(
+								({ desc, title, asignee_dtl, business_dtl, to_do_list }, i) => (
+									<ActionCard
+										key={i}
+										title={title}
+										time={'5 days'}
+										assignee={asignee_dtl.username}
+										admin
+										businessName={business_dtl.business_name}
+										businessId={business_dtl.business_id}
+										tag={to_do_list}
+										onClick={() => showActionDetails(i)}
+									/>
+								)
+							)}
+						</div>
+					) : (
+						<Empty />
+					)}
 
 					<div className="pb" />
 				</div>

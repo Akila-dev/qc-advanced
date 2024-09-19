@@ -64,7 +64,7 @@ export default function ForgotPassword() {
 			title="Forgot Password?"
 			text="No worries, we will help you to reset your password."
 			className=""
-			back="/auth/sign-in"
+			back="/auth/signin"
 		>
 			<form
 				onSubmit={handleSubmit((d) => onSubmit(d))}

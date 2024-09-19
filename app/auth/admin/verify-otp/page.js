@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 import { IconBoxWrapper, IconPopupWrapper } from '../../../../wrappers';
 import {
@@ -14,7 +15,8 @@ import {
 import { images, icons } from '../../../../constants';
 
 // BACKEND RELATED
-import { useRegisterStore } from '@/config/store';
+import { useRegisterStore } from '@/config/store'; // Store where user's details are stored
+import { getOTP } from '@/actions/getOTP'; // For Resend OTP
 import { registerAdmin } from '@/config/registerAdmin';
 
 export default function Verification() {
@@ -40,7 +42,11 @@ export default function Verification() {
 		}));
 	};
 
+	// ! OTP
 	const handleSubmit = () => {
+		setError('');
+		setSuccess('');
+
 		setIsSubmitting(true);
 		// console.log(formData);
 
@@ -53,6 +59,36 @@ export default function Verification() {
 			if (data?.response === 1) {
 				setIsDone(true);
 				clear_cookie();
+			}
+		});
+	};
+
+	// ! RESEND OTP
+	const resendOTP = () => {
+		setError('');
+		setSuccess('');
+		setIsSubmitting(true);
+
+		const otpVals = {
+			email: cookie_data.email,
+			ccode: cookie_data.ccode,
+			phone: cookie_data.phone,
+			business_name: cookie_data.business_name,
+		};
+
+		getOTP(otpVals).then((data) => {
+			if (data?.response === 1) {
+				setSuccess('OTP Resent');
+				setIsSubmitting(false);
+				setTimeout(() => {
+					setSuccess(null);
+				}, 4300);
+			} else {
+				setError('Failed to resend OTP');
+				setIsSubmitting(false);
+				setTimeout(() => {
+					setError(null);
+				}, 4300);
 			}
 		});
 	};
@@ -122,9 +158,16 @@ export default function Verification() {
 				<div className="pb-[50px] md:pb-[25px]" />
 				<p className="text-[--black] absolute bottom-0 left-0 p-4 w-full text-center">
 					{"Didn't receive the code?"}{' '}
-					<Link href="/auth/admin/verification" className="text-[--brand]">
+					<motion.button
+						whileTap={{ scale: 0.9 }}
+						whileHover={{ scale: 1.1, x: 4 }}
+						transition={{ type: 'spring', bounce: 0.75 }}
+						type="button"
+						onClick={() => resendOTP()}
+						className="text-[--brand]"
+					>
 						Resend Code
-					</Link>
+					</motion.button>
 				</p>
 			</div>
 			{isDone && (

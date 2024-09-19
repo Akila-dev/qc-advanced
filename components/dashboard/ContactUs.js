@@ -2,80 +2,108 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import { SelectInput, InputField } from '../../components';
+import {
+	SelectInputRHF,
+	InputFieldRHF,
+	Checkbox,
+	FormError,
+	FormSuccess,
+	SubmitButton,
+} from '../../components';
 import { images, icons } from '../../constants';
 
-const ContactUs = () => {
-	const [formData, setFormData] = useState({
-		name: '',
-		email: '',
-		subject: '',
-		message: '',
-	});
-	const { name, email, subject, message } = formData;
+// SERVER COMPONENTE
+import { contactUs } from '@/actions/contactUs';
+import { ContactUsSchema } from '@/schemas';
 
-	const submitForm = () => {
-		console.log(formData);
+const ContactUs = () => {
+	const [isPending, setIsPending] = useState();
+	const [error, setError] = useState('');
+	const [success, setSuccess] = useState('');
+
+	const {
+		setValue,
+		register,
+		handleSubmit,
+		formState: { errors },
+		control,
+		reset,
+	} = useForm({
+		resolver: zodResolver(ContactUsSchema),
+	});
+
+	const onSubmit = (values) => {
+		setError('');
+		setSuccess('');
+
+		setIsPending(true);
+
+		contactUs(values).then((data) => {
+			setError(data.error);
+			setSuccess(data.success);
+			setIsPending(false);
+
+			if (data?.response === 1) {
+				reset();
+			}
+		});
 	};
 
 	return (
 		<div>
-			<div className="flex flex-col gap-3">
+			<form
+				onSubmit={handleSubmit((d) => onSubmit(d))}
+				className={`flex flex-col gap-3 ${isPending && 'pending'}`}
+			>
 				<h2 className="hidden lg:block">Contact Us</h2>
 				{/* Name */}
-				<InputField
+				<InputFieldRHF
 					label="Name"
 					icon={icons.user1}
-					type="mail"
-					placeholder="Enter name"
-					formData={formData}
-					setFormData={setFormData}
-					nameValue="name"
+					type="text"
+					placeholder="John"
+					rhf={{ ...register('name') }}
+					error={errors.name?.message}
 				/>
 				{/* Email */}
-				<InputField
+				<InputFieldRHF
 					label="Email"
 					icon={icons.envelope}
 					type="mail"
-					placeholder="mail@mail.com"
-					formData={formData}
-					setFormData={setFormData}
-					nameValue="email"
+					placeholder="user@mail.com"
+					rhf={{ ...register('email') }}
+					error={errors.email?.message}
 				/>
 				{/* Subject */}
-				<SelectInput
-					icon={icons.subtitle}
+				<SelectInputRHF
+					icon={icons.details}
 					label="Subject"
-					placeholder="Choose a subject"
-					options={[
-						'Full Service Restaurant',
-						'Quick Service Restaurant',
-						'Cafe/Coffee Shop',
-						'Food Truck',
-						'Pop-up Station',
-					]}
-					valueName="subject"
-					setFormData={setFormData}
-					formData={formData}
-					darkBg
+					options={['Subscription', 'Need To Know']}
+					setValue={setValue}
+					name="subject"
+					rhf={{ ...register('subject') }}
+					error={errors.subject?.message}
 				/>
 				{/* Message */}
-				<InputField
+				<InputFieldRHF
 					label="Message"
-					icon={icons.message}
+					icon={icons.location}
 					type="textarea"
 					placeholder="Enter your Message"
-					formData={formData}
-					setFormData={setFormData}
-					nameValue="message"
+					rhf={{ ...register('msg') }}
+					error={errors.msg?.message}
+					additionalClassName="md:col-span-2"
 				/>
-				<div className="pt-7 lg:pt-5">
-					<button className="btn-1" onClick={() => submitForm()}>
-						Submit
-					</button>
+				<div className="pt-7 lg:pt-5 space-y-3">
+					{error && <FormError message={error} center />}
+					{success && <FormSuccess message={success} center />}
+
+					<SubmitButton text="submit" submitting={isPending} />
 				</div>
-			</div>
+			</form>
 		</div>
 	);
 };

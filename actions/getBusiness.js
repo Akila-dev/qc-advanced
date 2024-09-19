@@ -24,10 +24,25 @@ export const getBusinessList = async () => {
 			}
 		);
 
-		const businesses = await res.json();
+		const overview_res = await fetch(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/getUserExtraDtl`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
+				body: JSON.stringify({ user_id: session?.user?.id }),
+			}
+		);
 
-		if (res.ok && businesses) {
-			return { data: businesses };
+		const businesses = await res.json();
+		const overview = await overview_res.json();
+
+		if (res.ok && businesses && overview_res && overview) {
+			return { data: businesses, overview: overview };
 			// console.log(materials);
 		}
 	} catch (error) {

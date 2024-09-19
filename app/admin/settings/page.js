@@ -27,10 +27,6 @@ const navs = [
 		icon: icons.passwordCheck,
 	},
 	{
-		label: 'Manage Checklist',
-		icon: icons.checklist,
-	},
-	{
 		label: 'Privacy Policy',
 		icon: icons.lock2,
 	},
@@ -92,9 +88,9 @@ export default function Settings() {
 							<div className="flex-1 px-7 overflow-auto">
 								{activeTab === 0 && <EditProfile />}
 								{activeTab === 1 && <ChangePassword />}
-								{activeTab === 3 && <PrivacyPolicy />}
-								{activeTab === 4 && <ContactUs />}
-								{activeTab === 5 && <TermsAndConditions />}
+								{activeTab === 2 && <PrivacyPolicy />}
+								{activeTab === 3 && <ContactUs />}
+								{activeTab === 4 && <TermsAndConditions />}
 							</div>
 						</div>
 					</div>
@@ -113,9 +109,9 @@ export default function Settings() {
 							{activeTab === 1 && (
 								<ChangePassword close={() => setShowPopup(false)} />
 							)}
-							{activeTab === 3 && <PrivacyPolicy />}
-							{activeTab === 4 && <ContactUs />}
-							{activeTab === 5 && <TermsAndConditions />}
+							{activeTab === 2 && <PrivacyPolicy />}
+							{activeTab === 3 && <ContactUs />}
+							{activeTab === 4 && <TermsAndConditions />}
 						</div>
 					</SidePopupWrapper>
 				)}

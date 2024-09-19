@@ -11,18 +11,21 @@ export const LoginSchema = z.object({
 // ! REGISTER/SIGN UP
 export const RegisterSchema = z
 	.object({
-		profile: zfd
-			.file()
-			.refine((file) => file?.length !== 0, 'Required*')
-			.refine((file) => file.size < 2000000, {
-				message: "File can't be bigger than 2MB.",
-			})
-			.refine(
-				(file) => ['image/jpeg', 'image/png', 'image/jpg'].includes(file.type),
-				{
-					message: 'File format must be either jpg, jpeg or png.',
-				}
-			),
+		profile:
+			z.any() ||
+			zfd
+				.file()
+				.refine((file) => file?.length !== 0, 'Required*')
+				.refine((file) => file.size < 2000000, {
+					message: "File can't be bigger than 2MB.",
+				})
+				.refine(
+					(file) =>
+						['image/jpeg', 'image/png', 'image/jpg'].includes(file.type),
+					{
+						message: 'File format must be either jpg, jpeg or png.',
+					}
+				),
 		fname: z.string().min(1, { message: 'First Name is required' }),
 		lname: z.string().min(1, { message: 'Last Name is required' }),
 		email: z.string().email(),
@@ -165,4 +168,51 @@ export const AdminActionSchema = z.object({
 		z.number().min(1, { message: 'Choose Assignee*' }) ||
 		z.string().min(1, { message: 'Choose Assignee*' }),
 	to_do_list: z.string().min(1, { message: 'Required*' }),
+});
+
+// SETTINGS
+export const ChangePasswordSchema = z
+	.object({
+		old_pass: z.string().min(1, { message: 'Required*' }),
+		new_pass: z.string().min(1, { message: 'Required*' }),
+		confirm_pass: z.string().min(1, { message: 'Required*' }),
+	})
+	.refine((data) => data.new_pass === data.confirm_pass, {
+		message: "Passwords don't match",
+		path: ['confirm_pass'],
+	});
+
+export const ContactUsSchema = z.object({
+	name: z.string().min(1, { message: 'Required*' }),
+	email: z.string().email(),
+	subject: z.string().min(1, { message: '' }).max(3, { message: 'Required*' }),
+	msg: z.string().min(1, { message: 'Required*' }),
+});
+
+// ! REGISTER/SIGN UP
+export const EditProfileSchema = z.object({
+	profile:
+		z.any() ||
+		zfd
+			.file()
+			.refine((file) => file?.length !== 0, 'Required*')
+			.refine((file) => file.size < 2000000, {
+				message: "File can't be bigger than 2MB.",
+			})
+			.refine(
+				(file) => ['image/jpeg', 'image/png', 'image/jpg'].includes(file.type),
+				{
+					message: 'File format must be either jpg, jpeg or png.',
+				}
+			),
+	fname: z.any() || z.string().min(1, { message: 'First Name is required' }),
+	lname: z.any() || z.string().min(1, { message: 'Last Name is required' }),
+	business_name:
+		z.any() || z.string().min(1, { message: 'Business Name is required' }),
+	email: z.any() || z.string().email(),
+	ccode: z.any() || z.string().min(1, { message: '' }).max(3, { message: '' }),
+	phone: z.any() || z.string().min(1, { message: 'Phone number is required' }),
+	business_type_id:
+		z.any() || z.string().min(1, { message: 'Choose Business Type' }),
+	address: z.any() || z.string().min(1, { message: 'Address is required' }),
 });

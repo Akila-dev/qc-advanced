@@ -5,20 +5,9 @@ import Image from 'next/image';
 
 import { images, icons } from '../../constants';
 
-const EditProfileImage = ({ rhf, error, setValue, name }) => {
-	const [image, setImage] = useState(null);
+const EditProfileImage = ({ rhf, error, setValue, name, defaultValue }) => {
+	const [image, setImage] = useState(defaultValue ? defaultValue : null);
 	const inputRef = useRef();
-
-	// const onImageChange = (event) => {
-	// 	console.log('Hi');
-	// 	if (event.target.files && event.target.files[0]) {
-	// 		// console.log(event.target.files[0]);
-	// 		setImage(URL.createObjectURL(event.target.files[0]));
-	// 		setValue(name, URL.createObjectURL(event.target.files[0]));
-	// 		// setValue(name, event.target.files[0]);
-	// 		console.log(image);
-	// 	}
-	// };
 
 	const onImageChange = async (event) => {
 		if (event.target.files && event.target.files) {

@@ -67,7 +67,7 @@ export default function Training() {
 			setOverview([
 				{
 					label: 'Training Materials',
-					value: data?.data?.total_record || '_',
+					value: data?.overview?.data?.no_of_training_materials,
 				},
 				{
 					label: 'Training Materials Limit',
@@ -75,7 +75,7 @@ export default function Training() {
 				},
 				{
 					label: 'Businesses',
-					value: data?.businessList?.total_record || '_',
+					value: data?.overview?.data?.no_of_business,
 				},
 			]);
 			setIsLoading(false);

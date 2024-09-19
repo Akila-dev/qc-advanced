@@ -37,11 +37,37 @@ export const getTrainingMaterials = async () => {
 			}
 		);
 
+		const overview_res = await fetch(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/getUserExtraDtl`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
+				body: JSON.stringify({ user_id: session?.user?.id }),
+			}
+		);
+
 		const materials = await res.json();
 		const businessList = await b_res.json();
+		const overview = await overview_res.json();
 
-		if (res.ok && materials) {
-			return { data: materials, businessList: businessList };
+		if (
+			res.ok &&
+			b_res.ok &&
+			overview_res.ok &&
+			materials &&
+			businessList &&
+			overview
+		) {
+			return {
+				data: materials,
+				businessList: businessList,
+				overview: overview,
+			};
 		}
 	} catch (error) {
 		return { errorMsg: "Couldn't Access Database" };

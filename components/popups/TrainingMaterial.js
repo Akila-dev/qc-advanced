@@ -166,7 +166,6 @@ const TrainingMaterial = ({
 					name="business_id"
 					rhf={{ ...register('business_id') }}
 					error={errors.business_id?.message}
-					darkBg
 					defaultValue={initialValues && initialValues.business_id}
 				/>
 

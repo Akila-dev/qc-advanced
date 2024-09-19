@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 
 import { IconBoxWrapper } from '../../../../wrappers';
 import {
@@ -15,7 +16,10 @@ import { images, icons } from '../../../../constants';
 
 // SERVER COMPONENT
 import { useForgotPasswordEmailStore } from '@/config/store';
-import { verifyForgotPasswordOTP } from '@/actions/forgotPassword';
+import {
+	verifyForgotPasswordOTP,
+	getForgotPasswordOTP,
+} from '@/actions/forgotPassword';
 
 export default function Verification() {
 	const cookie_data = useForgotPasswordEmailStore((state) => state.pendingData); // To store data of the
@@ -39,7 +43,10 @@ export default function Verification() {
 
 	const router = useRouter();
 
+	// ! OTP
 	const handleSubmit = () => {
+		setError('');
+		setSuccess('');
 		setIsSubmitting(true);
 
 		const otp = `${formData.input1}${formData.input2}${formData.input3}${formData.input4}`;
@@ -57,9 +64,26 @@ export default function Verification() {
 		});
 	};
 
-	const submitForm = () => {
-		console.log(formData);
-		router.push('/auth/admin/reset-password');
+	// ! RESEND OTP
+	const resendOTP = () => {
+		setError('');
+		setSuccess('');
+		setIsSubmitting(true);
+		getForgotPasswordOTP(cookie_data).then((data) => {
+			if (data?.response === 1) {
+				setSuccess('OTP Resent Successfully');
+				setIsSubmitting(false);
+				setTimeout(() => {
+					setSuccess(null);
+				}, 3000);
+			} else {
+				setError('Failed to resend OTP!');
+				setIsSubmitting(false);
+				setTimeout(() => {
+					setError(null);
+				}, 3000);
+			}
+		});
 	};
 
 	return (
@@ -127,9 +151,16 @@ export default function Verification() {
 				<div className="pb-[50px] md:pb-[25px]" />
 				<p className="text-[--black] absolute bottom-0 left-0 p-4 w-full text-center">
 					{"Didn't receive the code?"}{' '}
-					<Link href="/auth/admin/verification" className="text-[--brand]">
+					<motion.button
+						whileTap={{ scale: 0.9 }}
+						whileHover={{ scale: 1.1, x: 4 }}
+						transition={{ type: 'spring', bounce: 0.75 }}
+						type="button"
+						onClick={() => resendOTP()}
+						className="text-[--brand]"
+					>
 						Resend Code
-					</Link>
+					</motion.button>
 				</p>
 			</div>
 		</IconBoxWrapper>

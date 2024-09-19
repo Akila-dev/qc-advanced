@@ -5,12 +5,14 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { images, variants } from '@/constants';
 
-const Loading = ({ inner }) => {
+const Loading = ({ inner, notFull }) => {
 	return (
 		<motion.div
 			className={`${
 				inner
 					? 'h-full bg-[--white]'
+					: notFull
+					? 'h-screen bg-[--card]'
 					: 'h-screen bg-[--card] fixed top-0 left-0 w-full !z-[100000]'
 			} w-full  text-[--black] flex-center`}
 		>

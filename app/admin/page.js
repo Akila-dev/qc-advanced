@@ -52,7 +52,7 @@ const OverviewCard = ({ i, label, value }) => (
 			<RiGlassesLine className="text-[2.8rem] bg-[--tag] rounded-full p-[6px] mb-[-6px]" />
 		)}
 		{i === 1 && <SideNavIcons i={1} color={'#2d2d2b'} w={35} />}
-		{i === 2 && <Image src={icons.trash} alt="archive" className="w-[35px]" />}
+		{i === 2 && <SideNavIcons i={2} color={'#2d2d2b'} w={35} />}
 		<p className="text-[--black] !font-semibold pt-5 pb-1">{label}</p>
 		<h1 className="text-[--brand]">{value}</h1>
 	</div>
@@ -88,9 +88,13 @@ export default function Dashboard() {
 
 	useEffect(() => {
 		getBusinessList(userId).then((data) => {
-			// console.log(data?.data);
+			console.log(data?.data);
 			setBusinessList(data?.data?.data);
-			setOverview([data?.data?.total_record]);
+			setOverview([
+				data?.overview?.data?.no_of_business,
+				data?.overview?.data?.no_of_pending_actions,
+				data?.overview?.data?.no_of_training_materials,
+			]);
 			setIsLoading(false);
 			if (data?.data?.ResponseCode === 1) {
 				setSuccessfullyLoaded(true);
@@ -151,7 +155,7 @@ export default function Dashboard() {
 	};
 
 	return isLoading ? (
-		<Loading />
+		<Loading notFull />
 	) : successfullyLoaded ? (
 		<>
 			<div className="md:p-10 h-screen overflow-auto ">
@@ -168,8 +172,12 @@ export default function Dashboard() {
 								label="Number of Businesses"
 								value={overview[0]}
 							/>
-							<OverviewCard i={1} label="Pending Actions" value="0/2" />
-							<OverviewCard i={2} label="Training Materials" value="0/2" />
+							<OverviewCard i={1} label="Pending Actions" value={overview[1]} />
+							<OverviewCard
+								i={2}
+								label="Training Materials"
+								value={overview[2]}
+							/>
 						</div>
 					</div>
 				</div>

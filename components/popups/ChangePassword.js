@@ -1,66 +1,99 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { images, icons } from '../../constants';
 import { IconPopupWrapper } from '../../wrappers';
-import { InputField } from '../../components';
+import {
+	InputFieldRHF,
+	FormError,
+	FormSuccess,
+	SubmitButton,
+	Button,
+} from '../../components';
 
-const ChangePassword = ({ close }) => {
-	const [formData, setFormData] = useState({
-		currentPassword: '',
-		newPassword: '',
-		confirmPassword: '',
-	});
+// SERVER COMPONENT
+import { changePassword } from '@/actions/changePassword';
+import { ChangePasswordSchema } from '@/schemas';
+
+const ChangePassword = () => {
 	const [passwordSavedPopup, setPasswordSavedPopup] = useState(false);
+	const [isPending, setIsPending] = useState();
+	const [error, setError] = useState('');
+	const [success, setSuccess] = useState('');
 
-	const { currentPassword, newPassword, confirmPassword } = formData;
+	const {
+		setValue,
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		resolver: zodResolver(ChangePasswordSchema),
+	});
 
-	const submitForm = () => {
-		setPasswordSavedPopup(true);
-		console.log(formData);
+	const onSubmit = (values) => {
+		setIsPending(true);
+
+		changePassword(values).then((data) => {
+			// console.log(data);
+			setError(data.error);
+			setSuccess(data.success);
+			setIsPending(false);
+			if (data?.response === 1) {
+				setPasswordSavedPopup(true);
+				// clear_cookie();
+			}
+		});
+	};
+
+	const closePopup = () => {
+		setValue('old_pass', '');
+		setValue('new_pass', '');
+		setValue('confirm_pass', '');
+		setPasswordSavedPopup(false);
 	};
 
 	return (
-		<div className="flex flex-col gap-3">
+		<form
+			onSubmit={handleSubmit((d) => onSubmit(d))}
+			className={`flex flex-col gap-3 ${isPending && 'pending'}`}
+		>
 			{/* Current Password */}
-			<InputField
-				label="Current Password"
+			<InputFieldRHF
+				label="Old Password"
 				icon={icons.lock}
 				type="password"
-				placeholder="Current Password"
-				formData={formData}
-				setFormData={setFormData}
-				nameValue="currentPassword"
+				placeholder="Enter Old Password"
+				rhf={{ ...register('old_pass') }}
+				error={errors.old_pass?.message}
 			/>
 			{/* New Password */}
-			<InputField
+			<InputFieldRHF
 				label="New Password"
 				icon={icons.lock}
 				type="password"
-				placeholder="New Password"
-				formData={formData}
-				setFormData={setFormData}
-				nameValue="newPassword"
+				placeholder="Enter New Password"
+				rhf={{ ...register('new_pass') }}
+				error={errors.new_pass?.message}
 			/>
 			{/* Confirm Password */}
-			<InputField
+			<InputFieldRHF
 				label="Confirm Password"
 				icon={icons.lock}
 				type="password"
-				placeholder="Confirm Password"
-				formData={formData}
-				setFormData={setFormData}
-				nameValue="confirmPassword"
+				placeholder="Confirm New Password"
+				rhf={{ ...register('confirm_pass') }}
+				error={errors.confirm_pass?.message}
 			/>
-			<div className="pt-5">
-				<button
-					type="button"
-					onClick={() => submitForm()}
-					className="btn-1 !max-w-[300px]"
-				>
-					save
-				</button>
+			<div className="pt-5 space-y-2">
+				{error && <FormError message={error} />}
+				{success && <FormSuccess message={success} />}
+
+				<div className="pt-3">
+					<SubmitButton text="save" submitting={isPending} />
+				</div>
 			</div>
 			{passwordSavedPopup && (
 				<IconPopupWrapper
@@ -69,12 +102,12 @@ const ChangePassword = ({ close }) => {
 					text="Your password has been changed successfully"
 					smallIcon
 				>
-					<button onClick={close} className="btn-1 mt-5">
-						OK
-					</button>
+					<div className="mt-5 w-[80%]">
+						<Button text="ok" onClick={() => closePopup()} />
+					</div>
 				</IconPopupWrapper>
 			)}
-		</div>
+		</form>
 	);
 };
 
