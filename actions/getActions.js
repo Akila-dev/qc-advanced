@@ -23,8 +23,8 @@ export const getActions = async () => {
 			}
 		);
 
-		const b_res = await fetch(
-			`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/getBusinessList`,
+		const ba_res = await fetch(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/getBusinessWithAssignee`,
 			{
 				method: 'POST',
 				headers: {
@@ -52,12 +52,12 @@ export const getActions = async () => {
 		);
 
 		const actions = await res.json();
-		const businessList = await b_res.json();
+		const businessList = await ba_res.json();
 		const overview = await overview_res.json();
 
 		if (
 			res.ok &&
-			b_res.ok &&
+			ba_res.ok &&
 			overview_res.ok &&
 			actions &&
 			businessList &&
@@ -70,13 +70,13 @@ export const getActions = async () => {
 	}
 };
 
-export const deleteTrainingMaterial = async (training_id) => {
+export const getActionActivities = async (action_id) => {
 	const session = await getServerSession(options);
 	const user_id = session?.user?.id;
 
 	try {
 		const res = await fetch(
-			`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/deleteTrainingMaterial`,
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/actionActivity`,
 			{
 				method: 'POST',
 				headers: {
@@ -87,7 +87,47 @@ export const deleteTrainingMaterial = async (training_id) => {
 				},
 				body: JSON.stringify({
 					user_id: session?.user?.id,
-					training_id: training_id,
+					action_id: action_id,
+				}),
+			}
+		);
+
+		const activities = await res.json();
+		console.log(activities);
+
+		if (res.ok && activities.ResponseCode === 1) {
+			return {
+				response: activities.ResponseCode,
+				data: activities,
+			};
+		} else {
+			return {
+				error: activities.ResponseMsg,
+			};
+		}
+	} catch (error) {
+		return { errorMsg: "Couldn't Access Database" };
+	}
+};
+
+export const deleteAction = async (action_id) => {
+	const session = await getServerSession(options);
+	const user_id = session?.user?.id;
+
+	try {
+		const res = await fetch(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/deleteAction`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
+				body: JSON.stringify({
+					user_id: session?.user?.id,
+					action_id: action_id,
 				}),
 			}
 		);
@@ -97,7 +137,7 @@ export const deleteTrainingMaterial = async (training_id) => {
 
 		if (res.ok && deleted.ResponseCode === 1) {
 			return {
-				success: 'Training deleted successfully',
+				success: deleted.ResponseMsg,
 				response: deleted.ResponseCode,
 			};
 		} else {

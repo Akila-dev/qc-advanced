@@ -62,7 +62,9 @@ const DateTimePicker = ({
 	const [selectedDate, setSelectedDate] = useState();
 	// const [selectedTime, setSelectedTime] = useState('00:00:00');
 
-	const [selected, setSelected] = useState();
+	const [selected, setSelected] = useState(
+		defaultValue ? defaultValue : new Date()
+	);
 	const [timeValue, setTimeValue] = useState('00:00');
 
 	const handleTimeChange = (e) => {
@@ -97,23 +99,69 @@ const DateTimePicker = ({
 
 	useEffect(() => {
 		if (selected) {
-			console.log(selected);
+			let dateVal = new Date(selected);
+			// CONVERT DATE TO UTC AND SEND TO THE BACKEND
+			let utc = dateVal.toUTCString();
+			let t = {
+				day:
+					new Date(utc).getDate() < 10
+						? '0' + new Date(utc).getDate()
+						: new Date(utc).getDate(),
+				month:
+					new Date(utc).getMonth() + 1 < 10
+						? '0' + (new Date(utc).getMonth() + 1)
+						: new Date(utc).getMonth() + 1,
+				year: new Date(utc).getFullYear(),
+				hr:
+					new Date(utc).getUTCHours() < 10
+						? '0' + new Date(utc).getUTCHours()
+						: new Date(utc).getUTCHours(),
+				min:
+					new Date(utc).getUTCMinutes() < 10
+						? '0' + new Date(utc).getUTCMinutes()
+						: new Date(utc).getUTCMinutes(),
+				sec:
+					new Date(utc).getUTCSeconds() < 10
+						? '0' + new Date(utc).getUTCSeconds()
+						: new Date(utc).getUTCSeconds(),
+			};
+			utc =
+				t.year +
+				'-' +
+				t.month +
+				'-' +
+				t.day +
+				' ' +
+				t.hr +
+				':' +
+				t.min +
+				':' +
+				t.sec;
+			setValue(name, utc);
+
+			// DISPLAY DATE ACCORDING TO LOCALITY
+			const options = {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric',
+			};
 			setSelectedDate(
-				selected
-					.toLocaleString()
-					.replace('/', '-')
-					.replace('/', '-')
-					.replace(',', '')
+				dateVal.toLocaleDateString(undefined, options) +
+					', ' +
+					dateVal.toLocaleTimeString(undefined, {
+						timeZoneName: 'short',
+						hour12: 'true',
+					})
 			);
-			setValue(
-				name,
-				selected
-					.toLocaleString()
-					.replace('/', '-')
-					.replace('/', '-')
-					.replace(',', '')
-			);
+			// console.log(selected.toLocaleDateString(undefined, options));
+			// console.log(
+			// 	selected.toLocaleTimeString(undefined, {
+			// 		timeZoneName: 'short',
+			// 		hour12: 'true',
+			// 	})
+			// );
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selected]);
 
 	// const selectOption = (i) => {
@@ -137,7 +185,7 @@ const DateTimePicker = ({
 					type="button"
 					onClick={() => setShowSelector(true)}
 				>
-					<p className="w-full text-left">{selectedDate}</p>
+					<p className="w-full text-left text-[--black]">{selectedDate}</p>
 					<Image
 						src={icons.calendar}
 						w={20}

@@ -43,8 +43,9 @@ export { default as Empty } from './dashboard/Empty';
 export { default as DragAndDrop } from './dashboard/DragAndDrop';
 export { default as LoadingFailed } from './dashboard/LoadingFailed';
 
-// Popups
+// Popups AddSubchecklistAction
 export { default as AddAction } from './popups/AddAction';
+export { default as AddSubchecklistAction } from './popups/AddSubchecklistAction';
 export { default as ActionDetails } from './popups/ActionDetails';
 export { default as TrainingDetails } from './popups/TrainingDetails';
 export { default as InspectionDetails } from './popups/InspectionDetails';

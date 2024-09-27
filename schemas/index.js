@@ -164,10 +164,26 @@ export const AdminActionSchema = z.object({
 	desc: z.string().min(1, { message: 'Enter Description' }),
 	priority: z.string().min(1, { message: 'Select Priority*' }),
 	due_date: z.string().min(1, { message: 'Pick a Date*' }),
-	assignee_id:
-		z.number().min(1, { message: 'Choose Assignee*' }) ||
-		z.string().min(1, { message: 'Choose Assignee*' }),
+	assignee_id: z.string().min(1, { message: 'Choose Assignee*' }),
 	to_do_list: z.string().min(1, { message: 'Required*' }),
+});
+
+export const AddActionCommentSchema = z.object({
+	msg: z.string().min(1, { message: 'Required*' }),
+	media:
+		z.any() ||
+		zfd
+			.file()
+			.refine((file) => file?.length !== 0, 'Required*')
+			.refine((file) => file.size < 2000000, {
+				message: "File can't be bigger than 2MB.",
+			})
+			.refine(
+				(file) => ['image/jpeg', 'image/png', 'image/jpg'].includes(file.type),
+				{
+					message: 'File format must be either jpg, jpeg or png.',
+				}
+			),
 });
 
 // SETTINGS

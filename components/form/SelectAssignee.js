@@ -2,6 +2,7 @@
 
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 
 import { icons } from '../../constants';
@@ -21,23 +22,27 @@ const SelectAssignee = ({
 }) => {
 	const [showOptions, setShowOptions] = useState(false);
 	`Since getInvitees include also the admin's id, set a condition to check if the first item of the list has a username (which basically means its and admin), if it does, skip it and move to the next ite on the list`;
-	const [selectedId, setSelectedId] = useState(options[0].username ? 0 : 1);
+	const [selectedId, setSelectedId] = useState(0);
 	const [selectedOption, setSelectedOption] = useState(
 		defaultValue
 			? options.filter((option) => {
 					return option.user_id === defaultValue;
-			  })[0]
+			  })[0].username
 			: options[0].username
-			? options[0].username
-			: options[1].username
 	);
 
 	const selectRef = useRef(null);
 
+	useEffect(() => {
+		setValue(name, options[selectedId].user_id);
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	const selectOption = (e, i, value) => {
 		// e.preventDefault();
 		setSelectedId(i);
-		setSelectedOption(options[i]);
+		setSelectedOption(options[i].username);
 		setShowOptions(false);
 		setValue(name, value);
 	};
@@ -92,26 +97,32 @@ const SelectAssignee = ({
 					options
 					close={() => setShowOptions(false)}
 				>
-					<div className="bg-[--card] border border-[--border] rounded-2xl flex flex-col w-full overflow-hidden">
-						{options.map(
-							(option, i) =>
-								option.username && (
-									<button
-										type="button"
-										key={i}
-										className="options-btn group"
-										onClick={(e) => selectOption(e, i, option.user_id)}
+					{options.length > 0 ? (
+						<div className="bg-[--card] border border-[--border] rounded-2xl flex flex-col w-full overflow-hidden">
+							{options.map((option, i) => (
+								<button
+									type="button"
+									key={i}
+									className="options-btn group"
+									onClick={(e) => selectOption(e, i, option.user_id)}
+								>
+									<span
+										style={colors ? { color: colors[i] } : { color: '' }}
+										className="group-hover:scale-110 group-hover:text-[--brand] inline-block transition duration-700"
 									>
-										<span
-											style={colors ? { color: colors[i] } : { color: '' }}
-											className="group-hover:scale-110 group-hover:text-[--brand] inline-block transition duration-700"
-										>
-											{option.username}
-										</span>
-									</button>
-								)
-						)}
-					</div>
+										{option.username}
+									</span>
+								</button>
+							))}
+						</div>
+					) : (
+						<div className="bg-[--card] border border-[--border] rounded-2xl w-full overflow-hidden p-5 md:p7-6 flex flex-col gap-2">
+							<span>There are no Assignees Assigned to this business.</span>
+							<Link href="/admin" className="!inline text-[--brand]">
+								Add Assignees to the business in the Dashboard.
+							</Link>
+						</div>
+					)}
 				</TitlePopupWrapper>
 			)}
 			{error && <p className="text-[--brand] text-xs">{error}*</p>}

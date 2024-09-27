@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { RiEyeLine } from 'react-icons/ri';
@@ -13,164 +13,125 @@ import {
 	SelectInput,
 	DateTimePicker,
 	InputField,
+	AddAction,
+	Loading,
+	LoadingFailed,
 } from '../../components';
+
+// SERVER COMPONENTE
+import { getActionActivities } from '@/actions/getActions';
 
 const actionActivities = [
 	{
 		title: 'Coffee machine broken',
 		createdBy: '',
-		date: '28 may 2024 at 12:00 pm',
+		date: '2024-09-23T22:47:36.000000Z',
 	},
 	{
 		title: 'Coffee machine repairs started',
 		createdBy: '',
-		date: '28 may 2024 at 12:00 pm',
+		date: '2024-09-23T22:47:36.000000Z',
 	},
 ];
 
-const ActionDetails = ({ close, admin }) => {
+const ActionDetails = ({
+	close,
+	admin,
+	userId,
+	businessList,
+	actionsList,
+	setActionsList,
+	activeAction,
+}) => {
 	// TAB VARIABLES
 	const [activeTab, setActiveTab] = useState(0);
 	// COMMENT VARIABLES
 	const [comment, setComment] = useState('');
-	// FORM VARIABLES
-	const [formData, setFormData] = useState({
-		title: '',
-		description: '',
-		priority: '',
-		dueDate: '',
-		assignees: '',
-		business: '',
-		status: '',
-	});
-	const { title, description, priority, dueDate, assignees, business, status } =
-		formData;
+	const [isLoading, setIsLoading] = useState(true); // The loading state of the business Types list
+	const [successfullyLoaded, setSuccessfullyLoaded] = useState(false);
+	const [actionActivitiesList, setActionActivitiesList] = useState();
 
-	// FORM FUNCTIONS
-	const submitForm = () => {
-		console.log(formData);
-	};
+	useEffect(() => {
+		getActionActivities(actionsList[activeAction].action_id).then((data) => {
+			console.log(data?.data?.data);
+			if (data?.response === 1) {
+				setActionActivitiesList(data?.data?.data);
+				setSuccessfullyLoaded(true);
+			}
+			setIsLoading(false);
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
-	return (
-		<div className="h-full w-full py-5 px-4 lg:p-7 space-y-8">
-			<div className="lg:mt-[-10px] mb-[-15px]">
-				<Tabs
-					tabs={['details', 'activities']}
-					active={activeTab}
-					onClick={setActiveTab}
-				/>
-			</div>
-			{activeTab === 0 ? (
-				<div className="space-y-8">
-					<div className="w-full space-y-4">
-						{/* Title */}
-						<InputField
-							label="Title"
-							type="text"
-							placeholder="Add Title"
-							formData={formData}
-							setFormData={setFormData}
-							nameValue="title"
-						/>
-						{/* Description */}
-						<InputField
-							label="Description"
-							type="text"
-							placeholder="Add Description"
-							formData={formData}
-							setFormData={setFormData}
-							nameValue="description"
-						/>
-						{/* Priority */}
-						<SelectInput
-							// icon={icons.details}
-							label="Priority"
-							options={['Low', 'Medium', 'High']}
-							colors={['#177EC1', '#2d2d2b', '#b62e32']}
-							valueName="priority"
-							setFormData={setFormData}
-							formData={formData}
-						/>
-						{/* DueDate */}
-						<DateTimePicker
-							label="Due Date"
-							valueName="dueDate"
-							setFormData={setFormData}
-							formData={formData}
-						/>
-						{/* Assignees */}
-						<SelectInput
-							// icon={icons.details}
-							label="Assignees"
-							placeholder="Choose Assignees"
-							options={['Sigmandom', 'Rhemadom']}
-							valueName="assignees"
-							setFormData={setFormData}
-							formData={formData}
-						/>
-						{admin && (
-							<>
-								{/* Business */}
-								<SelectInput
-									// icon={icons.details}
-									label="Business"
-									placeholder="Choose Business"
-									options={['Sigmandom', 'Rhemadom']}
-									valueName="business"
-									setFormData={setFormData}
-									formData={formData}
-								/>
-								{/* Status */}
-								<SelectInput
-									// icon={icons.details}
-									label="Status"
-									options={['In Progress', 'Completed']}
-									valueName="status"
-									setFormData={setFormData}
-									formData={formData}
-								/>
-							</>
-						)}
-					</div>
-					<div className="w-full">
-						<button
-							type="button"
-							onClick={() => submitForm()}
-							className="btn-1 block"
-						>
-							UPDATE
-						</button>
-					</div>
-
-					<div className="flex flex-col items-center text-center gap-1">
-						<p className="font-medium">Inspection Of</p>
-						<p className="black-text">Business 1 / 28 May, 2024</p>
-						<p className="text-[--brand] font-semibold flex gap-1 items-center pt-2">
-							<RiEyeLine className="text-lg" /> View Report
-						</p>
-					</div>
-				</div>
-			) : (
-				<div className="w-full space-y-4 pt-2">
-					{actionActivities.map((activity, i) => (
-						<ActionActivityCard
-							key={i}
-							title={activity.title}
-							date={activity.date}
-							createdBy={activity.createdBy}
-						/>
-					))}
-					<div className="pb" />
-					{/* ! Text Box */}
-					<CommentTextBox
-						comment={comment}
-						setComment={setComment}
-						send={() => console.log('make comment')}
+	return isLoading ? (
+		<Loading inner />
+	) : successfullyLoaded ? (
+		<>
+			<div className="h-full w-full py-5 px-4 lg:p-7 space-y-8">
+				<div className="lg:mt-[-10px] mb-[-15px]">
+					<Tabs
+						tabs={['details', 'activities']}
+						active={activeTab}
+						onClick={setActiveTab}
 					/>
 				</div>
-			)}
-			<div className="popup-pb" />
-		</div>
+				{activeTab === 0 ? (
+					<div className="space-y-8">
+						<AddAction
+							actionsList={actionsList}
+							setActionsList={setActionsList}
+							businessList={businessList}
+							initialValues={actionsList[activeAction]}
+							edit
+							activeAction={activeAction}
+							admin={admin}
+						/>
+
+						<div className="flex flex-col items-center text-center gap-1">
+							<p className="font-medium">Inspection Of</p>
+							<p className="black-text">
+								{actionsList[activeAction].business_dtl.business_name} /{' '}
+								{new Date(
+									actionsList[activeAction].due_date
+								).toLocaleDateString(undefined, {
+									year: 'numeric',
+									month: 'long',
+									day: 'numeric',
+								})}
+							</p>
+							{/* <p className="text-[--brand] font-semibold flex gap-1 items-center pt-2">
+								<RiEyeLine className="text-lg" /> View Report
+							</p> */}
+						</div>
+					</div>
+				) : (
+					<div className="w-full space-y-4 pt-2">
+						{actionActivitiesList.map((activity, i) => (
+							<ActionActivityCard
+								key={i}
+								title={activity.msg}
+								msg={activity.msg}
+								date={activity.created_at}
+								createdBy={activity.user_dtl.username || 'Admin'}
+								img={activity.media}
+							/>
+						))}
+						{/* <div className="popup-pb" /> */}
+						<div className="h-[75px]" />
+						{/* ! Text Box */}
+						<CommentTextBox
+							actionId={actionsList[activeAction].action_id}
+							actionActivitiesList={actionActivitiesList}
+							setActionActivitiesList={setActionActivitiesList}
+							userId={userId}
+						/>
+					</div>
+				)}
+				<div className="popup-pb" />
+			</div>
+		</>
+	) : (
+		<LoadingFailed />
 	);
 };
 

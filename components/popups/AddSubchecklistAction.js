@@ -23,18 +23,17 @@ import {
 import { SelectOptionsWrapper } from '@/wrappers';
 
 // SERVER COMPONENT
-import { addAction, updateAction } from '@/config/addAction';
+import { addAction } from '@/config/addAction';
 import { AdminActionSchema } from '@/schemas';
 
-const AddAction = ({
+const AddSubchecklistAction = ({
 	close,
+	className,
+	mini,
 	admin,
 	businessList,
 	actionsList,
 	setActionsList,
-	edit,
-	activeAction,
-	initialValues,
 }) => {
 	const { data: session } = useSession();
 	const userId = session?.user?.id;
@@ -44,8 +43,6 @@ const AddAction = ({
 
 	const [showInvitees, setShowInvitees] = useState(false);
 	const [inviteesList, setInviteesList] = useState([]);
-
-	// console.log(initialValues);
 
 	const {
 		watch,
@@ -60,15 +57,13 @@ const AddAction = ({
 	});
 
 	useEffect(() => {
-		const values = getValues();
-		setTimeout(() => {
-			if (values?.business_id?.length > 0) {
-				let assigneeData = businessList.filter(
-					(res) => res.business_id === values.business_id
-				);
-				setInviteesList(assigneeData[0].assignee_dtl);
-			}
-		}, 500);
+		let values = getValues();
+		if (values.business_id.length > 0) {
+			let assigneeData = businessList.filter(
+				(res) => res.business_id === values.business_id
+			);
+			setInviteesList(assigneeData[0].assignee_dtl);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -76,7 +71,7 @@ const AddAction = ({
 	// look for list invitees for that particular business
 	useEffect(() => {
 		const subscription = watch((value, { name, type }) => {
-			if (value?.business_id?.length > 0) {
+			if (value.business_id.length > 0) {
 				let assigneeData = businessList.filter(
 					(res) => res.business_id === value.business_id
 				);
@@ -92,49 +87,28 @@ const AddAction = ({
 
 		setIsPending(true);
 
-		// console.log(actionsList[activeAction].action_id)
+		addAction(values, userId).then((data) => {
+			setIsPending(false);
+			setError(data.error);
+			setSuccess(data.success);
 
-		if (admin) {
-			if (!edit) {
-				addAction(values, userId).then((data) => {
-					setIsPending(false);
-					setError(data.error);
-					setSuccess(data.success);
+			console.log(data?.data?.data);
+			setIsPending(false);
 
-					console.log(data?.data?.data);
-					setIsPending(false);
-
-					if (data.success) {
-						setActionsList([data?.data?.data, ...actionsList]);
-						setTimeout(() => {
-							close();
-						}, 1000);
-					}
-				});
-			} else {
-				updateAction(values, userId, actionsList[activeAction].action_id).then(
-					(data) => {
-						setIsPending(false);
-						setError(data.error);
-						setSuccess(data.success);
-
-						console.log(data?.data);
-						setIsPending(false);
-
-						if (data.success) {
-							let prevActions = [...actionsList];
-							prevActions[activeAction] = data?.data?.data;
-							setActionsList(prevActions);
-						}
-					}
-				);
+			if (data.success) {
+				setActionsList([data?.data?.data, ...actionsList]);
+				setTimeout(() => {
+					close();
+				}, 1000);
 			}
-		}
+		});
 	};
 
 	return (
 		<div
-			className={`h-full w-full space-y-8 ${edit ? '' : 'py-5 px-4 lg:p-7'}`}
+			className={
+				className ? className : 'h-full w-full py-5 px-4 lg:p-7 space-y-8'
+			}
 		>
 			<form
 				onSubmit={handleSubmit((d) => onSubmit(d))}
@@ -147,16 +121,14 @@ const AddAction = ({
 					placeholder="Enter Title"
 					rhf={{ ...register('title') }}
 					error={errors.title?.message}
-					defaultValue={initialValues && initialValues.title}
 				/>
 				{/* Description */}
 				<InputFieldRHF
-					label="Description"
+					label="Descriptiom"
 					type="text"
 					placeholder="Enter Description"
 					rhf={{ ...register('desc') }}
 					error={errors.desc?.message}
-					defaultValue={initialValues && initialValues.desc}
 				/>
 				{/* Priority */}
 				<SelectInputLabelValueRHF
@@ -168,7 +140,6 @@ const AddAction = ({
 					name="priority"
 					rhf={{ ...register('priority') }}
 					error={errors.priority?.message}
-					defaultValue={initialValues && initialValues.priority}
 				/>
 				{/* DueDate */}
 				<DateTimePicker
@@ -177,7 +148,6 @@ const AddAction = ({
 					name="due_date"
 					rhf={{ ...register('due_date') }}
 					error={errors.due_date?.message}
-					defaultValue={initialValues && initialValues.due_date}
 				/>
 
 				{/* Assignees */}
@@ -189,6 +159,7 @@ const AddAction = ({
 					valueName="assignees"
 					setFormData={setFormData}
 					formData={formData}
+					darkBg={mini}
 				/> */}
 				{admin && (
 					<>
@@ -208,7 +179,6 @@ const AddAction = ({
 								name="business_id"
 								rhf={{ ...register('business_id') }}
 								error={errors.business_id?.message}
-								defaultValue={initialValues && initialValues.business_id}
 							/>
 						</SelectOptionsWrapper>
 
@@ -227,7 +197,6 @@ const AddAction = ({
 								name="assignee_id"
 								rhf={{ ...register('assignee_id') }}
 								error={errors.assignee_id?.message}
-								defaultValue={initialValues && initialValues.assignee_id}
 							/>
 						</SelectOptionsWrapper>
 
@@ -241,7 +210,6 @@ const AddAction = ({
 							rhf={{ ...register('to_do_list') }}
 							error={errors.to_do_list?.message}
 							darkBg
-							defaultValue={initialValues && initialValues.message}
 						/>
 					</>
 				)}
@@ -249,17 +217,21 @@ const AddAction = ({
 				{error && <FormError message={error} />}
 				{success && <FormSuccess message={success} />}
 
-				<div className="w-full pt-5">
-					<SubmitButton
-						text={edit ? 'update' : 'create'}
-						submitting={isPending}
-					/>
-				</div>
+				{mini ? (
+					<div className="w-full grid grid-cols-2 gap-4 lg:gap-5">
+						<Button text="close" noBg onClick={close} />
+						<SubmitButton text={'create'} submitting={isPending} />
+					</div>
+				) : (
+					<div className="w-full">
+						<SubmitButton text={'create'} submitting={isPending} />
+					</div>
+				)}
 			</form>
 
-			<div className={edit ? '' : 'popup-pb'} />
+			<div className={mini ? '' : 'popup-pb'} />
 		</div>
 	);
 };
 
-export default AddAction;
+export default AddSubchecklistAction;

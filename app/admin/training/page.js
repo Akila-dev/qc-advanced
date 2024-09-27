@@ -30,13 +30,13 @@ const colors = ['#2d2d2b08', '#2d2d2b08', '#f5edc7'];
 const tags = ['all', 'due soon', 'exceeded due date'];
 
 export default function Training() {
+	const { data: session } = useSession();
+	const userId = session?.user?.id;
 	const [isLoading, setIsLoading] = useState(true); // The loading state of the training list
 	const [successfullyLoaded, setSuccessfullyLoaded] = useState(false);
 	const [trainingMaterialsList, setTrainingMaterialsList] = useState(); // For storing the training materials list information that would be placed on the dashboard
 	const [businessList, setBusinessList] = useState();
 	const [overview, setOverview] = useState([]); // Overview data
-	const { data: session } = useSession();
-	const userId = session?.user?.id;
 	const [pendingDelete, setPendingDelete] = useState(false);
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState('');
@@ -125,7 +125,7 @@ export default function Training() {
 	};
 
 	return isLoading ? (
-		<Loading />
+		<Loading notFull />
 	) : successfullyLoaded ? (
 		<>
 			<div className="md:p-10 h-screen overflow-auto scroll-2">

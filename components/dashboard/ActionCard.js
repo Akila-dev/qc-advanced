@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { MdArrowOutward } from 'react-icons/md';
 
@@ -13,7 +15,61 @@ const ActionCard = ({
 	admin,
 	businessName,
 	businessId,
+	due_date,
 }) => {
+	const [remainder, setRemainder] = useState('');
+	useEffect(() => {
+		let due = new Date(due_date);
+		let now = new Date();
+		// let min_diff = due.getUTCMinutes() - now.getUTCMinutes();
+		// let hour_diff = due.getUTCHours() - now.getUTCHours();
+		// let day_diff = due.getDate() - now.getDate();
+		// let month_diff = due.getMonth() - now.getMonth();
+
+		// if (month_diff > 0) {
+		// 	setRemainder(month_diff + ' month(s) left');
+		// } else if (day_diff > 0) {
+		// 	setRemainder(day_diff + ' day(s) left');
+		// } else if (hour_diff > 0) {
+		// 	setRemainder(hour_diff + ' hour(s) left');
+		// } else if (min_diff > 0) {
+		// 	setRemainder(min_diff + ' minute(s) left');
+		// } else if (month_diff < 0) {
+		// 	setRemainder('exceeded ' + month_diff + ' month(s)');
+		// } else if (day_diff < 0) {
+		// 	setRemainder('exceeded ' + day_diff + ' day(s)');
+		// } else if (hour_diff < 0) {
+		// 	setRemainder('exceeded ' + hour_diff + ' hour(s)');
+		// } else if (min_diff < 0) {
+		// 	setRemainder('exceeded ' + min_diff + ' minute(s)');
+		// } else {
+		// 	setRemainder('now');
+		// }
+
+		let diff = due.valueOf() - now.valueOf();
+		// of two dates
+		let diff_time = due.getTime() - now.getTime();
+		let diff_mins = Math.round(diff_time / (1000 * 60));
+		let diff_hours = Math.round(diff_time / (1000 * 3600));
+		let diff_days = Math.round(diff_time / (1000 * 3600 * 24));
+		let diff_months = Math.round(diff_time / (1000 * 3600 * 24 * 30));
+
+		if (diff_months > 0) {
+			setRemainder(diff_months + ' month(s) left');
+		} else if (diff_days > 0) {
+			setRemainder(diff_days + ' day(s) left');
+		} else if (diff_hours > 0) {
+			setRemainder(diff_hours + ' hour(s) left');
+		} else if (diff_mins > 0) {
+			setRemainder(diff_mins + ' minute(s) left');
+		} else {
+			setRemainder('exceeded due date');
+		}
+
+		console.log(diff_days);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	return (
 		<button
 			onClick={onClick}
@@ -25,7 +81,13 @@ const ActionCard = ({
 					<span className="truncate">{businessName}</span>
 				)}
 			</h3>
-			<p>{time}</p>
+			<p
+				className={
+					remainder === 'exceeded due date' ? 'text-[--brand]' : 'text-[--text]'
+				}
+			>
+				{remainder}
+			</p>
 			<div className="flex justify-between w-full">
 				<p className="w-full truncate flex-1">Assigned to {assignee}</p>
 				<span className="bg-[--tag] text-[--text] px-3 py-[6px] rounded-md mt-[-5px] text-xs lg:text-sm">

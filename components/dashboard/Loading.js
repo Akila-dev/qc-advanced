@@ -12,7 +12,7 @@ const Loading = ({ inner, notFull }) => {
 				inner
 					? 'h-full bg-[--white]'
 					: notFull
-					? 'h-screen bg-[--card]'
+					? 'h-screen bg-[--card] fixed top-0 left-0 w-full !z-[100000] lg:relative'
 					: 'h-screen bg-[--card] fixed top-0 left-0 w-full !z-[100000]'
 			} w-full  text-[--black] flex-center`}
 		>
