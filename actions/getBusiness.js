@@ -43,7 +43,6 @@ export const getBusinessList = async () => {
 
 		if (res.ok && businesses && overview_res && overview) {
 			return { data: businesses, overview: overview };
-			// console.log(materials);
 		}
 	} catch (error) {
 		return { errorMsg: "Couldn't Find Businesses" };

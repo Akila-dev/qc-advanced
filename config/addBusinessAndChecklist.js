@@ -114,3 +114,47 @@ export const addChecklist = async (formValues, userId, businessId) => {
 		return { error: "Couldn't Upload Checklist" };
 	}
 };
+
+export const archiveToggleChecklist = async (userId, checklistId, type) => {
+	if (!userId || !checklistId) {
+		return { error: 'Network Error, Reload Page' };
+	}
+
+	const formData = new FormData();
+
+	formData.append('user_id', userId);
+	formData.append('business_checklist_id', checklistId);
+	formData.append('type', type);
+
+	try {
+		const { data } = await axios.post(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/archiveUnarchiveChecklist`,
+			formData,
+			{
+				headers: {
+					'Content-Type': 'multipart/form-data',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
+			}
+		);
+
+		if (data) {
+			if (data.ResponseCode === 1) {
+				// console.log(data);
+				return {
+					success: data.ResponseMsg,
+					data: data,
+				};
+			} else {
+				return {
+					error: data.ResponseMsg,
+				};
+			}
+		}
+	} catch (error) {
+		// console.log(error);
+		return { error: "Couldn't Upload Checklist" };
+	}
+};

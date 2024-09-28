@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -11,21 +12,21 @@ import {
 	MiniAddAction,
 	MiniAddMedia,
 	MiniAddNote,
-	SelectChecklist,
-	AddInvitee,
+	Empty,
 } from '../../components';
 import { SidePopupWrapper, TitlePopupWrapper } from '../../wrappers';
 import { inspectionData } from '../../dummyData/inspectionData';
 
-import { SideNavIcons } from '../../components/svgs';
-
-const invitedUsers = [
-	{
-		img: images.profile,
-	},
-];
-
-export default function InspectionsArchive({ close, title }) {
+export default function InspectionsArchive({
+	userId,
+	close,
+	title,
+	sidebar,
+	archiveList,
+	setArchiveList,
+	inspectionData,
+	setInspectionData,
+}) {
 	const [activeInspection, setActiveInspection] = useState(0);
 	const [toggleInspectionDetails, setToggleInspectionDetails] = useState(false);
 	const [searchInput, setSearchInput] = useState('');
@@ -57,7 +58,7 @@ export default function InspectionsArchive({ close, title }) {
 	};
 	return (
 		<>
-			<SidePopupWrapper title="Archive" close={close}>
+			<SidePopupWrapper title="Archive" close={close} noBg>
 				{/* DASHBOARD CONTENT */}
 				<div className="w-full px-4 py-5 md:p-5 grid grid-cols-1 gap-3">
 					<div className="icon-input !rounded-[2rem] !gap-2 mb-2">
@@ -76,20 +77,34 @@ export default function InspectionsArchive({ close, title }) {
 							className="input"
 						/>
 					</div>
-					{inspectionData
-						.filter((inspection) => inspection.title.includes(searchInput))
-						.map((inspection, i) => (
-							<InspectionCard
-								key={i}
-								title={inspection.title}
-								percentage={0}
-								completed={0}
-								total={2}
-								toggled={activeInspection === i}
-								onClick={() => showInspectionDetails(i)}
-								sidebar
-							/>
-						))}
+					{archiveList && archiveList.length > 0 ? (
+						archiveList
+							.filter((inspection) => inspection.name.includes(searchInput))
+							.map((inspection, i) => (
+								<InspectionCard
+									key={i}
+									inspectionContent={inspection}
+									title={inspection.name}
+									percentage={inspection.percentage}
+									completed={inspection.ans_yes_count}
+									total={inspection.ans_yes_no_count}
+									toggled={activeInspection === i}
+									onClick={() => showInspectionDetails(i)}
+									sidebar={sidebar}
+									userId={userId}
+									business_checklist_id={inspection.business_checklist_id}
+									archiveList={archiveList}
+									setArchiveList={setArchiveList}
+									inspectionData={inspectionData}
+									setInspectionData={setInspectionData}
+									archived
+								/>
+							))
+					) : (
+						<div className="w-full h-full min-h-[50vh]">
+							<Empty text="No Archived Checklist" />
+						</div>
+					)}
 				</div>
 			</SidePopupWrapper>
 			{showAddNote && (

@@ -66,7 +66,6 @@ export default function Dashboard() {
 	const [businessId, setBusinessId] = useState(); // For Storing The business id that would be gotten after a business is added and would be used by the checklist section
 	const { data: session } = useSession();
 	const userId = session?.user?.id;
-	const isSubscribed = session?.user?.subscribed;
 	const [pendingDelete, setPendingDelete] = useState(false);
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState('');
@@ -81,14 +80,15 @@ export default function Dashboard() {
 	const [showSelectChecklist, setShowSelectChecklist] = useState(false);
 	const [showInspectionsList, setShowInspectionsList] = useState(false);
 	const [activeBusiness, setActiveBusiness] = useState(0);
-	const [showPurchase, setShowPurchase] = useState(!isSubscribed);
+	const [showPurchase, setShowPurchase] = useState(true);
 	const [showOptions, setShowOptions] = useState(false);
 	const [activeBusinessName, setActiveBusinessName] = useState('');
 	const [isDeleting, setIsDeleting] = useState(false);
 
 	useEffect(() => {
 		getBusinessList(userId).then((data) => {
-			console.log(data?.data);
+			// console.log(data?.data);
+			// console.log(data?.overview);
 			setBusinessList(data?.data?.data);
 			setOverview([
 				data?.overview?.data?.no_of_business,
@@ -98,6 +98,9 @@ export default function Dashboard() {
 			setIsLoading(false);
 			if (data?.data?.ResponseCode === 1) {
 				setSuccessfullyLoaded(true);
+			}
+			if (String(data?.overview?.data?.is_subscription) === '1') {
+				setShowPurchase(false);
 			}
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps

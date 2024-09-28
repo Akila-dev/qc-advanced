@@ -27,12 +27,29 @@ export const getListOfChecklist = async (business_id, type) => {
 				}),
 			}
 		);
+		const res_2 = await fetch(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/getArchiveList`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
+				body: JSON.stringify({
+					user_id: user_id,
+				}),
+			}
+		);
 
 		const checklist = await res.json();
+		const archive = await res_2.json();
 
 		if (res.ok && checklist.ResponseCode === 1) {
 			return {
-				data: checklist,
+				checklist: checklist,
+				archive: archive,
 				success: checklist.ResponseMsg,
 				response: checklist.ResponseCode,
 			};
