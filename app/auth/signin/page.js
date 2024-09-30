@@ -55,6 +55,7 @@ export default function LogIn() {
 
 		console.log(values);
 		console.log(selectedOption);
+		console.log('OK');
 
 		setIsPending(true);
 		// signIn('credentials', { redirectTo: `/${selectedOption}` });
@@ -64,6 +65,7 @@ export default function LogIn() {
 			callbackUrl: callback,
 		}).then(({ ok, error }) => {
 			if (ok) {
+				setIsPending(false);
 				setSuccess('Logged In Successfully!');
 				setTimeout(() => {
 					if (callback === '/') {

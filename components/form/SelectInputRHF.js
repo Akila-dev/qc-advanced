@@ -53,7 +53,7 @@ const SelectInputRHF = ({
 			<input
 				id={label}
 				{...rhf}
-				defaultValue={businessList ? selectedOption.business_id : 0}
+				defaultValue={businessList ? selectedOption.business_id : options[0]}
 				className="hidden"
 			/>
 

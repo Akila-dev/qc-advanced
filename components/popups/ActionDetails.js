@@ -21,18 +21,18 @@ import {
 // SERVER COMPONENTE
 import { getActionActivities } from '@/actions/getActions';
 
-const actionActivities = [
-	{
-		title: 'Coffee machine broken',
-		createdBy: '',
-		date: '2024-09-23T22:47:36.000000Z',
-	},
-	{
-		title: 'Coffee machine repairs started',
-		createdBy: '',
-		date: '2024-09-23T22:47:36.000000Z',
-	},
-];
+// const actionActivities = [
+// 	{
+// 		title: 'Coffee machine broken',
+// 		createdBy: '',
+// 		date: '2024-09-23T22:47:36.000000Z',
+// 	},
+// 	{
+// 		title: 'Coffee machine repairs started',
+// 		createdBy: '',
+// 		date: '2024-09-23T22:47:36.000000Z',
+// 	},
+// ];
 
 const ActionDetails = ({
 	close,
@@ -40,6 +40,7 @@ const ActionDetails = ({
 	userId,
 	businessList,
 	actionsList,
+	assigneeList,
 	setActionsList,
 	activeAction,
 }) => {
@@ -85,6 +86,7 @@ const ActionDetails = ({
 							edit
 							activeAction={activeAction}
 							admin={admin}
+							assigneeList={assigneeList}
 						/>
 
 						<div className="flex flex-col items-center text-center gap-1">

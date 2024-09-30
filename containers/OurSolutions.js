@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { solutionsData } from '../dummyData/landingPageData';
+import { solutionsData } from '../textData/landingPageData';
 import { landingImages } from '../constants';
 import { SectionBlock, SoultionsCard } from '../components';
 

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useScroll, motion } from 'framer-motion';
 
 import { SectionBlock, WavyLine } from '../components';
-import { qcSteps } from '../dummyData/landingPageData';
+import { qcSteps } from '../textData/landingPageData';
 import { landingImages } from '../constants';
 import { slideInBottom, popIn } from '../constants/variants';
 

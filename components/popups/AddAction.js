@@ -23,8 +23,13 @@ import {
 import { SelectOptionsWrapper } from '@/wrappers';
 
 // SERVER COMPONENT
-import { addAction, updateAction } from '@/config/addAction';
-import { AdminActionSchema } from '@/schemas';
+import {
+	addAction,
+	addActionUser,
+	updateAction,
+	updateActionUser,
+} from '@/config/addAction';
+import { AdminActionSchema, UserActionSchema } from '@/schemas';
 
 const AddAction = ({
 	close,
@@ -32,6 +37,7 @@ const AddAction = ({
 	businessList,
 	actionsList,
 	setActionsList,
+	assigneeList,
 	edit,
 	activeAction,
 	initialValues,
@@ -56,34 +62,41 @@ const AddAction = ({
 		formState: { errors },
 		control,
 	} = useForm({
-		resolver: zodResolver(AdminActionSchema),
+		resolver: admin
+			? zodResolver(AdminActionSchema)
+			: zodResolver(UserActionSchema),
 	});
 
 	useEffect(() => {
-		const values = getValues();
-		setTimeout(() => {
-			if (values?.business_id?.length > 0) {
-				let assigneeData = businessList.filter(
-					(res) => res.business_id === values.business_id
-				);
-				setInviteesList(assigneeData[0].assignee_dtl);
-			}
-		}, 500);
+		if (admin) {
+			const values = getValues();
+			setTimeout(() => {
+				if (values?.business_id?.length > 0) {
+					let assigneeData = businessList.filter(
+						(res) => res.business_id === values.business_id
+					);
+					setInviteesList(assigneeData[0].assignee_dtl);
+				}
+			}, 500);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	// show invitees tab only when a business has been selected
 	// look for list invitees for that particular business
 	useEffect(() => {
-		const subscription = watch((value, { name, type }) => {
-			if (value?.business_id?.length > 0) {
-				let assigneeData = businessList.filter(
-					(res) => res.business_id === value.business_id
-				);
-				setInviteesList(assigneeData[0].assignee_dtl);
-			}
-		});
-		return () => subscription.unsubscribe();
+		if (admin) {
+			const subscription = watch((value, { name, type }) => {
+				if (value?.business_id?.length > 0) {
+					let assigneeData = businessList.filter(
+						(res) => res.business_id === value.business_id
+					);
+					setInviteesList(assigneeData[0].assignee_dtl);
+				}
+			});
+			return () => subscription.unsubscribe();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [businessList, watch]);
 
 	const onSubmit = (values) => {
@@ -128,6 +141,43 @@ const AddAction = ({
 						}
 					}
 				);
+			}
+		} else {
+			if (!edit) {
+				addActionUser(values, userId).then((data) => {
+					setIsPending(false);
+					setError(data.error);
+					setSuccess(data.success);
+
+					console.log(data?.data?.data);
+					setIsPending(false);
+
+					if (data.success) {
+						setActionsList([data?.data?.data, ...actionsList]);
+						setTimeout(() => {
+							close();
+						}, 1000);
+					}
+				});
+			} else {
+				updateActionUser(
+					values,
+					userId,
+					actionsList[activeAction].action_id
+				).then((data) => {
+					setIsPending(false);
+					setError(data.error);
+					setSuccess(data.success);
+
+					console.log(data?.data);
+					setIsPending(false);
+
+					if (data.success) {
+						let prevActions = [...actionsList];
+						prevActions[activeAction] = data?.data?.data;
+						setActionsList(prevActions);
+					}
+				});
 			}
 		}
 	};
@@ -181,15 +231,26 @@ const AddAction = ({
 				/>
 
 				{/* Assignees */}
-				{/* <SelectInput
-					// icon={icons.details}
-					label="Assignees"
-					placeholder="Choose Assignees"
-					options={['Sigmandom', 'Rhemadom']}
-					valueName="assignees"
-					setFormData={setFormData}
-					formData={formData}
-				/> */}
+				{!admin && (
+					<SelectOptionsWrapper
+						list={assigneeList}
+						label="Assignees"
+						setValue={setValue}
+						name="assignee_id"
+						error={errors.assignee_id?.message}
+					>
+						<SelectAssignee
+							label="Assignees"
+							options={assigneeList}
+							setValue={setValue}
+							name="assignee_id"
+							rhf={{ ...register('assignee_id') }}
+							error={errors.assignee_id?.message}
+							defaultValue={initialValues && initialValues.assignee_id}
+						/>
+					</SelectOptionsWrapper>
+				)}
+
 				{admin && (
 					<>
 						{/* Business */}
@@ -230,21 +291,21 @@ const AddAction = ({
 								defaultValue={initialValues && initialValues.assignee_id}
 							/>
 						</SelectOptionsWrapper>
-
-						{/* Status */}
-						<SelectInputLabelValueRHF
-							label="Status"
-							options={['In Progress', 'Complete', "Can't Do"]}
-							valueList={['in_progress', 'complete', 'cant_do']}
-							setValue={setValue}
-							name="to_do_list"
-							rhf={{ ...register('to_do_list') }}
-							error={errors.to_do_list?.message}
-							darkBg
-							defaultValue={initialValues && initialValues.message}
-						/>
 					</>
 				)}
+
+				{/* Status */}
+				<SelectInputLabelValueRHF
+					label="Status"
+					options={['In Progress', 'Complete', "Can't Do"]}
+					valueList={['in_progress', 'complete', 'cant_do']}
+					setValue={setValue}
+					name="to_do_list"
+					rhf={{ ...register('to_do_list') }}
+					error={errors.to_do_list?.message}
+					darkBg
+					defaultValue={initialValues && initialValues.message}
+				/>
 
 				{error && <FormError message={error} />}
 				{success && <FormSuccess message={success} />}

@@ -14,7 +14,7 @@ import {
 	FormError,
 	FormSuccess,
 } from '../../components';
-import { checklistData } from '../../dummyData/checkListData';
+import { checklistData } from '../../textData/checkListData';
 
 // SERVER COMPONENT
 import { addChecklist } from '@/config/addBusinessAndChecklist';

@@ -168,6 +168,15 @@ export const AdminActionSchema = z.object({
 	to_do_list: z.string().min(1, { message: 'Required*' }),
 });
 
+export const UserActionSchema = z.object({
+	title: z.string().min(1, { message: 'Enter Title' }),
+	desc: z.string().min(1, { message: 'Enter Description' }),
+	priority: z.string().min(1, { message: 'Select Priority*' }),
+	due_date: z.string().min(1, { message: 'Pick a Date*' }),
+	assignee_id: z.string().min(1, { message: 'Choose Assignee*' }),
+	to_do_list: z.string().min(1, { message: 'Required*' }),
+});
+
 export const AddActionCommentSchema = z.object({
 	msg: z.string().min(1, { message: 'Required*' }),
 	media:

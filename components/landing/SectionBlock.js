@@ -20,22 +20,9 @@ const SectionBlock = ({
 	text,
 	buttons,
 	wrapperClasses,
+	makeWhite,
 	// scrollYProgress,
 }) => {
-	// const min = 10;
-	// const parallax4 = useTransform(scrollYProgress, [0.5, 1], [0, min], {
-	// 	ease: circOut,
-	// });
-	// const parallax3 = useTransform(scrollYProgress, [0.5, 1], [0, min * 1.5], {
-	// 	ease: circOut,
-	// });
-	// const parallax2 = useTransform(scrollYProgress, [0.5, 1], [0, min * 2], {
-	// 	ease: circOut,
-	// });
-	// const parallax1 = useTransform(scrollYProgress, [0.5, 1], [0, min * 2], {
-	// 	ease: circOut,
-	// });
-
 	return (
 		<motion.div
 			initial="initial"
@@ -54,14 +41,14 @@ const SectionBlock = ({
 			<motion.h1
 				// style={{ translateY: parallax3 }}
 				variants={slideInBottom2}
-				className="text-[--black] h1"
+				className={`${makeWhite ? 'h1 !text-[--white]' : 'h1 text-[--black]'}`}
 			>
 				{heading}
 			</motion.h1>
 			<motion.p
 				// style={{ translateY: parallax2 }}
 				variants={slideInBottom2}
-				className="py-2"
+				className={`py-2 ${makeWhite && 'text-[--white]'}`}
 			>
 				{text}
 			</motion.p>

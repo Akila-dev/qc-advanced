@@ -93,7 +93,7 @@ export const getActionActivities = async (action_id) => {
 		);
 
 		const activities = await res.json();
-		console.log(activities);
+		// console.log(activities);
 
 		if (res.ok && activities.ResponseCode === 1) {
 			return {
@@ -133,7 +133,7 @@ export const deleteAction = async (action_id) => {
 		);
 
 		const deleted = await res.json();
-		console.log(deleted);
+		// console.log(deleted);
 
 		if (res.ok && deleted.ResponseCode === 1) {
 			return {
@@ -143,6 +143,83 @@ export const deleteAction = async (action_id) => {
 		} else {
 			return {
 				error: deleted.ResponseMsg,
+			};
+		}
+	} catch (error) {
+		return { errorMsg: "Couldn't Access Database" };
+	}
+};
+
+// !USER
+// !USER
+// !USER
+// !USER
+// !USER
+export const getActionsUser = async () => {
+	const session = await getServerSession(options);
+	const user_id = session?.user?.id;
+
+	try {
+		const res = await fetch(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/getActionList`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
+				body: JSON.stringify({ user_id: session?.user?.id }),
+			}
+		);
+
+		const ba_res = await fetch(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/businessWiseAssignee`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
+				body: JSON.stringify({ user_id: session?.user?.id }),
+			}
+		);
+
+		const overview_res = await fetch(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/getUserExtraDtl`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
+				body: JSON.stringify({ user_id: session?.user?.id }),
+			}
+		);
+
+		const actions = await res.json();
+		const businessAssignees = await ba_res.json();
+		const overview = await overview_res.json();
+
+		// console.log(businessAssignees);
+
+		if (
+			res.ok &&
+			ba_res.ok &&
+			overview_res.ok &&
+			actions &&
+			businessAssignees &&
+			overview
+		) {
+			return {
+				data: actions,
+				overview: overview,
+				assignees: businessAssignees,
 			};
 		}
 	} catch (error) {

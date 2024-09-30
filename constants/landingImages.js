@@ -19,11 +19,13 @@ import linePoint from '../assets/imgs/landing/line-point.png';
 import line from '../assets/imgs/landing/line.svg';
 import line1 from '../assets/imgs/landing/line1.png';
 import logo from '../assets/imgs/landing/logo.png';
+import mail from '../assets/imgs/landing/mail.png';
 import medal from '../assets/imgs/landing/medal.png';
 import mic from '../assets/imgs/landing/mic.png';
 import no1 from '../assets/imgs/landing/no1.png';
 import no2 from '../assets/imgs/landing/no2.png';
 import no3 from '../assets/imgs/landing/no3.png';
+import phone from '../assets/imgs/landing/phone.png';
 import phone1 from '../assets/imgs/landing/phone1.png';
 import phone2 from '../assets/imgs/landing/phone2.png';
 import quote from '../assets/imgs/landing/quote.png';
@@ -33,6 +35,7 @@ import solutionsBg from '../assets/imgs/landing/solutions-bg.png';
 import star from '../assets/imgs/landing/star.svg';
 import starRed from '../assets/imgs/landing/starRed.svg';
 import starGrey from '../assets/imgs/landing/starGrey.svg';
+import support from '../assets/imgs/landing/support.png';
 import testimonialBg from '../assets/imgs/landing/testimonial-bg.png';
 import cardCta from '../assets/imgs/landing/cardCta.png';
 
@@ -57,11 +60,13 @@ export default {
 	line,
 	line1,
 	logo,
+	mail,
 	medal,
 	mic,
 	no1,
 	no2,
 	no3,
+	phone,
 	phone1,
 	phone2,
 	quote,
@@ -71,6 +76,7 @@ export default {
 	star,
 	starGrey,
 	starRed,
+	support,
 	testimonialBg,
 	cardCta,
 };

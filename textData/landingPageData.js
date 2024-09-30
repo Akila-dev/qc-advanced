@@ -37,3 +37,24 @@ export const solutionsData = [
 		desc: "QC Advanced is not just about maintaining standards; it's about continuously improving them. Our adaptive checklists evolve with your business, ensuring you always stay ahead of the curve.",
 	},
 ];
+
+export const contactData = [
+	{
+		icon: landingImages.phone,
+		text: '+ 1800 145 276',
+		link: '/',
+		desc: '8:00am-8:00pm',
+	},
+	{
+		icon: landingImages.support,
+		text: 'support@gmail.com',
+		link: '/',
+		desc: '8:00am-8:00pm',
+	},
+	{
+		icon: landingImages.mail,
+		text: 'qc_advanced@gmail.com',
+		link: '/',
+		desc: '8:00am-8:00pm',
+	},
+];

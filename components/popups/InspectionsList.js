@@ -20,7 +20,7 @@ import {
 	Empty,
 } from '../../components';
 import { SidePopupWrapper, TitlePopupWrapper } from '../../wrappers';
-// import { inspectionData } from '../../dummyData/inspectionData';
+// import { inspectionData } from '../../textData/inspectionData';
 
 import { SideNavIcons } from '../../components/svgs';
 

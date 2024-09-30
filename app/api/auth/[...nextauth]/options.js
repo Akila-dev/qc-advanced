@@ -28,7 +28,10 @@ export const options = {
 			async authorize(credentials, req) {
 				try {
 					// const { email, password, user_type } = credentials;
-					credentials.password = md5(credentials.password);
+
+					if (credentials.user_type === 'admin') {
+						credentials.password = md5(credentials.password);
+					}
 
 					const res = await fetch(
 						`${process.env.NEXT_PUBLIC_BASE_URL}/api/login`,
@@ -42,21 +45,26 @@ export const options = {
 							body: JSON.stringify(credentials),
 						}
 					);
-					// console.log(JSON.stringify(credentials));
+
 					const user = await res.json();
+					// console.log(credentials);
 
 					if (res.ok && user) {
 						if (user?.ResponseCode === 1) {
 							let userRole = '';
+							let name = '';
 							let subscribedUser = false;
 
 							console.log(user);
 							if (user?.data?.user_type === 'admin') {
 								userRole = 'admin';
-							} else if (user?.data?.user_type === 'admin') {
+								name = user?.data?.fname + ' ' + user?.data?.lname;
+							} else if (user?.data?.user_type === 'user') {
 								userRole = 'user';
+								name = user?.data?.username;
 							} else {
 								userRole = 'user';
+								name = user?.data?.username;
 							}
 
 							// if (user?.data?.is_subscription === '1') {
@@ -69,7 +77,7 @@ export const options = {
 								...user,
 								id: user?.data?.user_id,
 								email: user?.data?.email,
-								name: user?.data?.fname + ' ' + user?.data?.lname,
+								name: name,
 								image: user?.data?.profile,
 								role: userRole,
 								// subscribed: subscribedUser,

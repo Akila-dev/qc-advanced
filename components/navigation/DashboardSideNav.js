@@ -81,20 +81,17 @@ const DashboardSideNav = ({ type }) => {
 									/>
 								</button>
 							) : (
-								<button className={`w-[45px] min-w-[45px]`}>
-									<Image
-										// src={session?.user?.image}
-										src={images.business1}
-										width={50}
-										height={50}
-										alt="log out"
-										className="w-[45px] h-[45px] rounded-full object-cover object-top"
-									/>
+								<button
+									className={`w-[45px] min-w-[45px] h-[45px] rounded-full bg-[--brand] flex-center`}
+								>
+									<h2 className="text-[--white] uppercase">
+										{session?.user?.name.substr(0, 2)}
+									</h2>
 								</button>
 							)}
 							<div className="w-full">
 								<h3 className="text-base truncate w-[150px]">
-									{type === 'admin' ? session?.user?.name : 'Business 1'}
+									{session?.user?.name || 'Not Named'}
 								</h3>
 								<p className="text-sm truncate w-[150px]">
 									{session?.user?.email}

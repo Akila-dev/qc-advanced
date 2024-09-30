@@ -21,30 +21,6 @@ const ActionCard = ({
 	useEffect(() => {
 		let due = new Date(due_date);
 		let now = new Date();
-		// let min_diff = due.getUTCMinutes() - now.getUTCMinutes();
-		// let hour_diff = due.getUTCHours() - now.getUTCHours();
-		// let day_diff = due.getDate() - now.getDate();
-		// let month_diff = due.getMonth() - now.getMonth();
-
-		// if (month_diff > 0) {
-		// 	setRemainder(month_diff + ' month(s) left');
-		// } else if (day_diff > 0) {
-		// 	setRemainder(day_diff + ' day(s) left');
-		// } else if (hour_diff > 0) {
-		// 	setRemainder(hour_diff + ' hour(s) left');
-		// } else if (min_diff > 0) {
-		// 	setRemainder(min_diff + ' minute(s) left');
-		// } else if (month_diff < 0) {
-		// 	setRemainder('exceeded ' + month_diff + ' month(s)');
-		// } else if (day_diff < 0) {
-		// 	setRemainder('exceeded ' + day_diff + ' day(s)');
-		// } else if (hour_diff < 0) {
-		// 	setRemainder('exceeded ' + hour_diff + ' hour(s)');
-		// } else if (min_diff < 0) {
-		// 	setRemainder('exceeded ' + min_diff + ' minute(s)');
-		// } else {
-		// 	setRemainder('now');
-		// }
 
 		let diff = due.valueOf() - now.valueOf();
 		// of two dates
@@ -76,9 +52,9 @@ const ActionCard = ({
 			className="w-full p-4 lg:p-5 bg-[--card] border-[--card-border] rounded-lg text-left space-y-[0.3rem] lg:space-y-2 hover:shadow-md "
 		>
 			<h3 className="flex gap-2 w-full truncate">
-				<span className="truncate">{title}</span> |{' '}
+				<span className="truncate">{title}</span>{' '}
 				{admin && businessName && (
-					<span className="truncate">{businessName}</span>
+					<span className="truncate">| {businessName}</span>
 				)}
 			</h3>
 			<p

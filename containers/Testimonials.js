@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 import { SectionBlock, AppCTA } from '@/components';
-import { testimonials } from '@/dummyData/testimonialsData';
+import { testimonials } from '@/textData/testimonialsData';
 import { landingImages } from '@/constants';
 
 const Testimonials = () => {

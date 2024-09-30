@@ -178,11 +178,11 @@ const DragDropFile = ({
 							<Image
 								src={icons.noteList}
 								alt="Training images"
-								width={200}
-								height={200}
+								width={300}
+								height={300}
 								className={`w-full h-[40px] object-contain rounded-xl`}
 							/>
-							<p className="text-center px-4">
+							<p className="text-center px-3 !text-xs">
 								{fileName
 									? fileName.length > 5
 										? fileName.slice(0, 5) + '...'
