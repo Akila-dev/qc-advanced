@@ -55,7 +55,7 @@ export const options = {
 							let name = '';
 							let subscribedUser = false;
 
-							console.log(user);
+							// console.log(user);
 							if (user?.data?.user_type === 'admin') {
 								userRole = 'admin';
 								name = user?.data?.fname + ' ' + user?.data?.lname;

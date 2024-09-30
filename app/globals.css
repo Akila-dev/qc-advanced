@@ -26,6 +26,7 @@
 	--brand-50: #b62e322c;
 
 	--card: #f8f8f8;
+	--card-50: #f8f8f81d;
 	--card-border: 1px solid #f0f0f0;
 	--border: #f0f0f0;
 
@@ -149,6 +150,9 @@ input[type='number'] {
 .textarea {
 	@apply !bg-transparent !min-h-[120px] !p-0 !outline-none;
 }
+/* .textarea-2 {
+	@apply !bg-transparent !min-h-[120px] !p-0 !outline-none;
+} */
 
 .options-btn {
 	@apply p-4 !border !border-[--border] flex-1;
@@ -170,6 +174,11 @@ label {
 .icon-input {
 	@apply flex gap-3 p-3 bg-[--highlight-bg-2] border-[--highlight-bg-2] rounded-lg shadow-[--shadow] text-[3.9vw] md:text-sm;
 }
+
+.icon-input-2 {
+	@apply flex gap-3 p-3 bg-[--card-50] border-[--highlight-bg-2] rounded-lg shadow-[--shadow] text-[3.9vw] md:text-sm;
+}
+
 .input-img {
 	@apply w-[20px] min-w-[20px] max-w-[20px] h-auto object-contain;
 }
@@ -177,6 +186,10 @@ label {
 input,
 .input {
 	@apply w-full bg-transparent outline-none border-none text-[3.9vw] md:text-sm;
+}
+
+.footer-link {
+	@apply hover:text-[--brand] hover:scale-105 transition duration-500;
 }
 
 /* ! NAVIGATION */

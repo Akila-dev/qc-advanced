@@ -25,7 +25,7 @@ export default function Home() {
 				<WhyChooseUs />
 				<Testimonials />
 				{/* <Blogs /> */}
-				{/* <Contact /> */}
+				<Contact />
 			</main>
 		</SmoothScroll>
 	);

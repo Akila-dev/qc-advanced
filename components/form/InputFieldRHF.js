@@ -12,6 +12,7 @@ const InputFieldRHF = ({
 	rhf,
 	error,
 	defaultValue,
+	landing,
 }) => {
 	return (
 		<div
@@ -21,13 +22,27 @@ const InputFieldRHF = ({
 		>
 			<div className={`input-block `}>
 				<div className="flex">
-					<label className={error ? 'text-[--brand]' : ''}>{label}</label>
+					<label
+						className={
+							!landing && error
+								? 'text-[--brand]'
+								: landing
+								? 'text-[--white]'
+								: ''
+						}
+					>
+						{label}
+					</label>
 					{/* {error && (
 						<p className="text-[--brand] inline pl-2 text-xs">{error}*</p>
 					)} */}
 				</div>
 				{type === 'textarea' ? (
-					<div className="icon-input !items-start">
+					<div
+						className={` ${
+							landing ? 'icon-input-2' : 'icon-input'
+						} !items-start`}
+					>
 						{icon && (
 							<Image
 								src={icon}
@@ -41,13 +56,15 @@ const InputFieldRHF = ({
 							defaultValue={defaultValue ? defaultValue : ''}
 							placeholder={placeholder}
 							{...rhf}
-							className="textarea"
+							className={`textarea ${
+								landing ? '!text-[--white] placeholder:!text-white/50' : ''
+							}`}
 						/>
 					</div>
 				) : (
 					<div
-						className={`icon-input  ${
-							error
+						className={`${landing ? 'icon-input-2' : 'icon-input'}  ${
+							!landing && error
 								? 'rin ring-[--outline] !borde !border-[--white] !bg-[--border]'
 								: ''
 						} `}
@@ -66,7 +83,9 @@ const InputFieldRHF = ({
 							placeholder={placeholder}
 							defaultValue={defaultValue ? defaultValue : ''}
 							{...rhf}
-							className="input"
+							className={`input ${
+								landing ? '!text-[--white] placeholder:!text-white/50' : ''
+							}`}
 						/>
 					</div>
 				)}

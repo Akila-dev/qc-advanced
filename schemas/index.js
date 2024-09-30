@@ -241,3 +241,12 @@ export const EditProfileSchema = z.object({
 		z.any() || z.string().min(1, { message: 'Choose Business Type' }),
 	address: z.any() || z.string().min(1, { message: 'Address is required' }),
 });
+
+// !LANDING PAGE SCHEMA
+// * CONTACT US
+export const LandingPageContactUsSchema = z.object({
+	name: z.string().min(1, { message: 'Required*' }),
+	email: z.string().email(),
+	subject: z.string().min(1, { message: '' }).max(3, { message: 'Required*' }),
+	msg: z.string().min(1, { message: 'Required*' }),
+});

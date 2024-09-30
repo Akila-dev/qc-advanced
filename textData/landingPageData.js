@@ -58,3 +58,5 @@ export const contactData = [
 		desc: '8:00am-8:00pm',
 	},
 ];
+
+export const socialData = ['facebook.com', 'instagram.com', 'linkedin.com'];
