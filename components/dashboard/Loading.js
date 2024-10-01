@@ -13,7 +13,7 @@ const Loading = ({ inner, notFull }) => {
 					? 'h-full bg-[--white]'
 					: notFull
 					? 'h-screen bg-[--card] fixed top-0 left-0 w-full !z-[100000] lg:relative'
-					: 'h-screen bg-[--card] fixed top-0 left-0 w-full !z-[100000]'
+					: 'h-screen bg-[--card] fixed top-0 left-0 w-full !z-[1000000000000]'
 			} w-full  text-[--black] flex-center`}
 		>
 			<motion.div

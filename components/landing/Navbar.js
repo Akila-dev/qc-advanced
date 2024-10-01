@@ -121,7 +121,7 @@ const Navbar = ({ loginButton }) => {
 				) : (
 					<div className="flex-v-center justify-end min-w-[220px] !gap-2 !hidden lg:!flex">
 						<Link
-							href="/api/auth/signin?callbackUrl=/"
+							href="/api/auth/signin?callbackUrl=/auth-in"
 							className="btn-2-v2 !bg-transparent hover:!bg-[--card] !capitalize"
 						>
 							Sign In

@@ -66,9 +66,9 @@ export default function LogIn() {
 		}).then(({ ok, error }) => {
 			if (ok) {
 				setIsPending(false);
-				setSuccess('Logged In Successfully!');
+				setSuccess('Logging you in...');
 				setTimeout(() => {
-					if (callback === '/') {
+					if (callback === '/auth-in' || callback.includes('auth-in')) {
 						router.push(`/${selectedOption}`);
 					} else {
 						router.push(callback);

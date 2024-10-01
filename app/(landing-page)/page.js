@@ -1,3 +1,6 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { icons, images } from '@/constants';
@@ -12,10 +15,18 @@ import {
 	Blogs,
 	Contact,
 } from '@/containers';
-import { AppCTA, CardCTA } from '@/components';
+import { AppCTA, CardCTA, Loading } from '@/components';
 
 export default function Home() {
-	return (
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		setLoading(false);
+	}, []);
+
+	return loading ? (
+		<Loading />
+	) : (
 		<SmoothScroll>
 			<main className="flex flex-col gap-[50px] md:gap-[70px] xl:gap-[100px] landing overflow-auto snap-y snap-mandatory">
 				<Header />

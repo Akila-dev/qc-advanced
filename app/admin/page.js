@@ -312,11 +312,13 @@ export default function Dashboard() {
 					smallIcon
 					className={pendingDelete && 'pointer-events-none'}
 				>
-					<div className={`space-y-3 pt-3 ${pendingDelete && 'pending'}`}>
+					<div
+						className={`space-y-3 pt-3 w-full ${pendingDelete && 'pending'}`}
+					>
 						{error && <FormError message={error} />}
 						{success && <FormSuccess message={success} />}
 
-						<div className="grid grid-cols-2 gap-3">
+						<div className="grid grid-cols-2 gap-3 w-[80%] mx-auto">
 							<Button onClick={() => setIsDeleting(false)} text="no" noBg />
 							<Button
 								onClick={() => requestDeleteBusiness()}
