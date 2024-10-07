@@ -23,63 +23,30 @@ import {
 import { SelectOptionsWrapper } from '@/wrappers';
 
 // SERVER COMPONENT
-import { addAction } from '@/config/addAction';
-import { AdminActionSchema } from '@/schemas';
+import { addSubChecklistAction } from '@/config/answerSubChecklist';
+import { MiniActionSchema } from '@/schemas';
 
-const AddSubchecklistAction = ({
-	close,
-	className,
-	mini,
-	admin,
-	businessList,
-	actionsList,
-	setActionsList,
-}) => {
-	const { data: session } = useSession();
-	const userId = session?.user?.id;
+const AddSubchecklistAction = ({ close, userId, assigneeData, bsc_id }) => {
 	const [isPending, setIsPending] = useState();
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState('');
 
+	const [assigneeList, setAssigneeList] = useState();
 	const [showInvitees, setShowInvitees] = useState(false);
-	const [inviteesList, setInviteesList] = useState([]);
+
+	useEffect(() => {
+		setAssigneeList(assigneeData);
+	}, []);
 
 	const {
-		watch,
-		getValues,
 		setValue,
 		register,
 		handleSubmit,
 		formState: { errors },
 		control,
 	} = useForm({
-		resolver: zodResolver(AdminActionSchema),
+		resolver: zodResolver(MiniActionSchema),
 	});
-
-	useEffect(() => {
-		let values = getValues();
-		if (values.business_id.length > 0) {
-			let assigneeData = businessList.filter(
-				(res) => res.business_id === values.business_id
-			);
-			setInviteesList(assigneeData[0].assignee_dtl);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	// show invitees tab only when a business has been selected
-	// look for list invitees for that particular business
-	useEffect(() => {
-		const subscription = watch((value, { name, type }) => {
-			if (value.business_id.length > 0) {
-				let assigneeData = businessList.filter(
-					(res) => res.business_id === value.business_id
-				);
-				setInviteesList(assigneeData[0].assignee_dtl);
-			}
-		});
-		return () => subscription.unsubscribe();
-	}, [businessList, watch]);
 
 	const onSubmit = (values) => {
 		setError('');
@@ -87,16 +54,12 @@ const AddSubchecklistAction = ({
 
 		setIsPending(true);
 
-		addAction(values, userId).then((data) => {
+		addSubChecklistAction(userId, bsc_id, values).then((data) => {
 			setIsPending(false);
 			setError(data.error);
 			setSuccess(data.success);
 
-			console.log(data?.data?.data);
-			setIsPending(false);
-
-			if (data.success) {
-				setActionsList([data?.data?.data, ...actionsList]);
+			if (data.response) {
 				setTimeout(() => {
 					close();
 				}, 1000);
@@ -105,11 +68,7 @@ const AddSubchecklistAction = ({
 	};
 
 	return (
-		<div
-			className={
-				className ? className : 'h-full w-full py-5 px-4 lg:p-7 space-y-8'
-			}
-		>
+		<div className={'h-full w-full lg:p-2 space-y-8'}>
 			<form
 				onSubmit={handleSubmit((d) => onSubmit(d))}
 				className={`w-full space-y-4 ${isPending && 'pending'}`}
@@ -151,85 +110,33 @@ const AddSubchecklistAction = ({
 				/>
 
 				{/* Assignees */}
-				{/* <SelectInput
-					// icon={icons.details}
+				<SelectOptionsWrapper
+					list={assigneeList}
 					label="Assignees"
-					placeholder="Choose Assignees"
-					options={['Sigmandom', 'Rhemadom']}
-					valueName="assignees"
-					setFormData={setFormData}
-					formData={formData}
-					darkBg={mini}
-				/> */}
-				{admin && (
-					<>
-						{/* Business */}
-						<SelectOptionsWrapper
-							list={businessList}
-							label="Business"
-							setValue={setValue}
-							name="business_id"
-							error={errors.business_id?.message}
-						>
-							<SelectInputRHF
-								label="Business"
-								options={businessList}
-								businessList
-								setValue={setValue}
-								name="business_id"
-								rhf={{ ...register('business_id') }}
-								error={errors.business_id?.message}
-							/>
-						</SelectOptionsWrapper>
-
-						{/* Assignees */}
-						<SelectOptionsWrapper
-							list={inviteesList}
-							label="Assignees"
-							setValue={setValue}
-							name="assignee_id"
-							error={errors.assignee_id?.message}
-						>
-							<SelectAssignee
-								label="Assignees"
-								options={inviteesList}
-								setValue={setValue}
-								name="assignee_id"
-								rhf={{ ...register('assignee_id') }}
-								error={errors.assignee_id?.message}
-							/>
-						</SelectOptionsWrapper>
-
-						{/* Status */}
-						<SelectInputLabelValueRHF
-							label="Status"
-							options={['In Progress', 'Complete', "Can't Do"]}
-							valueList={['in_progress', 'complete', 'cant_do']}
-							setValue={setValue}
-							name="to_do_list"
-							rhf={{ ...register('to_do_list') }}
-							error={errors.to_do_list?.message}
-							darkBg
-						/>
-					</>
-				)}
+					setValue={setValue}
+					name="assignee_id"
+					error={errors.assignee_id?.message}
+				>
+					<SelectAssignee
+						label="Assignees"
+						options={assigneeList}
+						setValue={setValue}
+						name="assignee_id"
+						rhf={{ ...register('assignee_id') }}
+						error={errors.assignee_id?.message}
+					/>
+				</SelectOptionsWrapper>
 
 				{error && <FormError message={error} />}
 				{success && <FormSuccess message={success} />}
 
-				{mini ? (
-					<div className="w-full grid grid-cols-2 gap-4 lg:gap-5">
-						<Button text="close" noBg onClick={close} />
-						<SubmitButton text={'create'} submitting={isPending} />
-					</div>
-				) : (
-					<div className="w-full">
-						<SubmitButton text={'create'} submitting={isPending} />
-					</div>
-				)}
+				<div className="w-full grid grid-cols-2 gap-4 lg:gap-5">
+					<Button text="close" noBg onClick={close} />
+					<SubmitButton text={'create'} submitting={isPending} />
+				</div>
 			</form>
 
-			<div className={mini ? '' : 'popup-pb'} />
+			<div className={''} />
 		</div>
 	);
 };

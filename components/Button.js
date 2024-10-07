@@ -13,6 +13,7 @@ const Button = ({
 	noClick,
 	sm,
 	icon,
+	className,
 }) => {
 	const variantsP = {
 		initial: (i) => ({
@@ -69,7 +70,9 @@ const Button = ({
 			whileTap="tap"
 			whileHover="hover"
 			variants={variants.buttonClick}
-			className={`flex-center !gap-2 ${noBg ? 'btn-2' : 'btn-1'}`}
+			className={
+				className ? className : `flex-center !gap-2 ${noBg ? 'btn-2' : 'btn-1'}`
+			}
 			onClick={onClick}
 		>
 			{icon && icon} {text}
@@ -80,7 +83,9 @@ const Button = ({
 			whileTap="tap"
 			whileHover="hover"
 			variants={variants.buttonClick}
-			className={`flex-center !gap-2 ${noBg ? 'btn-2' : 'btn-1'}`}
+			className={
+				className ? className : `flex-center !gap-2 ${noBg ? 'btn-2' : 'btn-1'}`
+			}
 		>
 			{icon && icon} {text}
 		</motion.button>
@@ -94,7 +99,11 @@ const Button = ({
 		>
 			<Link
 				href={link}
-				className={`flex-center !gap-2 ${noBg ? 'btn-2' : 'btn-1'}`}
+				className={
+					className
+						? className
+						: `flex-center !gap-2 ${noBg ? 'btn-2' : 'btn-1'}`
+				}
 			>
 				{icon && icon} {text}
 			</Link>

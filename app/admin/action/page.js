@@ -98,7 +98,7 @@ export default function Action() {
 		setSuccess('');
 		setPendingDelete(true);
 
-		let active_action_id = actionsList[activeAction].action_id;
+		let active_action_id = actionsList[activeAction]?.action_id;
 
 		deleteAction(active_action_id).then((data) => {
 			setError(data.error);
@@ -106,8 +106,8 @@ export default function Action() {
 			setPendingDelete(false);
 			if (data?.response === 1) {
 				setShowDetails(false);
-				let newActionsList = actionsList.filter((list) => {
-					return list.action_id !== active_action_id;
+				let newActionsList = actionsList?.filter((list) => {
+					return list?.action_id !== active_action_id;
 				});
 
 				setActionsList(newActionsList);
@@ -185,7 +185,7 @@ export default function Action() {
 							</div>
 						</div>
 					</div>
-					{filteredActionsList.length > 0 ? (
+					{filteredActionsList?.length > 0 ? (
 						<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 px-4 py-5 md:pt-0  lg:p-8 lg:pt-5">
 							{filteredActionsList?.map(
 								(
@@ -204,7 +204,7 @@ export default function Action() {
 										title={title}
 										time={'5 days'}
 										due_date={due_date}
-										assignee={asignee_dtl.username}
+										assignee={asignee_dtl ? asignee_dtl.username : 'unassigned'}
 										admin
 										businessName={business_dtl.business_name}
 										businessId={business_dtl.business_id}
@@ -239,7 +239,11 @@ export default function Action() {
 						close={() => setShowDetails(false)}
 						title=""
 						otherIcon={icons.deleteRed}
-						otherFunc={() => setShowDelete(true)}
+						otherFunc={() => {
+							setError('');
+							setSuccess('');
+							setShowDelete(true);
+						}}
 					>
 						<ActionDetails
 							close={() => setAddAction(false)}
@@ -252,32 +256,7 @@ export default function Action() {
 						/>
 					</SidePopupWrapper>
 				)}
-				{/* {optionsVisible && (
-					<TitlePopupWrapper
-						darkB
-						options
-						close={() => setOptionsVisible(false)}
-					>
-						<div className="bg-[--card] border border-[--border] rounded-2xl flex flex-col w-full overflow-hidden">
-							<button
-								className="options-btn group"
-								onClick={() => shareAction()}
-							>
-								<span className="group-hover:scale-110 group-hover:text-[--brand] inline-block transition duration-700">
-									share
-								</span>
-							</button>
-							<button
-								className="options-btn group"
-								onClick={() => setShowDelete(true)}
-							>
-								<span className="group-hover:scale-110 group-hover:text-[--brand] inline-block transition duration-700">
-									delete
-								</span>
-							</button>
-						</div>
-					</TitlePopupWrapper>
-				)} */}
+
 				{showDelete && (
 					<IconPopupWrapper
 						icon={

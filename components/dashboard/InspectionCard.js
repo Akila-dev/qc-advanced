@@ -1,9 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { RiGlassesLine } from 'react-icons/ri';
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import {
+	motion,
+	useMotionValue,
+	useTransform,
+	useSpring,
+	useAnimate,
+} from 'framer-motion';
 import { FormError, FormSuccess } from '../../components';
 import { icons } from '../../constants';
 
@@ -30,7 +36,9 @@ const InspectionCard = ({
 	const [isPending, setIsPending] = useState();
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState('');
+	const dragRef = useRef();
 
+	const [scope, animate] = useAnimate();
 	const x = useMotionValue(0);
 
 	const scaleNormal = useTransform(x, [0, -30], [0, 1]);
@@ -38,6 +46,20 @@ const InspectionCard = ({
 
 	const opacityNormal = useTransform(x, [0, -50], [0, 1]);
 	const opacity = useSpring(opacityNormal);
+
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (dragRef.current && !dragRef.current.contains(event.target)) {
+				animate(dragRef.current, { x: 0 });
+			}
+		};
+
+		document.addEventListener('click', handleClickOutside, true);
+
+		return () => {
+			document.removeEventListener('click', handleClickOutside, true);
+		};
+	}, []);
 
 	const doArchiveUnarchive = (type) => {
 		setError('');
@@ -88,8 +110,9 @@ const InspectionCard = ({
 	};
 
 	return (
-		<div className={`w-full relative ${isPending && 'pending'}`}>
+		<div ref={scope} className={`w-full relative ${isPending && 'pending'}`}>
 			<motion.div
+				ref={dragRef}
 				drag="x"
 				style={{ x }}
 				dragConstraints={{
@@ -98,6 +121,8 @@ const InspectionCard = ({
 					top: 0,
 					bottom: 0,
 				}}
+				whileHover={{ x: sidebar ? -50 : 0 }}
+				transition={{ type: 'spring', duration: 1 }}
 				dragElastic={0.1}
 				className={`slide-animated-children flex justify-between items-center w-full bg-[--card] border border-[--border] rounded-lg gap-4 relative z-[1] ${
 					sidebar ? '' : 'lg:flex-col lg:items-start lg:p-[14px]'

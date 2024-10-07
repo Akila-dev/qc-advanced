@@ -21,6 +21,15 @@ const SubChecklistBlock = ({
 	const [questionValue, setQuestionValue] = useState(subChecklist[id].question);
 
 	useEffect(() => {
+		setRadioValue(
+			subChecklist[id].media_upload_type
+				? subChecklist[id].media_upload_type
+				: 'both'
+		);
+		setQuestionValue(subChecklist[id].question);
+	}, [subChecklist]);
+
+	useEffect(() => {
 		if (questionValue.length <= 0 && !questionValue) {
 			setErrorMessage('Please Name your Subchecklists');
 		} else {
@@ -36,11 +45,6 @@ const SubChecklistBlock = ({
 		newData[id].question = value;
 		// console.log(value);
 		setSubChecklist(newData);
-		// if (value.length <= 0 && !value) {
-		// 	setErrorMessage('Please Name your Subchecklists');
-		// } else {
-		// 	setErrorMessage('');
-		// }
 	};
 
 	// handle media type change
@@ -58,11 +62,6 @@ const SubChecklistBlock = ({
 					type="text"
 					name="question"
 					placeholder="Add question"
-					// value={
-					// 	subChecklist[id].question.length > 0
-					// 		? subChecklist[id].question
-					// 		: ''
-					// }
 					value={questionValue}
 					onChange={handleChangeInput}
 					className="input"
@@ -111,11 +110,11 @@ const SubChecklist = ({
 }) => {
 	const [subChecklist, setSubChecklist] = useState(
 		edit
-			? formData.sub_checklist
+			? formData.sub_check_list_dtl
 			: [
 					{
 						question: '',
-						mediaType: 0,
+						media_upload_type: 0,
 					},
 			  ]
 	);
@@ -127,7 +126,7 @@ const SubChecklist = ({
 			...prev,
 			{
 				question: '',
-				mediaType: 0,
+				media_upload_type: 'both',
 			},
 		]);
 	};
@@ -141,7 +140,7 @@ const SubChecklist = ({
 
 	useEffect(() => {
 		let newData = [...subChecklist];
-		setFormData({ ...formData, [nameValue]: newData });
+		setFormData({ ...formData, [nameValue]: [...newData] });
 	}, [subChecklist]);
 
 	return (
@@ -167,6 +166,7 @@ const SubChecklist = ({
 					setSubChecklist={setSubChecklist}
 					remove={() => deleteSubChecklist(i)}
 					setErrorMessage={setErrorMessage}
+					edit
 				/>
 			))}
 		</div>

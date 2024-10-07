@@ -100,6 +100,20 @@ export const InviteSchema = z
 		path: ['confirm_password'],
 	});
 
+export const NoteSchema = z.object({
+	notes: z.string().min(1, { message: 'Required*' }),
+	follow_up: z.string().min(1, { message: 'Required*' }),
+});
+
+// ! MINI ACTION
+export const MiniActionSchema = z.object({
+	title: z.string().min(1, { message: 'Enter Title' }),
+	desc: z.string().min(1, { message: 'Enter Description' }),
+	priority: z.string().min(1, { message: 'Select Priority*' }),
+	due_date: z.string().min(1, { message: 'Pick a Date*' }),
+	assignee_id: z.string().min(1, { message: 'Choose Assignee*' }),
+});
+
 // !TRAINING MATERIALS
 export const TrainingMaterialSchema = z.object({
 	image: zfd

@@ -60,28 +60,93 @@ export const addChecklist = async (formValues, userId, businessId) => {
 		return { error: 'Network Error, Reload Page' };
 	}
 
-	let responseMsg = 'Uploaded Successfully';
-	let errorMsg = '';
-	const formValueList = [...formValues];
-	// console.log(formValueList);
+	try {
+		const formData = new FormData();
+
+		formData.append('user_id', userId);
+		formData.append('business_id', businessId);
+		formData.append('name', formValues.name);
+		formData.append('assignee_id', formValues.assignee_id);
+		formData.append(
+			'sub_checklist',
+			JSON.stringify(formValues.sub_check_list_dtl)
+		);
+
+		const { data } = await axios.post(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/addCheckList`,
+			formData,
+			{
+				headers: {
+					'Content-Type': 'multipart/form-data',
+					// 'Content-Type': 'application/json',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
+			}
+		);
+
+		if (data) {
+			if (data.ResponseCode === 1) {
+				return { success: data.ResponseMsg, response: true };
+			} else {
+				return {
+					error: data.ResponseMsg,
+				};
+			}
+		}
+	} catch (error) {
+		console.log(error);
+		return { error: "Couldn't Upload Checklist" };
+	}
+};
+
+export const updateChecklist = async (
+	checklistData,
+	user_id,
+	business_checklist_id
+) => {
+	// console.log(formValues, userId, businessId);
+	if (!checklistData) {
+		return { error: 'Invalid Fields!' };
+	}
+
+	if (!user_id || !business_checklist_id) {
+		return { error: 'Network Error, Reload Page' };
+	}
 
 	try {
-		for await (const values of formValueList) {
-			const formData = new FormData();
+		const formData = new FormData();
 
-			formData.append('user_id', userId);
-			formData.append('business_id', businessId);
-			// formData.append('business_id', 36);
-			formData.append('name', values.name);
-			formData.append('assignee_id', values.assignee_id);
-			formData.append('sub_checklist', values.sub_checklist);
+		formData.append('name', checklistData.name);
+		formData.append('assignee_id', checklistData.assignee_id);
+		// formData.append('sub_checklist', checklistData.sub_checklist[0]);
 
+		// for (const val of checklistData.sub_checklist) {
+		// 	formData.append('sub_checklist', val);
+		// }
+
+		// checklistData.sub_checklist.map((val) => {
+		// 	formData.append('sub_checklist', val);
+		// });
+		formData.append(
+			'sub_checklist',
+			JSON.stringify(checklistData.sub_check_list_dtl)
+		);
+		// console.log(checklistData.sub_check_list_dtl);
+		// console.log(formData.getAll('sub_checklist'));
+
+		formData.append('business_checklist_id', business_checklist_id);
+		formData.append('user_id', user_id);
+
+		try {
 			const { data } = await axios.post(
-				`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/addCheckList`,
+				`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/updateCheckList`,
 				formData,
 				{
 					headers: {
 						'Content-Type': 'application/json',
+						// 'Content-Type': 'multipart/form-data',
 						Accept: 'application/json',
 						key: process.env.NEXT_PUBLIC_KEY,
 						token: process.env.NEXT_PUBLIC_TOKEN,
@@ -92,26 +157,24 @@ export const addChecklist = async (formValues, userId, businessId) => {
 			if (data) {
 				if (data.ResponseCode === 1) {
 					// console.log(data);
-					responseMsg = data.ResponseMsg;
+					return {
+						success: data.ResponseMsg,
+						response: data.ResponseCode,
+					};
 				} else {
-					errorMsg = data.ResponseMsg;
+					console.log(data);
+					return {
+						error: data.ResponseMsg,
+					};
 				}
 			}
-		}
-
-		if (responseMsg) {
-			return {
-				success: responseMsg,
-				response: true,
-			};
-		} else {
-			return {
-				error: errorMsg,
-			};
+		} catch (error) {
+			console.log(error);
+			return { error: 'Invalid Fields, Please Try Again' };
 		}
 	} catch (error) {
 		// console.log(error);
-		return { error: "Couldn't Upload Checklist" };
+		return { error: "Couldn't Update Checklist" };
 	}
 };
 

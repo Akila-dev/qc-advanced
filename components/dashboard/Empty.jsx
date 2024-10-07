@@ -10,7 +10,7 @@ const Empty = ({ text }) => {
 				alt="Empty"
 				className="w-[45vw] h-[45vw] md:w-[150px] md:h-[150px] object-contain"
 			/>
-			<p>{text}</p>
+			<p className="w-[80%] text-center">{text}</p>
 		</div>
 	);
 };

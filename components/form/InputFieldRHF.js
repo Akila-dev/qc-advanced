@@ -7,6 +7,7 @@ const InputFieldRHF = ({
 	icon,
 	label,
 	type,
+	defaultTextarea,
 	placeholder,
 	additionalClassName,
 	rhf,
@@ -39,9 +40,11 @@ const InputFieldRHF = ({
 				</div>
 				{type === 'textarea' ? (
 					<div
-						className={` ${
-							landing ? 'icon-input-2' : 'icon-input'
-						} !items-start`}
+						className={
+							defaultTextarea
+								? ''
+								: ` ${landing ? 'icon-input-2' : 'icon-input'} !items-start`
+						}
 					>
 						{icon && (
 							<Image
@@ -56,9 +59,15 @@ const InputFieldRHF = ({
 							defaultValue={defaultValue ? defaultValue : ''}
 							placeholder={placeholder}
 							{...rhf}
-							className={`textarea ${
-								landing ? '!text-[--white] placeholder:!text-white/50' : ''
-							}`}
+							className={
+								defaultTextarea
+									? ''
+									: `textarea ${
+											landing
+												? '!text-[--white] placeholder:!text-white/50'
+												: ''
+									  }`
+							}
 						/>
 					</div>
 				) : (

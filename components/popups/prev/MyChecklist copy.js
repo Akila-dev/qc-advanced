@@ -7,48 +7,44 @@ import Link from 'next/link';
 import { images, icons } from '../../constants';
 import { SidePopupWrapper } from '../../wrappers';
 import { AnimatePresence } from 'framer-motion';
-
 import {
 	SelectInput,
 	DateTimePicker,
 	InputField,
 	SubChecklist,
 	FormError,
-	FormSuccess,
-	Button,
 	Loading,
 	LoadingFailed,
 } from '../../components';
 
-import { getAssigneeData } from '@/actions/getChecklist';
-import { addChecklist } from '@/config/addBusinessAndChecklist';
+// API RELATED
+import { getSingleChecklistData } from '@/actions/getChecklist';
 
-const AddChecklist = ({ close, userId, businessId }) => {
+const MyChecklist = ({
+	close,
+	list,
+	setChecklist,
+	checklistId,
+	businessId,
+}) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [successfullyLoaded, setSuccessfullyLoaded] = useState();
+	const [checklistData, setChecklistData] = useState();
 	const [assigneeList, setAssigneeList] = useState();
 
 	const [options, setOptions] = useState(); // For Assignee SelectOption
 	const [values, setValues] = useState(); // For Assignee SelectOption
 
-	const [isPending, setIsPending] = useState();
-	const [error, setError] = useState(''); // Update Error
-	const [success, setSuccess] = useState(''); // Update Success
-
-	const [checklistData, setChecklistData] = useState({
-		name: '',
-		assignee_id: '',
-		sub_checklist: [],
-	});
-
-	const { name, assignee_id, sub_checklist } = checklistData;
-
 	const [showErrorMessage, setShowErrorMessage] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 
-	// LOAD ASSIGNEES
+	const handleChangeInput = (e) => {
+		const { name, value } = e.target;
+		setChecklistData({ ...checklistData, [name]: value });
+	};
+
 	useEffect(() => {
-		getAssigneeData(businessId)
+		getSingleChecklistData(checklistId, businessId)
 			.then((data) => {
 				let allAssignees = data?.assignees?.data?.filter((val) => val.username);
 
@@ -59,14 +55,18 @@ const AddChecklist = ({ close, userId, businessId }) => {
 					assigneeIds.push(val.user_id);
 				});
 
+				console.log(data?.assignees?.data);
+
 				return {
 					success: data?.response === 1,
 					assigneeData: data?.assignees?.data?.filter((val) => val.username),
+					allChecklists: data?.checklist?.data,
 					assigneeNames: assigneeNames,
 					assigneeIds: assigneeIds,
 				};
 			})
 			.then((data) => {
+				setChecklistData(data.allChecklists);
 				setAssigneeList(data.assigneeData);
 				setOptions(data.assigneeNames);
 				setValues(data.assigneeIds);
@@ -80,45 +80,34 @@ const AddChecklist = ({ close, userId, businessId }) => {
 	}, []);
 
 	// FORM FUNCTIONS
-	const addChecklistFunc = () => {
-		if (!checklistData.name) {
-			setErrorMessage('Enter Checklist Name');
-			setShowErrorMessage(true);
-			setTimeout(() => {
-				setShowErrorMessage(false);
-			}, 2000);
-		} else if (errorMessage.length > 0) {
-			setShowErrorMessage(true);
-			setTimeout(() => {
-				setShowErrorMessage(false);
-			}, 2000);
-		} else {
-			setIsPending(true);
-
-			addChecklist(checklistData, userId, businessId).then((data) => {
-				setError(data.error);
-				setSuccess(data.success);
-				setIsPending(false);
-				if (data.response) {
-					setTimeout(() => {
-						close();
-					}, 1000);
-				}
-			});
-		}
+	const updateChecklist = () => {
+		// if (checklistData.name.length <= 0) {
+		// 	setErrorMessage('Enter Checklist Name');
+		// 	setShowErrorMessage(true);
+		// 	setTimeout(() => {
+		// 		setShowErrorMessage(false);
+		// 	}, 2000);
+		// } else if (errorMessage.length > 0) {
+		// 	setShowErrorMessage(true);
+		// 	setTimeout(() => {
+		// 		setShowErrorMessage(false);
+		// 	}, 2000);
+		// } else {
+		// 	let newData = [...list];
+		// 	newData[checklistId] = { ...checklistData, selected: true };
+		// 	setChecklist(newData);
+		// 	close();
+		// }
+		console.log(checklistData);
 	};
 
 	return (
-		<SidePopupWrapper title="Add Checklist" close={close} noBg>
+		<SidePopupWrapper title={checklistData?.name} close={close} noBg>
 			{isLoading ? (
 				<Loading inner />
 			) : successfullyLoaded ? (
 				<>
-					<div
-						className={`h-full w-full py-5 px-4 lg:p-7 space-y-8 relative ${
-							isPending && 'pending'
-						}`}
-					>
+					<div className={'h-full w-full py-5 px-4 lg:p-7 space-y-8'}>
 						<div className="w-full space-y-4">
 							{/* Checklist */}
 							<InputField
@@ -128,9 +117,9 @@ const AddChecklist = ({ close, userId, businessId }) => {
 								placeholder="Name your checklist"
 								formData={checklistData}
 								setFormData={setChecklistData}
+								defaultValue={checklistData?.name}
 								nameValue="name"
 							/>
-
 							{/* Assignee */}
 							<SelectInput
 								label="Assignee"
@@ -141,24 +130,22 @@ const AddChecklist = ({ close, userId, businessId }) => {
 								setFormData={setChecklistData}
 								formData={checklistData}
 								darkBg
+								edit
+								defaultValue={checklistData?.assignee_id}
 							/>
 							<SubChecklist
 								setErrorMessage={setErrorMessage}
 								formData={checklistData}
 								setFormData={setChecklistData}
 								nameValue="sub_check_list_dtl"
+								edit
 							/>
 						</div>
-						<div>
-							{error && <FormError message={error} />}
-							{success && <FormSuccess message={success} />}
-						</div>
+
 						<div className="w-full">
-							<Button
-								onClick={() => addChecklistFunc()}
-								text="add"
-								submitting={isPending}
-							/>
+							<button onClick={() => updateChecklist()} className="btn-1 block">
+								done
+							</button>
 						</div>
 						<div className="popup-pb" />
 						<AnimatePresence>
@@ -179,4 +166,4 @@ const AddChecklist = ({ close, userId, businessId }) => {
 	);
 };
 
-export default AddChecklist;
+export default MyChecklist;

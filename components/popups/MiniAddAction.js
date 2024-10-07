@@ -1,11 +1,16 @@
 import React from 'react';
 
-import { AddAction } from '../../components';
+import { AddSubchecklistAction } from '../../components';
 
-const MiniAddAction = ({ close }) => {
+const MiniAddAction = ({ close, userId, assigneeData, bsc_id }) => {
 	return (
 		<div>
-			<AddAction close={close} className="w-full p-0 space-y-5" mini />
+			<AddSubchecklistAction
+				close={close}
+				userId={userId}
+				assigneeData={assigneeData}
+				bsc_id={bsc_id}
+			/>
 		</div>
 	);
 };

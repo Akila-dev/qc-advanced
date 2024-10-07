@@ -9,9 +9,10 @@ import { images, icons, variants } from '../../constants';
 import {
 	InspectionCard,
 	InspectionDetails,
-	MiniAddAction,
-	MiniAddMedia,
-	MiniAddNote,
+	// MiniAddAction,
+	// MiniAddMedia,
+	// MiniAddNote,
+	AddedChecklists,
 	SelectChecklist,
 	AddInvitee,
 	InspectionsArchive,
@@ -42,14 +43,17 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 
 	const [activeInspection, setActiveInspection] = useState(0);
 	const [toggleInspectionDetails, setToggleInspectionDetails] = useState(false);
-	const [showSelectChecklist, setShowSelectChecklist] = useState(false);
+	const [showAddedChecklist, setShowAddedChecklist] = useState(false);
 	const [showArchive, setShowArchive] = useState(false);
 	const [invitees, setInvitees] = useState();
 	const [showAddInvitee, setShowAddInvitee] = useState(false);
 
+	// SUBCHECKLIST VARIABLES
+	const [activeSubchecklist_id, setActiveSubchecklist_id] = useState();
+
 	const showInspectionDetails = async (i) => {
 		await setActiveInspection(i);
-		// await setToggleInspectionDetails(true);
+		await setToggleInspectionDetails(true);
 	};
 
 	// ADDING NOTES AND THE LIKES
@@ -57,37 +61,47 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 	const [showAddMedia, setShowAddMedia] = useState(false);
 	const [showAddAction, setShowAddAction] = useState(false);
 
-	// LOAD CHECKLIST DATA
-	useEffect(() => {
+	const callGetInspectionList = () => {
+		setIsLoading(true);
+		setSuccessfullyLoaded(false);
 		getListOfChecklist(businessId, type).then((data) => {
 			console.log(data);
 			setInspectionData(data?.checklist?.data?.checklist_data);
 			setArchiveList(data?.archive?.data);
 			setInvitees(data?.checklist?.data?.invited_user_list);
-			setIsLoading(false);
 			if (data?.response === 1) {
 				setSuccessfullyLoaded(true);
 			}
+			setIsLoading(false);
 		});
+	};
+
+	// LOAD CHECKLIST DATA
+	useEffect(() => {
+		callGetInspectionList();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const openAddNote = (i) => {
-		setShowAddNote(true);
-	};
-	const openAddMedia = (i) => {
-		setShowAddMedia(true);
-	};
-	const openAddAction = (i) => {
-		setShowAddAction(true);
-	};
+	// const openAddNote = (bsc_id) => {
+	// 	setActiveSubchecklist_id(bsc_id);
+	// 	setShowAddNote(true);
+	// };
+	// const openAddMedia = (bsc_id) => {
+	// 	setActiveSubchecklist_id(bsc_id);
+	// 	setShowAddMedia(true);
+	// };
+	// const openAddAction = (bsc_id) => {
+	// 	setActiveSubchecklist_id(bsc_id);
+	// 	setShowAddAction(true);
+	// };
+
 	return (
 		<>
 			<SidePopupWrapper
 				title={title}
 				close={close}
 				otherIcon={icons.edit}
-				otherFunc={() => setShowSelectChecklist(true)}
+				otherFunc={() => setShowAddedChecklist(true)}
 			>
 				{isLoading ? (
 					<Loading inner />
@@ -163,7 +177,7 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 					<LoadingFailed />
 				)}
 			</SidePopupWrapper>
-			{showAddNote && (
+			{/* {showAddNote && (
 				<TitlePopupWrapper title="Add Note" close={() => setShowAddNote(false)}>
 					<MiniAddNote close={() => setShowAddNote(false)} />
 				</TitlePopupWrapper>
@@ -180,29 +194,32 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 				<TitlePopupWrapper title="Action" close={() => setShowAddAction(false)}>
 					<MiniAddAction close={() => setShowAddAction(false)} />
 				</TitlePopupWrapper>
-			)}
+			)} */}
 
-			{/* {toggleInspectionDetails && (
+			{toggleInspectionDetails && (
 				<SidePopupWrapper
 					close={() => setToggleInspectionDetails(false)}
-					title={inspectionData[activeInspection].title}
+					title={inspectionData[activeInspection].name}
 					noBg
 				>
 					<InspectionDetails
-						data={inspectionData[activeInspection].data}
-						addNote={openAddNote}
-						addMedia={openAddMedia}
-						addAction={openAddAction}
+						userId={userId}
+						checklistId={inspectionData[activeInspection].business_checklist_id}
+						businessId={businessId}
 					/>
 				</SidePopupWrapper>
-			)} */}
+			)}
 
-			{showSelectChecklist && (
-				<SelectChecklist
-					back={() => setShowSelectChecklist(false)}
+			{showAddedChecklist && (
+				<AddedChecklists
+					back={() => setShowAddedChecklist(false)}
 					close={() => {
-						setShowSelectChecklist(false);
+						callGetInspectionList();
+						setShowAddedChecklist(false);
 					}}
+					userId={userId}
+					businessId={businessId}
+					inspection
 				/>
 			)}
 			{showAddInvitee && (

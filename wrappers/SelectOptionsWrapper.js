@@ -11,14 +11,14 @@ const SelectOptionsWrapper = ({
 	error,
 }) => {
 	useEffect(() => {
-		if (list.length < 1) {
+		if (list?.length < 1) {
 			setValue(name, '');
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [list, name, setValue]);
 
 	return list ? (
-		list.length > 0 ? (
+		list?.length > 0 ? (
 			children
 		) : (
 			<div>

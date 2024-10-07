@@ -14,6 +14,7 @@ import {
 	InspectionsList,
 	BusinessCard,
 	AddBusiness,
+	AddedChecklists,
 	SelectChecklist,
 	AddChecklist,
 	MyChecklist,
@@ -77,6 +78,7 @@ export default function Dashboard() {
 
 	// UI VARIABLES, as their names suggest
 	const [showAddBusiness, setShowAddBusiness] = useState(false);
+	const [showAddedChecklists, setShowAddedChecklists] = useState(false);
 	const [showSelectChecklist, setShowSelectChecklist] = useState(false);
 	const [showInspectionsList, setShowInspectionsList] = useState(false);
 	const [activeBusiness, setActiveBusiness] = useState(0);
@@ -232,14 +234,33 @@ export default function Dashboard() {
 					</div>
 				</div>
 			</div>
+
+			{/* ADD BUSINESS */}
 			{showAddBusiness && (
 				<AddBusiness
 					close={() => setShowAddBusiness(false)}
-					nextPopup={() => setShowSelectChecklist(true)}
+					nextPopup={() => setShowAddedChecklists(true)}
 					setBusinessId={setBusinessId}
 					userId={userId}
 				/>
 			)}
+
+			{/* ADDED CHECKLISTS */}
+			<AnimatePresence>
+				{showAddedChecklists && (
+					<AddedChecklists
+						back={() => setShowAddedChecklists(false)}
+						close={() => {
+							setShowAddBusiness(false);
+							setShowAddedChecklists(false);
+						}}
+						businessId={businessId}
+						userId={userId}
+					/>
+				)}
+			</AnimatePresence>
+
+			{/* SELECT CHECKLIST */}
 			<AnimatePresence>
 				{showSelectChecklist && (
 					<SelectChecklist
@@ -253,6 +274,8 @@ export default function Dashboard() {
 					/>
 				)}
 			</AnimatePresence>
+
+			{/* BUSINESS CARD OPTIONS */}
 			{showOptions && (
 				<TitlePopupWrapper darkBg options close={() => setShowOptions(false)}>
 					<div className="bg-[--card] border border-[--border] rounded-2xl flex flex-col w-full overflow-hidden">

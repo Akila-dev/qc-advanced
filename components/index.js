@@ -57,6 +57,7 @@ export { default as EditProfile } from './popups/EditProfile';
 export { default as ChangePassword } from './popups/ChangePassword';
 export { default as DeleteAccount } from './popups/DeleteAccount';
 export { default as AddBusiness } from './popups/AddBusiness';
+export { default as AddedChecklists } from './popups/AddedChecklists';
 export { default as SelectChecklist } from './popups/SelectChecklist';
 export { default as AddChecklist } from './popups/AddChecklist';
 export { default as MyChecklist } from './popups/MyChecklist';

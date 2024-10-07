@@ -1,8 +1,9 @@
 'use client';
 
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 import { icons } from '../../constants';
 import { TitlePopupWrapper } from '../../wrappers';
@@ -12,11 +13,13 @@ const SelectInput = ({
 	label,
 	placeholder,
 	options,
+	values,
 	valueName,
 	setFormData,
 	formData,
 	colors,
 	darkBg,
+	edit,
 }) => {
 	const [showOptions, setShowOptions] = useState(false);
 	const [selectedId, setSelectedId] = useState(0);
@@ -24,12 +27,14 @@ const SelectInput = ({
 		placeholder ? placeholder : options[0]
 	);
 
+	const errorRef = useRef();
+
 	// set value of select option to initial value
 	useEffect(() => {
 		if (!placeholder) {
 			setFormData({
 				...formData,
-				[valueName]: options[0],
+				[valueName]: values ? values[0] : options[0],
 			});
 		}
 	}, []);
@@ -39,7 +44,7 @@ const SelectInput = ({
 		setSelectedOption(options[i]);
 		setFormData({
 			...formData,
-			[valueName]: options[i],
+			[valueName]: values ? values[i] : options[i],
 		});
 		setShowOptions(false);
 	};
@@ -80,7 +85,17 @@ const SelectInput = ({
 					className="input-img p-1"
 				/>
 			</button>
-			{showOptions && (
+			{options.length === 0 && (
+				<motion.p
+					animate={{ scale: [1.1, 1] }}
+					transition={{ type: 'spring' }}
+					ref={errorRef}
+					className="text-xs text-[--text] -mt-1"
+				>
+					You have no {label} assigned to this business*
+				</motion.p>
+			)}
+			{options.length > 0 && showOptions && (
 				<TitlePopupWrapper
 					darkBg={darkBg}
 					options
