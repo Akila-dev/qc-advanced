@@ -347,7 +347,7 @@ export default function Dashboard() {
 								onClick={() => requestDeleteBusiness()}
 								text="Yes"
 								sm
-								// submitting={pendingDelete}
+								submitting={pendingDelete}
 							/>
 						</div>
 					</div>

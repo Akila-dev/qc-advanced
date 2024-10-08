@@ -22,6 +22,7 @@ export default function InspectionsArchive({
 	close,
 	title,
 	sidebar,
+	user,
 	archiveList,
 	setArchiveList,
 	inspectionData,
@@ -58,7 +59,7 @@ export default function InspectionsArchive({
 	};
 	return (
 		<>
-			<SidePopupWrapper title="Archive" close={close} noBg>
+			<SidePopupWrapper title="Archive" close={close} noBg={!user}>
 				{/* DASHBOARD CONTENT */}
 				<div className="w-full px-4 py-5 md:p-5 grid grid-cols-1 gap-3">
 					<div className="icon-input !rounded-[2rem] !gap-2 mb-2">

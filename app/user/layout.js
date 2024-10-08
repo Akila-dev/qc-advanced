@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
 				</div>
 				<div className="md:ml-[250px] relative">{children}</div>
 				<div className="md:hidden fixed bottom-0 left-0 h-[70px] w-full bg-[--white] border-t border-[--gray]">
-					<MobileBottomNav type="admin" />
+					<MobileBottomNav type="user" />
 				</div>
 			</div>
 			<div className="w-full h-full absolute top-0 left-0 -z-10">

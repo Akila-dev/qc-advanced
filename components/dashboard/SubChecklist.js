@@ -115,6 +115,7 @@ const SubChecklist = ({
 					{
 						question: '',
 						media_upload_type: 0,
+						bsc_id: '0',
 					},
 			  ]
 	);
@@ -127,6 +128,7 @@ const SubChecklist = ({
 			{
 				question: '',
 				media_upload_type: 'both',
+				bsc_id: '0',
 			},
 		]);
 	};

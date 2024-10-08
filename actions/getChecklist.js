@@ -5,7 +5,7 @@ import { options } from '@/app/api/auth/[...nextauth]/options';
 // import { getTrainingMaterials } from '@/actions/getTrainingMaterials';
 // import { BusinessSchema } from '@/schemas';
 
-export const getListOfChecklist = async (business_id, type) => {
+export const getListOfChecklist = async (business_id) => {
 	const session = await getServerSession(options);
 	const user_id = session?.user?.id;
 
@@ -23,12 +23,12 @@ export const getListOfChecklist = async (business_id, type) => {
 				body: JSON.stringify({
 					user_id: user_id,
 					business_id: business_id,
-					type: type,
+					type: 'unarchive',
 				}),
 			}
 		);
 		const res_2 = await fetch(
-			`${process.env.NEXT_PUBLIC_BASE_URL}/api/getArchiveList`,
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/getCheckListBusinessWise`,
 			{
 				method: 'POST',
 				headers: {
@@ -39,10 +39,11 @@ export const getListOfChecklist = async (business_id, type) => {
 				},
 				body: JSON.stringify({
 					user_id: user_id,
+					business_id: business_id,
+					type: 'archive',
 				}),
 			}
 		);
-
 		const checklist = await res.json();
 		const archive = await res_2.json();
 
@@ -60,10 +61,7 @@ export const getListOfChecklist = async (business_id, type) => {
 			};
 		} else {
 			return {
-				error: {
-					checklist: checklist.ResponseMsg,
-					archive: archive.ResponseMsg,
-				},
+				error: "Couldn't get data",
 			};
 		}
 	} catch (error) {
@@ -314,6 +312,93 @@ export const deleteChecklist = async (checklistId) => {
 		} else {
 			return {
 				error: deleted.ResponseMsg,
+			};
+		}
+	} catch (error) {
+		return { errorMsg: "Couldn't Find Businesses" };
+	}
+};
+
+// ! USER
+// ! USER
+// ! USER
+// ! USER
+// ! USER
+// ! USER
+export const getListOfChecklistUser = async () => {
+	const session = await getServerSession(options);
+	const user_id = session?.user?.id;
+
+	try {
+		const res = await fetch(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/getCheckListBusinessWise`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
+				body: JSON.stringify({
+					user_id: user_id,
+					type: 'unarchive',
+				}),
+			}
+		);
+		const res_2 = await fetch(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/getCheckListBusinessWise`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
+				body: JSON.stringify({
+					user_id: user_id,
+					type: 'archive',
+				}),
+			}
+		);
+
+		const overview_res = await fetch(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/getUserExtraDtl`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
+				body: JSON.stringify({ user_id: session?.user?.id }),
+			}
+		);
+
+		const checklist = await res.json();
+		const archive = await res_2.json();
+		const overview = await overview_res.json();
+
+		if (
+			res.ok &&
+			checklist.ResponseCode === 1 &&
+			res_2.ok &&
+			archive.ResponseCode === 1 &&
+			overview_res.ok &&
+			overview
+		) {
+			return {
+				checklist: checklist,
+				archive: archive,
+				success: checklist.ResponseMsg,
+				response: checklist.ResponseCode,
+				overview: overview,
+			};
+		} else {
+			return {
+				error: "Couldn't get data",
 			};
 		}
 	} catch (error) {

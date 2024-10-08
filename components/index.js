@@ -42,8 +42,9 @@ export { default as Loading } from './dashboard/Loading';
 export { default as Empty } from './dashboard/Empty';
 export { default as DragAndDrop } from './dashboard/DragAndDrop';
 export { default as LoadingFailed } from './dashboard/LoadingFailed';
+export { default as SignOutPopup } from './dashboard/SignOutPopup';
 
-// Popups AddSubchecklistAction
+// Popups
 export { default as AddAction } from './popups/AddAction';
 export { default as AddSubchecklistAction } from './popups/AddSubchecklistAction';
 export { default as ActionDetails } from './popups/ActionDetails';
@@ -51,6 +52,7 @@ export { default as TrainingDetails } from './popups/TrainingDetails';
 export { default as InspectionDetails } from './popups/InspectionDetails';
 export { default as MiniAddNote } from './popups/MiniAddNote';
 export { default as MiniAddMedia } from './popups/MiniAddMedia';
+export { default as MiniAddMediaSubchecklist } from './popups/MiniAddMediaSubchecklist';
 export { default as MiniAddAction } from './popups/MiniAddAction';
 export { default as TrainingMaterial } from './popups/TrainingMaterial';
 export { default as EditProfile } from './popups/EditProfile';

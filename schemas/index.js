@@ -114,6 +114,23 @@ export const MiniActionSchema = z.object({
 	assignee_id: z.string().min(1, { message: 'Choose Assignee*' }),
 });
 
+export const MiniMediaSchema = z.object({
+	media: z.array(
+		zfd
+			.file()
+			.refine((file) => file?.length !== 0, 'Required*')
+			.refine((file) => file.size < 2000000, {
+				message: "File can't be bigger than 2MB.",
+			})
+			.refine(
+				(file) => ['image/jpeg', 'image/png', 'image/jpg'].includes(file.type),
+				{
+					message: 'File format must be either jpg, jpeg or png.',
+				}
+			)
+	),
+});
+
 // !TRAINING MATERIALS
 export const TrainingMaterialSchema = z.object({
 	image: zfd

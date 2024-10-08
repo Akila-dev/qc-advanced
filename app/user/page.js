@@ -1,340 +1,240 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { RiGlassesLine } from 'react-icons/ri';
+import { motion } from 'framer-motion';
 
-import { images, icons } from '../../constants';
+import { images, icons, variants } from '../../constants';
 import {
 	InspectionCard,
 	InspectionDetails,
-	MiniAddAction,
-	MiniAddMedia,
-	MiniAddNote,
+	Loading,
+	LoadingFailed,
+	Button,
+	Empty,
+	InspectionsArchive,
 } from '../../components';
 import { SidePopupWrapper, TitlePopupWrapper } from '../../wrappers';
 
 import { SideNavIcons } from '../../components/svgs';
 
-const overview = [
-	{
-		label: 'Pending Inspections',
-		value: 2,
-	},
-	{
-		label: 'Pending Actions',
-		value: 1,
-	},
-	{
-		label: 'Archive',
-		value: 1,
-	},
-];
+// API RELATED
+import { getListOfChecklistUser } from '@/actions/getChecklist';
 
-const colors = ['#2d2d2b08', '#2d2d2b08', '#f5edc7'];
-
-const inspections = [
-	'Food',
-	'Customer Service',
-	'Communication',
-	'Atmosphere',
-	'flooring',
-	'Tray Service',
-];
-
-const inspectionData = [
-	{
-		title: 'Food',
-		archived: false,
-		data: [
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [images.food1, images.food2],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-		],
-	},
-	{
-		title: 'Customer Service',
-		archived: false,
-		data: [
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [images.food1, images.food2],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-		],
-	},
-	{
-		title: 'Communication',
-		archived: false,
-		data: [
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [images.food1, images.food2],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-		],
-	},
-	{
-		title: 'Atmosphere',
-		archived: false,
-		data: [
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [images.food1, images.food2],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-		],
-	},
-	{
-		title: 'flooring',
-		archived: false,
-		data: [
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [images.food1, images.food2],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-		],
-	},
-	{
-		title: 'Tray Service',
-		archived: false,
-		data: [
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [images.food1, images.food2],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-			{
-				query: 'Do you serve fresh salad',
-				answer: 0,
-				imgs: [],
-				notes: ['Lorem ipsum dolor sit amet consectetur. Consequat.'],
-				actions: [''],
-			},
-		],
-	},
-];
+// OVERVIEW
+const overviewCardColors = ['#2d2d2b08', '#2d2d2b08', '#f5edc7'];
+const OverviewCard = ({ i, label, value }) => (
+	<div
+		className={`p-5 rounded-xl`}
+		style={{ background: overviewCardColors[i] }}
+	>
+		{i === 0 && (
+			<RiGlassesLine className="text-[2.8rem] bg-[--tag] rounded-full p-[6px] mb-[-6px]" />
+		)}
+		{i === 1 && <SideNavIcons i={1} color={'#2d2d2b'} w={35} />}
+		{i === 2 && <SideNavIcons i={2} color={'#2d2d2b'} w={35} />}
+		<p className="text-[--black] !font-semibold pt-5 pb-1">{label}</p>
+		<h1 className="text-[--brand]">{value}</h1>
+	</div>
+);
 
 export default function Dashboard() {
+	const [isLoading, setIsLoading] = useState(true);
+	const [successfullyLoaded, setSuccessfullyLoaded] = useState();
+	const [inspectionData, setInspectionData] = useState();
+	const [archiveList, setArchiveList] = useState();
+	const [overview, setOverview] = useState([]); //Overview data
+	const [businessId, setBusinessId] = useState();
+
+	const { data: session } = useSession();
+	const userId = session?.user?.id;
+
 	const [activeInspection, setActiveInspection] = useState(0);
 	const [toggleInspectionDetails, setToggleInspectionDetails] = useState(false);
+	const [showArchive, setShowArchive] = useState(false);
+	const [invitees, setInvitees] = useState();
+
+	// SUBCHECKLIST VARIABLES
+	const [activeSubchecklist_id, setActiveSubchecklist_id] = useState();
 
 	const showInspectionDetails = async (i) => {
 		await setActiveInspection(i);
 		await setToggleInspectionDetails(true);
 	};
 
-	// ADDING NOTES AND THE LIKES
-	const [showAddNote, setShowAddNote] = useState(false);
-	const [showAddMedia, setShowAddMedia] = useState(false);
-	const [showAddAction, setShowAddAction] = useState(false);
+	const callGetInspectionList = () => {
+		setIsLoading(true);
+		setSuccessfullyLoaded(false);
+		getListOfChecklistUser()
+			.then((data) => {
+				console.log(data);
+				setInspectionData(data?.checklist?.data?.checklist_data);
+				setArchiveList(data?.archive?.data);
+				setInvitees(data?.checklist?.data?.invited_user_list);
+				setOverview([
+					data?.overview?.data?.no_of_business,
+					data?.overview?.data?.no_of_pending_actions,
+					data?.overview?.data?.no_of_training_materials,
+				]);
+				setBusinessId(data?.overview?.data?.business_id);
 
-	const openAddNote = (i) => {
-		setShowAddNote(true);
+				// return
+				return {
+					success: data.response,
+				};
+			})
+			.then((data) => {
+				if (data?.success === 1) {
+					setSuccessfullyLoaded(true);
+				}
+				setIsLoading(false);
+			});
 	};
-	const openAddMedia = (i) => {
-		setShowAddMedia(true);
-	};
-	const openAddAction = (i) => {
-		setShowAddAction(true);
-	};
-	return (
-		<div className="md:p-10 h-screen overflow-auto">
-			<h1 className="h-[15vh] lg:h-auto flex-center text-center">
-				QC Advanced
-			</h1>
-			{/* OVERVIEW */}
-			<div className="hidden lg:block w-full bg-white rounded-[--rounding] p-7 my-7">
-				<div className="w-full h-full space-y-5">
-					{/* <div className="flex justify-end gap-3">
-						<button
-							// onClick={() => setAddAction(true)}
-							className="btn-1 gap-2 flex items-center justify-center shadow-md !shadow-[#00000044]  !w-auto"
-						>
-							<Image src={icons.archive} alt="archive" className="w-[px]" />
-							<span className="pr-1 hidden lg:block">open archives</span>
-						</button>
-						<button
-							// onClick={() => setAddAction(true)}
-							className="btn-1 gap-2 flex items-center justify-center shadow-md !shadow-[#00000044]  !w-auto"
-						>
-							<Image src={icons.archive} alt="archive" className="w-[px]" />
-							<span className="pr-1 hidden lg:block">open archives</span>
-						</button>
-					</div> */}
-					<h1 className="text-[--black]">Overview</h1>
-					<div className="grid grid-cols-3 gap-5">
-						{overview.map(({ label, value }, i) => (
-							<div
-								key={i}
-								className={`p-5 rounded-xl`}
-								style={{ background: colors[i] }}
-							>
-								{i === 0 && (
-									<RiGlassesLine className="text-[2.8rem] bg-[--tag] rounded-full p-[6px] mb-[-6px]" />
-								)}
-								{i === 1 && <SideNavIcons i={1} color={'#2d2d2b'} w={35} />}
-								{i === 2 && (
-									<Image src={icons.trash} alt="archive" className="w-[35px]" />
-								)}
-								<p className="text-[--black] !font-semibold pt-5 pb-1">
-									{label}
-								</p>
-								<h1 className="text-[--brand]">{value}</h1>
-							</div>
-						))}
+
+	// LOAD CHECKLIST DATA
+	useEffect(() => {
+		callGetInspectionList();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	return isLoading ? (
+		<Loading notFull />
+	) : successfullyLoaded ? (
+		<>
+			<div className="md:p-10 h-screen overflow-auto">
+				<h1 className="h-[15vh] lg:h-auto flex-center text-center">
+					QC Advanced
+				</h1>
+				{/* OVERVIEW */}
+				<div className="hidden lg:block w-full bg-white rounded-[--rounding] p-7 my-7">
+					<div className="w-full h-full space-y-5">
+						<h1 className="text-[--black]">Overview</h1>
+						<div className="grid grid-cols-3 gap-5">
+							<OverviewCard
+								i={0}
+								label="Number of Businesses"
+								value={overview[0]}
+							/>
+							<OverviewCard i={1} label="Pending Actions" value={overview[1]} />
+							<OverviewCard
+								i={2}
+								label="Training Materials"
+								value={overview[2]}
+							/>
+						</div>
 					</div>
 				</div>
-			</div>
-			{/* DASHBOARD CONTENT */}
-			<div className="dashboard-content-box">
-				<div className="!hidden md:!flex p-7 pb-0 flex-v-center justify-between">
-					<h2 className="text-[--black]">Inspections</h2>
+				{/* DASHBOARD CONTENT */}
+				<div className="dashboard-content-box">
+					<div className="!hidden md:!flex p-7 pb-0 flex-v-center justify-between">
+						<h2 className="text-[--black]">Inspections</h2>
+						<div className="flex-v-center gap-2">
+							<motion.button
+								type="button"
+								whileTap="tap"
+								whileHover="hover"
+								variants={variants.buttonClick}
+								onClick={() => setShowArchive(true)}
+								className="flex-v-center py-3 px-[10px] md:px-3 !gap-2 bg-[--highlight-bg] border border-[--brand] rounded-lg"
+							>
+								<Image
+									src={icons.archive}
+									alt={'invite new user'}
+									className={`w-[18px] min-w-[18px] max-w-[18px] h-auto object-cover md:w-[20px] md:min-w-[20px] md:max-w-[20px]`}
+								/>
+								<p className="black-text">My Archive</p>
+							</motion.button>
+							<div className="md:hidden lg:block">
+								<Button
+									onClick={() => console.log(true)}
+									text="Complete Inspection"
+								/>
+							</div>
+						</div>
+					</div>
 
-					<button className="btn-1 gap-2 flex items-center justify-center shadow-md !shadow-[#00000044] !w-auto">
-						<span className="pr-1">Complete Inspection</span>
-					</button>
+					{inspectionData && inspectionData.length > 0 ? (
+						<div className="w-full px-4 py-5 md:p-7 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3">
+							<motion.button
+								type="button"
+								whileTap="tap"
+								whileHover="hover"
+								variants={variants.buttonClick}
+								onClick={() => setShowArchive(true)}
+								className="flex-v-center py-3 px-[10px] md:px-3 !gap-2 bg-[--highlight-bg] border border-[--brand] rounded-lg md:hidden"
+							>
+								<Image
+									src={icons.archive}
+									alt={'invite new user'}
+									className={`w-[18px] min-w-[18px] max-w-[18px] h-auto object-cover md:w-[20px] md:min-w-[20px] md:max-w-[20px]`}
+								/>
+								<p className="black-text">My Archive</p>
+							</motion.button>
+							{inspectionData.map((inspection, i) => (
+								<InspectionCard
+									key={i}
+									inspectionContent={inspection}
+									title={inspection.name}
+									percentage={inspection.percentage}
+									completed={inspection.ans_yes_count}
+									total={inspection.ans_yes_no_count}
+									toggled={activeInspection === i}
+									onClick={() => showInspectionDetails(i)}
+									userId={userId}
+									business_checklist_id={inspection.business_checklist_id}
+									archiveList={archiveList}
+									setArchiveList={setArchiveList}
+									inspectionData={inspectionData}
+									setInspectionData={setInspectionData}
+								/>
+							))}
+							<div className="lg:hidden pt-5">
+								<Button
+									onClick={() => console.log(true)}
+									text="Complete Inspection"
+								/>
+							</div>
+						</div>
+					) : (
+						<div className="w-full h-full min-h-[50vh]">
+							<Empty text="No Checklist Added" />
+						</div>
+					)}
 				</div>
-				<div className="w-full px-4 py-5 md:p-7 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3">
-					{inspectionData.map((inspection, i) => (
-						<InspectionCard
-							key={i}
-							title={inspection.title}
-							percentage={0}
-							completed={0}
-							total={2}
-							toggled={activeInspection === i}
-							onClick={() => showInspectionDetails(i)}
+
+				{toggleInspectionDetails && (
+					<SidePopupWrapper
+						close={() => setToggleInspectionDetails(false)}
+						title={inspectionData[activeInspection].name}
+					>
+						<InspectionDetails
+							userId={userId}
+							checklistId={
+								inspectionData[activeInspection].business_checklist_id
+							}
+							businessId={businessId}
 						/>
-					))}
-				</div>
-			</div>
+					</SidePopupWrapper>
+				)}
 
-			{toggleInspectionDetails && (
-				<SidePopupWrapper
-					close={() => setToggleInspectionDetails(false)}
-					title={inspections[activeInspection]}
-				>
-					<InspectionDetails
-						data={inspectionData[activeInspection].data}
-						addNote={openAddNote}
-						addMedia={openAddMedia}
-						addAction={openAddAction}
+				{showArchive && (
+					<InspectionsArchive
+						close={() => setShowArchive(false)}
+						userId={userId}
+						archiveList={archiveList}
+						setArchiveList={setArchiveList}
+						inspectionData={inspectionData}
+						setInspectionData={setInspectionData}
+						sidebar
+						user
 					/>
-				</SidePopupWrapper>
-			)}
-
-			{showAddNote && (
-				<TitlePopupWrapper title="Add Note" close={() => setShowAddNote(false)}>
-					<MiniAddNote close={() => setShowAddNote(false)} />
-				</TitlePopupWrapper>
-			)}
-			{showAddMedia && (
-				<TitlePopupWrapper
-					title="Upload Photo"
-					close={() => setShowAddMedia(false)}
-				>
-					<MiniAddMedia close={() => setShowAddMedia(false)} />
-				</TitlePopupWrapper>
-			)}
-			{showAddAction && (
-				<TitlePopupWrapper title="Action" close={() => setShowAddAction(false)}>
-					<MiniAddAction close={() => setShowAddAction(false)} />
-				</TitlePopupWrapper>
-			)}
-		</div>
+				)}
+			</div>{' '}
+		</>
+	) : (
+		<LoadingFailed />
 	);
 }

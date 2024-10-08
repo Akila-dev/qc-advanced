@@ -120,21 +120,17 @@ export const updateChecklist = async (
 
 		formData.append('name', checklistData.name);
 		formData.append('assignee_id', checklistData.assignee_id);
-		// formData.append('sub_checklist', checklistData.sub_checklist[0]);
 
-		// for (const val of checklistData.sub_checklist) {
-		// 	formData.append('sub_checklist', val);
-		// }
-
-		// checklistData.sub_checklist.map((val) => {
-		// 	formData.append('sub_checklist', val);
-		// });
 		formData.append(
 			'sub_checklist',
 			JSON.stringify(checklistData.sub_check_list_dtl)
 		);
-		// console.log(checklistData.sub_check_list_dtl);
-		// console.log(formData.getAll('sub_checklist'));
+		console.log('subchecklist', checklistData.sub_check_list_dtl);
+
+		// checklistData.sub_check_list_dtl.map((val) =>
+		// 	formData.append('sub_checklist', JSON.stringify(val))
+		// );
+		console.log('formData', formData.getAll('sub_checklist'));
 
 		formData.append('business_checklist_id', business_checklist_id);
 		formData.append('user_id', user_id);

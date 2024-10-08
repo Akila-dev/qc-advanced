@@ -123,7 +123,7 @@ const InspectionCard = ({
 				}}
 				whileHover={{ x: sidebar ? -50 : 0 }}
 				transition={{ type: 'spring', duration: 1 }}
-				dragElastic={0.1}
+				dragElastic={sidebar ? 0.1 : 0}
 				className={`slide-animated-children flex justify-between items-center w-full bg-[--card] border border-[--border] rounded-lg gap-4 relative z-[1] ${
 					sidebar ? '' : 'lg:flex-col lg:items-start lg:p-[14px]'
 				}`}
@@ -134,14 +134,29 @@ const InspectionCard = ({
 					}`}
 				>
 					<RiGlassesLine className="text-[2rem] bg-[--tag] rounded-full p-[6px]" />
-					<button className="p-2 bg-[--highlight-bg-2] rounded-md hover:shadow-xl transition duration-500">
-						<Image src={icons.archive} alt="caret" className="w-[20px]" />
-					</button>
+					<motion.button
+						whileTap={{ scale: 0.9 }}
+						whileHover={{ scale: 1.2 }}
+						transition={{ type: 'spring', bounce: 0.5, duration: 1.5 }}
+						type="button"
+						onClick={() => archiveUnarchive()}
+						className="p-2 bg-[--highlight-bg-2] rounded-md"
+					>
+						<Image
+							src={archived ? icons.upload2 : icons.archive}
+							alt="caret"
+							className="w-[20px]"
+						/>
+					</motion.button>
 				</div>
-				<button
+				<motion.button
+					whileTap={{ scale: 0.9 }}
+					whileHover={{ scale: sidebar ? 1 : 0.95 }}
+					transition={{ type: 'spring', bounce: 0.5, duration: 1.5 }}
+					type="button"
 					onClick={onClick}
-					className={`flex justify-between items-center w-full p-[14px]   bg-[--card] rounded-lg gap-3 transition duration-700 ${
-						sidebar ? '' : 'lg:p-0 lg:py-2 lg:hover:scale-95'
+					className={`flex justify-between items-center w-full p-[14px]   bg-[--card] rounded-lg gap-3 ${
+						sidebar ? '' : 'lg:p-0 lg:py-2 lg:hover:scale-9'
 					}`}
 				>
 					<div className="flex-v-center">
@@ -151,7 +166,7 @@ const InspectionCard = ({
 					<p className="black-text">
 						{completed}/{total} ({percentage}%)
 					</p>
-				</button>
+				</motion.button>
 			</motion.div>
 			<motion.div
 				style={{ scale, opacity }}

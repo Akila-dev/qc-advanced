@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -13,6 +13,8 @@ import {
 	EditProfile,
 	ChangePassword,
 	DeleteAccount,
+	SignOutPopup,
+	Loading,
 } from '../../../components';
 import { SidePopupWrapper } from '../../../wrappers';
 import { SideNavIcons } from '../../../components/svgs';
@@ -49,15 +51,23 @@ const navs = [
 ];
 
 export default function Settings() {
+	const [isLoading, setIsLoading] = useState(true);
 	const [activeTab, setActiveTab] = useState(0);
 	const [showPopup, setShowPopup] = useState(false);
+	const [showLogout, setShowLogout] = useState(false);
+
+	useEffect(() => {
+		setIsLoading(false);
+	}, []);
 
 	const openTab = (i) => {
 		setActiveTab(i);
 		setShowPopup(true);
 	};
 
-	return (
+	return isLoading ? (
+		<Loading notFull />
+	) : (
 		<div className="md:p-10 h-screen overflow-auto scroll-2">
 			<h1 className="h-[15vh] lg:h-auto flex-center text-center lg:pb-7">
 				Settings
@@ -79,7 +89,7 @@ export default function Settings() {
 							<SettingsNavButton
 								icon={navs[navs.length - 1].icon}
 								label={navs[navs.length - 1].label}
-								onClick={() => openTab(navs.length - 1)}
+								onClick={() => setShowLogout(true)}
 							/>
 						</div>
 					</div>
@@ -116,6 +126,8 @@ export default function Settings() {
 					</SidePopupWrapper>
 				)}
 			</div>
+
+			{showLogout && <SignOutPopup close={() => setShowLogout(false)} />}
 		</div>
 	);
 }

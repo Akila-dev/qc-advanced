@@ -83,7 +83,7 @@ const ContactUs = () => {
 				<SelectInputRHF
 					icon={icons.details}
 					label="Subject"
-					options={['Subscription', 'Need To Know']}
+					options={['Subscription', 'Need To Know', 'Question', 'Others']}
 					setValue={setValue}
 					name="subject"
 					rhf={{ ...register('subject') }}

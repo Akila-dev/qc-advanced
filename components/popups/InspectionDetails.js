@@ -10,7 +10,7 @@ import {
 	LoadingFailed,
 	Empty,
 	MiniAddAction,
-	MiniAddMedia,
+	MiniAddMediaSubchecklist,
 	MiniAddNote,
 	FormError,
 } from '@/components';
@@ -26,6 +26,7 @@ import { getSingleChecklistData } from '@/actions/getChecklist';
 import {
 	answerSubChecklistQuestion,
 	addSubChecklistNote,
+	deleteSubChecklistMedia,
 } from '@/config/answerSubChecklist';
 
 const InspectionDetails = ({ userId, checklistId, businessId }) => {
@@ -49,6 +50,7 @@ const InspectionDetails = ({ userId, checklistId, businessId }) => {
 		setSuccessfullyLoaded(false);
 		getSingleChecklistData(checklistId, businessId).then((data) => {
 			// console.log(data?.checklist?.data?.sub_check_list_dtl);
+			console.log(data?.checklist?.data);
 			// console.log(data?.assignees?.data);
 			let allAssignees = data?.assignees?.data?.filter((val) => val.username);
 
@@ -74,6 +76,21 @@ const InspectionDetails = ({ userId, checklistId, businessId }) => {
 			if (data.response) {
 				let newInspectionData = [...inspectionData];
 				newInspectionData[i].answer = answer;
+				setInspectionData(newInspectionData);
+			} else {
+				setError([i, data.error]);
+			}
+			setPendingSubChecklist(-1);
+		});
+	};
+
+	const deleteImage = (user_id, scmm_id, i) => {
+		setError('');
+		setPendingSubChecklist(i);
+		deleteSubChecklistMedia(userId, scmm_id).then((data) => {
+			if (data.response) {
+				let newInspectionData = [...inspectionData];
+				newInspectionData[i].media_list = data?.data?.data;
 				setInspectionData(newInspectionData);
 			} else {
 				setError([i, data.error]);
@@ -163,12 +180,15 @@ const InspectionDetails = ({ userId, checklistId, businessId }) => {
 								</div>
 								<div className="grid grid-cols-3 gap-2 pt-4">
 									{item.media_list.map((img, k) => (
-										<div key={k} className="relative">
+										<div
+											key={k}
+											className="relative rounded-md overflow-hidden bg-[--white]"
+										>
 											<Image
-												src={img}
+												src={img.media}
 												alt={item.question + ' ' + k}
-												w={100}
-												h={100}
+												width={100}
+												height={100}
 												className="w-full h-[90px] object-cover rounded-md"
 											/>
 											<motion.button
@@ -177,6 +197,7 @@ const InspectionDetails = ({ userId, checklistId, businessId }) => {
 												variants={variants.buttonClick}
 												type="button"
 												className="p-1 bg-[--transparent-bg] rounded-full absolute top-2 right-2"
+												onClick={() => deleteImage(userId, img.scmm_id, k)}
 											>
 												<Image
 													src={icons.bin}
@@ -266,9 +287,23 @@ const InspectionDetails = ({ userId, checklistId, businessId }) => {
 			{showAddMedia && (
 				<TitlePopupWrapper
 					title="Upload Photo"
-					close={() => setShowAddMedia(false)}
+					close={() => {
+						setPendingSubChecklist(-1);
+						setShowAddMedia(false);
+					}}
 				>
-					<MiniAddMedia close={() => setShowAddMedia(false)} />
+					<MiniAddMediaSubchecklist
+						close={() => {
+							setPendingSubChecklist(-1);
+							setShowAddMedia(false);
+						}}
+						userId={userId}
+						bsc_id={activeSubchecklist_id}
+						setError={setError}
+						index={pendingSubChecklist}
+						inspectionData={inspectionData}
+						setInspectionData={setInspectionData}
+					/>
 				</TitlePopupWrapper>
 			)}
 			{showAddAction && (

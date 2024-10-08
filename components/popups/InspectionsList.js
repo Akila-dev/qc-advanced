@@ -9,9 +9,6 @@ import { images, icons, variants } from '../../constants';
 import {
 	InspectionCard,
 	InspectionDetails,
-	// MiniAddAction,
-	// MiniAddMedia,
-	// MiniAddNote,
 	AddedChecklists,
 	SelectChecklist,
 	AddInvitee,
@@ -28,14 +25,7 @@ import { SideNavIcons } from '../../components/svgs';
 // API RELATED
 import { getListOfChecklist } from '@/actions/getChecklist';
 
-// const invitedUsers = [
-// 	{
-// 		img: images.profile,
-// 	},
-// ];
-
 export default function InspectionsList({ close, title, businessId, userId }) {
-	const [type, setType] = useState('unarchive');
 	const [isLoading, setIsLoading] = useState(true);
 	const [successfullyLoaded, setSuccessfullyLoaded] = useState();
 	const [inspectionData, setInspectionData] = useState();
@@ -56,15 +46,10 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 		await setToggleInspectionDetails(true);
 	};
 
-	// ADDING NOTES AND THE LIKES
-	const [showAddNote, setShowAddNote] = useState(false);
-	const [showAddMedia, setShowAddMedia] = useState(false);
-	const [showAddAction, setShowAddAction] = useState(false);
-
 	const callGetInspectionList = () => {
 		setIsLoading(true);
 		setSuccessfullyLoaded(false);
-		getListOfChecklist(businessId, type).then((data) => {
+		getListOfChecklist(businessId).then((data) => {
 			console.log(data);
 			setInspectionData(data?.checklist?.data?.checklist_data);
 			setArchiveList(data?.archive?.data);
@@ -81,19 +66,6 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 		callGetInspectionList();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	// const openAddNote = (bsc_id) => {
-	// 	setActiveSubchecklist_id(bsc_id);
-	// 	setShowAddNote(true);
-	// };
-	// const openAddMedia = (bsc_id) => {
-	// 	setActiveSubchecklist_id(bsc_id);
-	// 	setShowAddMedia(true);
-	// };
-	// const openAddAction = (bsc_id) => {
-	// 	setActiveSubchecklist_id(bsc_id);
-	// 	setShowAddAction(true);
-	// };
 
 	return (
 		<>
@@ -177,24 +149,6 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 					<LoadingFailed />
 				)}
 			</SidePopupWrapper>
-			{/* {showAddNote && (
-				<TitlePopupWrapper title="Add Note" close={() => setShowAddNote(false)}>
-					<MiniAddNote close={() => setShowAddNote(false)} />
-				</TitlePopupWrapper>
-			)}
-			{showAddMedia && (
-				<TitlePopupWrapper
-					title="Upload Photo"
-					close={() => setShowAddMedia(false)}
-				>
-					<MiniAddMedia close={() => setShowAddMedia(false)} />
-				</TitlePopupWrapper>
-			)}
-			{showAddAction && (
-				<TitlePopupWrapper title="Action" close={() => setShowAddAction(false)}>
-					<MiniAddAction close={() => setShowAddAction(false)} />
-				</TitlePopupWrapper>
-			)} */}
 
 			{toggleInspectionDetails && (
 				<SidePopupWrapper

@@ -41,7 +41,7 @@ export const getBusinessList = async () => {
 		const businesses = await res.json();
 		const overview = await overview_res.json();
 
-		if (res.ok && businesses && overview_res && overview) {
+		if (res.ok && businesses && overview_res.ok && overview) {
 			return { data: businesses, overview: overview };
 		}
 	} catch (error) {

@@ -53,10 +53,6 @@ export default function LogIn() {
 		setError('');
 		setSuccess('');
 
-		// console.log(values);
-		// console.log(selectedOption);
-		// console.log('OK');
-
 		setIsPending(true);
 
 		signIn('credentials', {
