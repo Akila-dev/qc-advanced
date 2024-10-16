@@ -15,6 +15,7 @@ import {
 	DeleteAccount,
 	SignOutPopup,
 	Loading,
+	PurchaseMini,
 } from '../../../components';
 import { SidePopupWrapper } from '../../../wrappers';
 import { SideNavIcons } from '../../../components/svgs';
@@ -39,6 +40,10 @@ const navs = [
 	{
 		label: 'Terms & Conditions',
 		icon: icons.noteList,
+	},
+	{
+		label: 'Subscriptions',
+		icon: icons.category,
 	},
 	{
 		label: 'Delete Account',
@@ -84,6 +89,7 @@ export default function Settings() {
 									icon={nav.icon}
 									label={nav.label}
 									onClick={() => openTab(i)}
+									active={i === activeTab}
 								/>
 							))}
 							<SettingsNavButton
@@ -101,6 +107,8 @@ export default function Settings() {
 								{activeTab === 2 && <PrivacyPolicy />}
 								{activeTab === 3 && <ContactUs />}
 								{activeTab === 4 && <TermsAndConditions />}
+								{activeTab === 5 && <PurchaseMini />}
+								{activeTab === 6 && <DeleteAccount />}
 							</div>
 						</div>
 					</div>
@@ -122,6 +130,8 @@ export default function Settings() {
 							{activeTab === 2 && <PrivacyPolicy />}
 							{activeTab === 3 && <ContactUs />}
 							{activeTab === 4 && <TermsAndConditions />}
+							{activeTab === 5 && <PurchaseMini />}
+							{activeTab === 6 && <DeleteAccount />}
 						</div>
 					</SidePopupWrapper>
 				)}

@@ -43,6 +43,7 @@ export { default as Empty } from './dashboard/Empty';
 export { default as DragAndDrop } from './dashboard/DragAndDrop';
 export { default as LoadingFailed } from './dashboard/LoadingFailed';
 export { default as SignOutPopup } from './dashboard/SignOutPopup';
+export { default as LoggedInCard } from './dashboard/LoggedInCard';
 
 // Popups
 export { default as AddAction } from './popups/AddAction';
@@ -67,6 +68,7 @@ export { default as InspectionsList } from './popups/InspectionsList';
 export { default as AddInvitee } from './popups/AddInvitee';
 export { default as InspectionsArchive } from './popups/InspectionsArchive';
 export { default as Purchase } from './popups/Purchase';
+export { default as PurchaseMini } from './popups/PurchaseMini';
 
 // landing Pages
 export { default as Navbar } from './landing/Navbar';
