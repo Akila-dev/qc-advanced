@@ -37,12 +37,14 @@ const LoggedInCard = ({ logout, scrolledOffTop }) => {
 			>
 				<button
 					className={`flex-v-center rounded-[2rem] transition duration-700 ${
-						scrolledOffTop ? 'bg-[--card] px-3 py-2 !gap-1' : '!gap-[6px]'
+						scrolledOffTop
+							? 'bg-[--card] px-2 md:px-3 py-[6px] md:py-2 !gap-1'
+							: '!gap-[6px]'
 					}`}
 					type="button"
 					onClick={() => setShowOptions((prev) => !prev)}
 				>
-					<div className="w-full hidden lg:block">
+					<div className="w-full hidden md:block">
 						<p className="text-sm truncate leading-[110%] text-[--black]">
 							{session?.user?.name.split(' ')[0]}{' '}
 							{session?.user?.name.split(' ')[1][0]}
@@ -52,7 +54,7 @@ const LoggedInCard = ({ logout, scrolledOffTop }) => {
 					</p> */}
 					</div>
 					<PiCaretDownBold
-						className={`transition duration-700 ${
+						className={`transition duration-700 text-sm md:text-base ${
 							showOptions ? 'rotate-180' : 'rotate-0'
 						}`}
 					/>
@@ -101,8 +103,8 @@ const LoggedInCard = ({ logout, scrolledOffTop }) => {
 							exit="exit"
 							// variants={variants.slideInRight}
 							// transition={{ staggerChildren: 0.01 }}
-							className={`absolute bg-[--white] rounded-xl w-[220px] p-5 pb-2 shadow-lg transition-all duration-700 overflow-hidden ${
-								scrolledOffTop ? 'top-[70px]' : 'top-[45px]'
+							className={`absolute bg-[--white] rounded-xl w-[80vw] max-w-[220px] p-5 pb-2 shadow-lg transition-all duration-700 overflow-hidden ${
+								scrolledOffTop ? 'top-[60px] lg:top-[70px]' : 'top-[45px]'
 							}`}
 						>
 							<motion.div className="w-full flex-center flex-col !gap-1">

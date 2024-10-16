@@ -103,31 +103,39 @@ const Navbar = ({ loginButton }) => {
 					</div>
 					{/* <div className="!hidden lg:!block">{loginButton}</div> */}
 
-					{session ? (
+					<div className="hidden lg:block">
+						{session ? (
+							<LoggedInCard
+								logout={() => setShowLogout(true)}
+								scrolledOffTop={scrolledOffTop}
+							/>
+						) : (
+							<div className="flex-v-center justify-end min-w-[220px] !gap-2 !hidden lg:!flex">
+								<Link
+									href="/api/auth/signin?callbackUrl=/auth-in"
+									className="btn-2-v2 !bg-transparent hover:!bg-[--card] !capitalize"
+								>
+									Sign In
+								</Link>
+								<Link href="/auth/admin/about" className="btn-1-v2 !capitalize">
+									Sign Up
+								</Link>
+							</div>
+						)}
+					</div>
+					<div className="flex-v-center !gap-2 lg:hidden">
 						<LoggedInCard
 							logout={() => setShowLogout(true)}
 							scrolledOffTop={scrolledOffTop}
 						/>
-					) : (
-						<div className="flex-v-center justify-end min-w-[220px] !gap-2 !hidden lg:!flex">
-							<Link
-								href="/api/auth/signin?callbackUrl=/auth-in"
-								className="btn-2-v2 !bg-transparent hover:!bg-[--card] !capitalize"
-							>
-								Sign In
-							</Link>
-							<Link href="/auth/admin/about" className="btn-1-v2 !capitalize">
-								Sign Up
-							</Link>
-						</div>
-					)}
-					<button className="lg:hidden" onClick={() => setMenuToggled(true)}>
-						{menuToggled ? (
-							<MdClose className="text-[--black] text-2xl" />
-						) : (
-							<CgMenuLeftAlt className="text-[--black] text-2xl" />
-						)}
-					</button>
+						<button className="lg:hidden" onClick={() => setMenuToggled(true)}>
+							{menuToggled ? (
+								<MdClose className="text-[--black] text-2xl" />
+							) : (
+								<CgMenuLeftAlt className="text-[--black] text-2xl" />
+							)}
+						</button>
+					</div>
 				</div>
 				{/* popup */}
 				<AnimatePresence>
@@ -166,33 +174,7 @@ const Navbar = ({ loginButton }) => {
 										</Link>
 									))}
 									{/* {loginButton} */}
-									{session ? (
-										<div className="flex-v-center flex-col !gap-[1.5vh] mt-[2vh]">
-											<motion.p
-												variants={slideInBottom}
-												className="!text-[--black] !leading-[120%] btn-1-v2 !bg-transparent pointer-events-none !px-0"
-											>
-												Logged In As{' '}
-												<span className="inline-block capitalize text-[--brand]">
-													{session?.user?.role}
-												</span>
-											</motion.p>
-											<motion.a
-												href="/api/auth/signout?callbackUrl=/"
-												variants={slideInBottom}
-												whileHover={{ scale: 1.1 }}
-												whileTap={{ scale: 0.9 }}
-												transition={{
-													type: 'spring',
-													stiffness: 400,
-													damping: 10,
-												}}
-												className="btn-1-v2 !capitalize"
-											>
-												Logout
-											</motion.a>
-										</div>
-									) : (
+									{!session && (
 										<div className="flex-v-center flex-col !gap-[1.5vh] mt-[2vh]">
 											<motion.a
 												href="/auth"
