@@ -38,6 +38,52 @@ export const solutionsData = [
 	},
 ];
 
+export const aboutData = [
+	{
+		image: landingImages.checklist,
+		heading: 'Our Mission',
+		text: 'At QC Advanced, our mission is to empower restaurants with the tools and expertise needed to deliver exceptional dining experiences. We believe that quality and safety are the cornerstones of success in the hospitality industry, and we are dedicated to helping our clients achieve and exceed these standards.',
+	},
+	{
+		image: landingImages.diamond,
+		heading: 'Our Story',
+		text: 'Founded by a team of industry veterans, QC Advanced was born out of a desire to streamline quality control processes in restaurants. With backgrounds in food safety, operations management, and technology, our founders recognized the need for a comprehensive solution that could address the unique challenges faced by modern restaurants.',
+	},
+	{
+		image: landingImages.flower,
+		heading: 'Our Approach',
+		text: "At QC Advanced, we take a holistic approach to quality control. We understand that maintaining high standards is not just about ticking boxes; it's about fostering a culture of excellence and continuous improvement. Our solutions are designed to be both practical and transformative, providing restaurants with the tools they need to succeed in a competitive market.",
+	},
+	{
+		image: landingImages.diamond,
+		heading: 'Our Team',
+		text: 'Our team is comprised of seasoned professionals with a passion for quality and innovation. We bring together expertise from various fields to provide comprehensive solutions that meet the diverse needs of our clients. Our collaborative approach ensures that we are always at the forefront of industry trends and technological advancements.',
+	},
+];
+
+export const valuesData = [
+	{
+		icon: landingImages.checklist,
+		title: 'Integrity',
+		desc: 'We are committed to honesty and transparency in all our interactions.',
+	},
+	{
+		icon: landingImages.diamond,
+		title: 'Excellence',
+		desc: 'We strive for excellence in everything we do, from our products to our customer service.',
+	},
+	{
+		icon: landingImages.flower,
+		title: 'Innovation',
+		desc: 'We embrace change and continuously seek new ways to improve and innovate.',
+	},
+	{
+		icon: landingImages.diamond,
+		title: 'Customer-Centric',
+		desc: 'Our clients are at the heart of everything we do. We work closely with them to understand their needs and deliver solutions that exceed expectations.',
+	},
+];
+
 export const contactData = [
 	{
 		icon: landingImages.phone,

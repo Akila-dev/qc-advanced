@@ -90,7 +90,7 @@ const About = () => {
 						scrollYProgress={scrollYProgress}
 					/>
 				</div>
-				<div className="lg:mt-[-200px] w-full relative pt-[40px] md:pt-[50px] lg:pt-0 lg:h-[449px]">
+				<div className="lg:mt-[-200px] w-full relative pt-[40px] md:pt-[50px] lg:pt-0 lg:h-[449px] pointer-events-none">
 					<div className="hidden lg:flex items-center justify-center overflow-hidden w-full h-full pr-[10%] xl:pr-12">
 						<WavyLine />
 					</div>

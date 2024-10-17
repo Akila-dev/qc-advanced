@@ -10,8 +10,9 @@ import {
 	useMotionTemplate,
 	circOut,
 } from 'framer-motion';
+import { Button } from '@/components';
 
-import { slideInBottom2 } from '../../constants/variants';
+import { slideInBottom2 } from '@/constants/variants';
 
 // const buttonColors = ["#b62e32","card"]
 const SectionBlock = ({
@@ -56,16 +57,19 @@ const SectionBlock = ({
 				<motion.div
 					// style={{ translateY: parallax1 }}
 					variants={slideInBottom2}
-					className="space-x-2 pt-5"
+					className="space-x-2 pt-5 flex "
 				>
 					{buttons.map((data, i) => (
-						<Link
-							key={i}
-							href={data.link}
-							className={`!rounded-[2rem] ${i === 0 ? 'btn-1-v2' : 'btn-2-v2'}`}
-						>
-							{data.text}
-						</Link>
+						<div key={i}>
+							<Button
+								key={i}
+								text={data.text}
+								link={data.link}
+								className={`!rounded-[2rem] ${
+									i === 0 ? 'btn-1-v2' : 'btn-2-v2'
+								}`}
+							/>
+						</div>
 					))}
 				</motion.div>
 			)}

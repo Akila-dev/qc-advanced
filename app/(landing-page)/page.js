@@ -31,7 +31,12 @@ export default function Home() {
 			<main className="flex flex-col gap-[50px] md:gap-[70px] xl:gap-[100px] landing overflow-auto snap-y snap-mandatory">
 				<Header />
 				<About />
-				<CardCTA />
+				<CardCTA
+					header="Join the QC Advanced Community"
+					desc="Become part of a community committed to quality and excellence.
+						Explore our resources, connect with industry experts, and take your
+						restaurant to the next level with QC Advanced."
+				/>
 				<OurSolutions />
 				<WhyChooseUs />
 				<Testimonials />
