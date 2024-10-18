@@ -15,6 +15,7 @@ import { FaCheck } from 'react-icons/fa';
 
 import { landingImages } from '../constants';
 import { slideInBottom, popIn } from '../constants/variants';
+import { Button } from '@/components';
 
 const Header = () => {
 	const container = useRef(null);
@@ -61,20 +62,17 @@ const Header = () => {
 						Never at water me might. On formed merits hunted unable merely by mr
 						whence or. Possession the unpleasing simplicity her uncommonly.
 					</motion.p>
-					<motion.div variants={slideInBottom} className="">
-						<motion.button
-							variants={slideInBottom}
-							whileHover={{ scale: 1.1 }}
-							whileTap={{ scale: 0.9 }}
-							transition={{
-								type: 'spring',
-								stiffness: 400,
-								damping: 10,
-							}}
-							className="btn-1-v2 !w-auto"
-						>
-							Get Started Now
-						</motion.button>
+					<motion.div
+						variants={slideInBottom}
+						className="flex justify-center lg:justify-start w-full pt-3"
+					>
+						<div className="flex w-ful">
+							<Button
+								link="/auth/admin/about"
+								text="Get Started Now"
+								className="btn-1 !normal-case"
+							/>
+						</div>
 					</motion.div>
 					<motion.div className="bottom-0 left-0 py-5 mt-3 flex-v-center justify-center lg:absolute lg:justify-start">
 						<motion.p variants={slideInBottom} className="flex-v-center !gap-2">

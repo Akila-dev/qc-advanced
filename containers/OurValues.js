@@ -31,7 +31,11 @@ const OurValues = () => {
 					))}
 				</div>
 				<div className="">
-					<Button text="get in touch with us" link="#contact" />
+					<Button
+						text="Get in Touch with us"
+						link="#contact"
+						className="btn-1-v2"
+					/>
 				</div>
 			</div>
 		</div>

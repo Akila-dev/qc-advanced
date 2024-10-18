@@ -85,3 +85,4 @@ export { default as Footer } from './landing/Footer';
 export { default as Logo } from './landing/Logo';
 export { default as WavyLine } from './landing/WavyLine';
 export { default as IconBox } from './landing/IconBox';
+export { default as ComingSoon } from './landing/ComingSoon';

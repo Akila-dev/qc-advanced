@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { solutionsData } from '../textData/landingPageData';
 import { landingImages } from '../constants';
-import { SectionBlock, SoultionsCard } from '../components';
+import { SectionBlock, SoultionsCard, Button } from '../components';
 
 const OurSolutions = () => {
 	return (
@@ -31,9 +31,7 @@ const OurSolutions = () => {
 					))}
 				</div>
 				<div className="">
-					<Link href="/about" className="btn-1-v2">
-						More About QC
-					</Link>
+					<Button text="More About QC" link="/about" className="btn-1-v2" />
 				</div>
 			</div>
 		</div>

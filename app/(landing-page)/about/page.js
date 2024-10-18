@@ -10,7 +10,6 @@ import { SmoothScroll } from '@/wrappers';
 
 import {
 	HeaderAbout,
-	About,
 	OurValues,
 	WhyChooseUs,
 	Testimonials,
@@ -26,7 +25,7 @@ import {
 } from '@/components';
 import { slideInBottom2 } from '@/constants/variants';
 
-export default function Home() {
+export default function About() {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
@@ -61,7 +60,7 @@ export default function Home() {
 
 				<OurValues />
 				<SectionTextImage
-					tag="the future"
+					tag="THE FUTURE"
 					// image={image}
 					heading="Looking to the Future"
 					text="As we continue to grow, QC Advanced remains committed to its founding principles. We are excited to expand our reach and help more restaurants achieve their quality control goals. Join us on this journey towards excellence and discover the difference QC Advanced can make for your business."
