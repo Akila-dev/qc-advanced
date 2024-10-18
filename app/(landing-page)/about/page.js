@@ -17,7 +17,13 @@ import {
 	Blogs,
 	Contact,
 } from '@/containers';
-import { AppCTA, CardCTA, Loading, SectionBlock } from '@/components';
+import {
+	AppCTA,
+	CardCTA,
+	Loading,
+	SectionBlock,
+	SectionTextImage,
+} from '@/components';
 import { slideInBottom2 } from '@/constants/variants';
 
 export default function Home() {
@@ -33,37 +39,16 @@ export default function Home() {
 		<SmoothScroll>
 			<main className="flex flex-col gap-[50px] md:gap-[80px] xl:gap-[100px] landing overflow-auto snap-y snap-mandatory">
 				<HeaderAbout />
-				<div className="flex flex-col gap-[50px] md:gap-[50px] xl:gap-[50px]">
+				<div className="flex flex-col gap-[30px] md:gap-[50px] xl:gap-[50px]">
 					{aboutData.map(({ image, heading, text }, i) => (
-						<div
+						<SectionTextImage
 							key={i}
-							className={
-								i % 2
-									? 'container flex flex-col gap-[50px] md:flex-row-reverse overflow-hidden md:items-center'
-									: 'container grid md:grid-cols-2 gap-[50px] items-center overflow-hidden'
-							}
-						>
-							<motion.div
-								initial="initial"
-								exit="exit"
-								whileInView="animate"
-								variants={slideInBottom2}
-								className="w-full h-[250px]"
-							>
-								<Image
-									src={landingImages.cardCta}
-									alt="our mission"
-									width={800}
-									height={400}
-									className="w-full h-[250px]"
-								/>
-							</motion.div>
-							<SectionBlock
-								tag="ABOUT QC ADVANCED"
-								heading={heading}
-								text={text}
-							/>
-						</div>
+							i={i}
+							tag="ABOUT QC ADVANCED"
+							image={image}
+							heading={heading}
+							text={text}
+						/>
 					))}
 				</div>
 
@@ -75,6 +60,13 @@ export default function Home() {
 				/>
 
 				<OurValues />
+				<SectionTextImage
+					tag="the future"
+					// image={image}
+					heading="Looking to the Future"
+					text="As we continue to grow, QC Advanced remains committed to its founding principles. We are excited to expand our reach and help more restaurants achieve their quality control goals. Join us on this journey towards excellence and discover the difference QC Advanced can make for your business."
+					largerImage
+				/>
 				{/* <WhyChooseUs />
 				<Testimonials /> */}
 				{/* <Blogs /> */}

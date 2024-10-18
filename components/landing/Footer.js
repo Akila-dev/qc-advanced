@@ -17,7 +17,7 @@ import { contactData, socialData } from '@/textData/landingPageData';
 const Footer = () => {
 	return (
 		<div className="py-[50px] lg:py-[80px]">
-			<div className="container grid grid-cols-1 md:grid-cols-3">
+			<div className="container grid grid-cols-1 md:grid-cols-3 gap-5">
 				<div className="space-y-3">
 					<Logo />
 					<p className="lg:max-w-[225px] !leading-[150%]">
@@ -35,7 +35,7 @@ const Footer = () => {
 						</Link>
 					</div>
 				</div>
-				<div className="grid md:grid-cols-2">
+				<div className="grid md:grid-cols-2 gap-5">
 					<div className="flex flex-col gap-3">
 						<h3>Company</h3>
 						<Link href="/about" className="footer-link">

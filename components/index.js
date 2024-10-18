@@ -75,6 +75,7 @@ export { default as Navbar } from './landing/Navbar';
 export { default as Hero } from './landing/Hero';
 export { default as Steps } from './landing/Steps';
 export { default as SectionBlock } from './landing/SectionBlock';
+export { default as SectionTextImage } from './landing/SectionTextImage';
 export { default as CardCTA } from './landing/CardCTA';
 export { default as SoultionsCard } from './landing/SoultionsCard';
 export { default as TextButtonCard } from './landing/TextButtonCard';
