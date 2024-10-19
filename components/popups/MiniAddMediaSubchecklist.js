@@ -35,9 +35,11 @@ const MiniAddMediaSubchecklist = ({
 		facingMode: facingMode,
 	};
 	const containerRef = useRef();
+	const toggleRef = useRef();
 	const webcamRef = useRef(null);
 
 	const toggleFacingMode = () => {
+		console.log('toggle');
 		if (facingMode === 'user') {
 			setFacingMode({ exact: 'environment' });
 		} else {
@@ -148,7 +150,9 @@ const MiniAddMediaSubchecklist = ({
 		const handleClickOutside = (event) => {
 			if (
 				containerRef.current &&
-				!containerRef.current.contains(event.target)
+				!containerRef.current.contains(event.target) &&
+				toggleRef.current &&
+				!toggleRef.current.contains(event.target)
 			) {
 				setTakingScreenShot(false);
 			}
@@ -228,19 +232,22 @@ const MiniAddMediaSubchecklist = ({
 								</div>
 							)}
 						</Webcam>
+						<button
+							type="button"
+							className="absolute top-4 md:top-5 right-4 md:right-5 p-3 bg-black/50 back backdrop-blur rounded-full"
+							onClick={() => setTakingScreenShot()}
+						>
+							<IoMdClose className="text-[--white] lg:text-xl" />
+						</button>
+						<button
+							ref={toggleRef}
+							type="button"
+							className="absolute top-4 md:top-5 left-4 md:left-5 p-3 bg-black/50 back backdrop-blur rounded-full"
+							onClick={() => toggleFacingMode()}
+						>
+							<MdFlipCameraAndroid className="text-[--white] lg:text-xl" />
+						</button>
 					</div>
-					<button
-						className="absolute top-4 md:top-5 right-4 md:right-5 p-3 bg-black/50 back backdrop-blur rounded-full"
-						onClick={() => setTakingScreenShot()}
-					>
-						<IoMdClose className="text-[--white] lg:text-xl" />
-					</button>
-					<button
-						className="absolute top-4 md:top-5 left-4 md:left-5 p-3 bg-black/50 back backdrop-blur rounded-full"
-						onClick={() => toggleFacingMode()}
-					>
-						<MdFlipCameraAndroid className="text-[--white] lg:text-xl" />
-					</button>
 				</div>
 			)}
 		</div>

@@ -3,8 +3,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import Webcam from 'react-webcam';
-import Camera from 'react-html5-camera-photo';
-import 'react-html5-camera-photo/build/css/index.css';
 
 import { FaPlay } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
@@ -22,11 +20,12 @@ const AddSingle = ({ rhf, setValue, name, close, setImageName }) => {
 		facingMode: facingMode,
 	};
 	const containerRef = useRef();
+	const toggleRef = useRef();
 	const webcamRef = useRef(null);
 
 	const toggleFacingMode = () => {
 		if (facingMode === 'user') {
-			setFacingMode({ exact: 'environment' });
+			setFacingMode('environment');
 		} else {
 			setFacingMode('user');
 		}
@@ -81,11 +80,6 @@ const AddSingle = ({ rhf, setValue, name, close, setImageName }) => {
 		[webcamRef]
 	);
 
-	// const handleTakePhoto = (dataUri) => {
-	// 	let imagerr = converterDataURItoBlob(dataUri);
-	// 	console.log(imagerr);
-	// };
-
 	// On click on Gallery
 	const onImageChange = async (event) => {
 		// event.preventDefault();
@@ -109,7 +103,9 @@ const AddSingle = ({ rhf, setValue, name, close, setImageName }) => {
 		const handleClickOutside = (event) => {
 			if (
 				containerRef.current &&
-				!containerRef.current.contains(event.target)
+				!containerRef.current.contains(event.target) &&
+				toggleRef.current &&
+				!toggleRef.current.contains(event.target)
 			) {
 				setTakingScreenShot(false);
 			}
@@ -161,14 +157,6 @@ const AddSingle = ({ rhf, setValue, name, close, setImageName }) => {
 
 			{takingScreenShot && (
 				<div className="fixed top-0 left-0 right-0 bottom-0 h-full w-full bg-[--black] backdrop-blur-sm flex-center">
-					{/* <Camera
-						onTakePhoto={(dataUri) => {
-							handleTakePhoto(dataUri);
-						}}
-						// isMaxResolution={true}
-						// isFullscreen={true}
-					/> */}
-
 					<div ref={containerRef} className="lg:relative">
 						<Webcam
 							audio={false}
@@ -191,12 +179,15 @@ const AddSingle = ({ rhf, setValue, name, close, setImageName }) => {
 						</Webcam>
 					</div>
 					<button
+						type="button"
 						className="absolute top-4 md:top-5 right-4 md:right-5 p-3 bg-black/50 back backdrop-blur rounded-full"
 						onClick={() => setTakingScreenShot()}
 					>
 						<IoMdClose className="text-[--white] lg:text-xl" />
 					</button>
 					<button
+						ref={toggleRef}
+						type="button"
 						className="absolute top-4 md:top-5 left-4 md:left-5 p-3 bg-black/50 back backdrop-blur rounded-full"
 						onClick={() => toggleFacingMode()}
 					>
