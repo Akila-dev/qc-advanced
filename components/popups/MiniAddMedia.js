@@ -2,41 +2,72 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Image from 'next/image';
-// import Webcam from 'react-webcam';
+import Webcam from 'react-webcam';
 import Camera from 'react-html5-camera-photo';
 import 'react-html5-camera-photo/build/css/index.css';
 
 import { FaPlay } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
+import { MdFlipCameraAndroid } from 'react-icons/md';
 
 import { icons } from '../../constants';
 
 const AddSingle = ({ rhf, setValue, name, close, setImageName }) => {
 	const [takingScreenShot, setTakingScreenShot] = useState(false);
+	const [facingMode, setFacingMode] = useState('user');
 	const inputRef = useRef();
 
 	// Webcam Functions
 	const videoConstraints = {
-		facingMode: 'both',
+		facingMode: facingMode,
 	};
 	const containerRef = useRef();
 	const webcamRef = useRef(null);
-	// const takeScreenshot = useCallback(
-	// 	() => {
-	// 		const imageSrc = webcamRef.current.getScreenshot();
-	// 		console.log(imageSrc);
-	// 		setTakingScreenShot(false);
-	// 		setValue(name, imageSrc);
 
-	// 		close();
-	// 	},
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// 	[webcamRef]
-	// );
+	const toggleFacingMode = () => {
+		if (facingMode === 'user') {
+			setFacingMode({ exact: 'environment' });
+		} else {
+			setFacingMode('user');
+		}
+	};
+	const takeScreenshot = useCallback(
+		() => {
+			const imageSrc = webcamRef.current.getScreenshot();
+			console.log(imageSrc);
+			setTakingScreenShot(false);
+			setValue(name, imageSrc);
+
+			close();
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[webcamRef]
+	);
+
+	const converterDataURItoBlob = (dataURI) => {
+		let byteString;
+		let mimeString;
+		let ia;
+
+		if (dataURI.split(',')[0].indexOf('base64') >= 0) {
+			byteString = atob(dataURI.split(',')[1]);
+		} else {
+			byteString = encodeURI(dataURI.split(',')[1]);
+		}
+		// separate out the mime component
+		mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+		// write the bytes of the string to a typed array
+		ia = new Uint8Array(byteString.length);
+		for (var i = 0; i < byteString.length; i++) {
+			ia[i] = byteString.charCodeAt(i);
+		}
+		return new Blob([ia], { type: mimeString });
+	};
 
 	const handleTakePhoto = (dataUri) => {
-		// Do stuff with the photo...
-		console.log(dataUri);
+		let imagerr = converterDataURItoBlob(dataUri);
+		console.log(imagerr);
 	};
 
 	// On click on Gallery
@@ -114,39 +145,47 @@ const AddSingle = ({ rhf, setValue, name, close, setImageName }) => {
 
 			{takingScreenShot && (
 				<div className="fixed top-0 left-0 right-0 bottom-0 h-full w-full bg-[--black] backdrop-blur-sm flex-center">
-					<Camera
+					{/* <Camera
 						onTakePhoto={(dataUri) => {
 							handleTakePhoto(dataUri);
 						}}
-						isMaxResolution={true}
-					/>
+						// isMaxResolution={true}
+						// isFullscreen={true}
+					/> */}
+
+					<div ref={containerRef} className="lg:relative">
+						<Webcam
+							audio={false}
+							screenshotFormat="image/jpeg"
+							ref={webcamRef}
+							width={720}
+							height={1024}
+							videoConstraints={videoConstraints}
+						>
+							{({ getScreenshot }) => (
+								<div className="absolute bottom-0 left-0 flex-center w-full p-5">
+									<button
+										className="!bg-[--brand-50] rounded-full !w-[70px] lg:!w-[80px] h-[70px] lg:h-[80px] flex-center shadow-xl shadow-[--highlight-bg-2] hover:scale-125 transition duration-700 p-3"
+										onClick={() => takeScreenshot()}
+									>
+										<div className="!bg-[--brand] rounded-full !w-full !h-full flex-center shadow-xl shadow-[--highlight-bg-2] hover:scale-125 transition duration-700" />
+									</button>
+								</div>
+							)}
+						</Webcam>
+					</div>
 					<button
 						className="absolute top-4 md:top-5 right-4 md:right-5 p-3 bg-black/50 back backdrop-blur rounded-full"
 						onClick={() => setTakingScreenShot()}
 					>
 						<IoMdClose className="text-[--white] lg:text-xl" />
 					</button>
-					{/* <div ref={containerRef} className="lg:relative">
-						<Webcam
-							audio={false}
-							screenshotFormat="image/jpeg"
-							ref={webcamRef}
-							// width={720}
-							// height={1024}
-							videoConstraints={videoConstraints}
-						>
-							{({ getScreenshot }) => (
-								<div className="absolute bottom-0 left-0 flex-center w-full p-5">
-									<button
-										className="!bg-[--brand] rounded-full !w-[50px] lg:!w-[60px] h-[50px] lg:h-[60px] flex-center shadow-xl shadow-[--highlight-bg-2] hover:scale-125 transition duration-700"
-										onClick={() => takeScreenshot()}
-									>
-										<FaPlay className="text-[--white] ml-1 lg:text-xl" />
-									</button>
-								</div>
-							)}
-						</Webcam>
-					</div> */}
+					<button
+						className="absolute top-4 md:top-5 left-4 md:right-5 p-3 bg-black/50 back backdrop-blur rounded-full"
+						onClick={() => toggleFacingMode()}
+					>
+						<MdFlipCameraAndroid className="text-[--white] lg:text-xl" />
+					</button>
 				</div>
 			)}
 		</div>
