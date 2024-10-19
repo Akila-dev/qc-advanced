@@ -84,7 +84,7 @@ export default function SelectChecklist({
 	};
 
 	return (
-		<SidePopupWrapper title="Select Checklist" close={close} noBg={inspection}>
+		<SidePopupWrapper title="Select Checklist" close={close} noBg>
 			{isLoading ? (
 				<Loading inner />
 			) : successfullyLoaded ? (

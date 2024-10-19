@@ -242,6 +242,8 @@ export default function Dashboard() {
 					nextPopup={() => setShowAddedChecklists(true)}
 					setBusinessId={setBusinessId}
 					userId={userId}
+					businessList={businessList}
+					setBusinessList={setBusinessList}
 				/>
 			)}
 
@@ -256,6 +258,7 @@ export default function Dashboard() {
 						}}
 						businessId={businessId}
 						userId={userId}
+						inspection={false}
 					/>
 				)}
 			</AnimatePresence>

@@ -21,7 +21,14 @@ import { SidePopupWrapper, TitlePopupWrapper } from '../../wrappers';
 import { addBusiness } from '@/config/addBusinessAndChecklist';
 import { BusinessSchema } from '@/schemas';
 
-const AddBusiness = ({ close, nextPopup, setBusinessId, userId }) => {
+const AddBusiness = ({
+	close,
+	nextPopup,
+	setBusinessId,
+	userId,
+	businessList,
+	setBusinessList,
+}) => {
 	const [isPending, setIsPending] = useState();
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState('');
@@ -54,7 +61,13 @@ const AddBusiness = ({ close, nextPopup, setBusinessId, userId }) => {
 			setSuccess(data.success);
 			setBusinessId(data.business_id);
 
+			const prevBusinessList = [...businessList];
+
+			// console.log(data?.data);
+			// console.log(businessList);
+
 			if (data.success) {
+				setBusinessList([data?.data?.data, ...prevBusinessList]);
 				setTimeout(() => {
 					close();
 					nextPopup();

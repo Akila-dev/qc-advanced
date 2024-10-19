@@ -37,6 +37,7 @@ export const addBusiness = async (values, id) => {
 				return {
 					success: data.ResponseMsg,
 					business_id: data.data.business_id,
+					data: data,
 				};
 			} else {
 				return {

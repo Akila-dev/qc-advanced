@@ -68,7 +68,7 @@ export default function AddedChecklists({
 		<SidePopupWrapper
 			title="Select Checklist"
 			close={close}
-			noBg
+			noBg={inspection}
 			otherIcon={icons.plus2}
 			otherFunc={() => setShowAddChecklist(true)}
 		>
@@ -103,7 +103,13 @@ export default function AddedChecklists({
 								className="w-full bg-[--light-brand] border border-[--brand] px-5 py-2 rounded-lg black-text"
 							/>
 
-							<Button onClick={() => close()} text="done" />
+							<Button
+								onClick={() => {
+									// router.refresh();
+									close();
+								}}
+								text="done"
+							/>
 						</div>
 						<div className="popup-pb" />
 					</div>
@@ -117,7 +123,7 @@ export default function AddedChecklists({
 							}}
 							list={checklist}
 							setChecklist={setChecklist}
-							inspection
+							inspection={inspection}
 							businessId={businessId}
 						/>
 					)}
