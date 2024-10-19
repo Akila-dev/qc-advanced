@@ -113,7 +113,7 @@ const AddSingle = ({ rhf, setValue, name, close, setImageName }) => {
 			</button>
 
 			{takingScreenShot && (
-				<div className="fixed top-0 left-0 right-0 bottom-0 h-full w-full bg-[--black] backdrop-blur-sm p-4 md:p-7 flex-center">
+				<div className="fixed top-0 left-0 right-0 bottom-0 h-full w-full bg-[--black] backdrop-blur-sm flex-center">
 					<Camera
 						onTakePhoto={(dataUri) => {
 							handleTakePhoto(dataUri);
