@@ -79,7 +79,6 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 					<Loading inner />
 				) : successfullyLoaded ? (
 					<>
-						{/* DASHBOARD CONTENT */}
 						<div className="w-full px-4 py-5 md:p-5 grid grid-cols-1 gap-3">
 							<h2>Invite</h2>
 							<div className="flex gap-3 w-full overflow-auto flex-nowrap no-scrollbar pb-2">

@@ -63,12 +63,14 @@ export default function SelectChecklist({
 			}
 		});
 
+		console.log(businessId);
+
 		setSuccess('');
 		setError('');
 		setIsPending(true);
 
 		importTemplateChecklist(businessId, acmIds).then((data) => {
-			console.log(data?.data);
+			console.log(data);
 			setError(data.error);
 			setSuccess(data.success);
 			setIsPending(false);

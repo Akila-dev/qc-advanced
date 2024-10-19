@@ -155,6 +155,8 @@ export const importTemplateChecklist = async (businessId, acmIds) => {
 
 		const data = await res.json();
 
+		console.log(data);
+
 		if (res.ok && data.ResponseCode === 1) {
 			return {
 				data: data,

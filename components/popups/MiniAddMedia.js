@@ -31,18 +31,6 @@ const AddSingle = ({ rhf, setValue, name, close, setImageName }) => {
 			setFacingMode('user');
 		}
 	};
-	const takeScreenshot = useCallback(
-		() => {
-			const imageSrc = webcamRef.current.getScreenshot();
-			console.log(imageSrc);
-			setTakingScreenShot(false);
-			setValue(name, imageSrc);
-
-			close();
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[webcamRef]
-	);
 
 	const converterDataURItoBlob = (dataURI) => {
 		let byteString;
@@ -65,10 +53,38 @@ const AddSingle = ({ rhf, setValue, name, close, setImageName }) => {
 		return new Blob([ia], { type: mimeString });
 	};
 
-	const handleTakePhoto = (dataUri) => {
-		let imagerr = converterDataURItoBlob(dataUri);
-		console.log(imagerr);
-	};
+	const takeScreenshot = useCallback(
+		() => {
+			const imageSrc = webcamRef.current.getScreenshot();
+			const blob = converterDataURItoBlob(imageSrc);
+			const file = new File([blob], 'temp.jpg', {
+				type: 'image/jpeg',
+				lastModified: Date.now(),
+			});
+
+			// console.log(file);
+
+			if (blob && file) {
+				setValue(name, file);
+				setTakingScreenShot(false);
+			}
+
+			if (setImageName) {
+				setImageName('New Snapshot');
+			}
+
+			close();
+			// setTakingScreenShot(false);
+			// setValue(name, imageSrc);
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[webcamRef]
+	);
+
+	// const handleTakePhoto = (dataUri) => {
+	// 	let imagerr = converterDataURItoBlob(dataUri);
+	// 	console.log(imagerr);
+	// };
 
 	// On click on Gallery
 	const onImageChange = async (event) => {
@@ -163,9 +179,9 @@ const AddSingle = ({ rhf, setValue, name, close, setImageName }) => {
 							videoConstraints={videoConstraints}
 						>
 							{({ getScreenshot }) => (
-								<div className="absolute bottom-0 left-0 flex-center w-full p-5">
+								<div className="absolute bottom-5 left-0 flex-center w-full p-5">
 									<button
-										className="!bg-[--brand-50] rounded-full !w-[70px] lg:!w-[80px] h-[70px] lg:h-[80px] flex-center shadow-xl shadow-[--highlight-bg-2] hover:scale-125 transition duration-700 p-3"
+										className="!bg-[--brand-50] rounded-full !w-[65px] lg:!w-[70px] h-[65px] lg:h-[70px] flex-center shadow-xl shadow-[--highlight-bg-2] hover:scale-125 transition duration-700 p-4"
 										onClick={() => takeScreenshot()}
 									>
 										<div className="!bg-[--brand] rounded-full !w-full !h-full flex-center shadow-xl shadow-[--highlight-bg-2] hover:scale-125 transition duration-700" />
@@ -181,7 +197,7 @@ const AddSingle = ({ rhf, setValue, name, close, setImageName }) => {
 						<IoMdClose className="text-[--white] lg:text-xl" />
 					</button>
 					<button
-						className="absolute top-4 md:top-5 left-4 md:right-5 p-3 bg-black/50 back backdrop-blur rounded-full"
+						className="absolute top-4 md:top-5 left-4 md:left-5 p-3 bg-black/50 back backdrop-blur rounded-full"
 						onClick={() => toggleFacingMode()}
 					>
 						<MdFlipCameraAndroid className="text-[--white] lg:text-xl" />

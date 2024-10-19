@@ -261,7 +261,7 @@ export default function Dashboard() {
 			</AnimatePresence>
 
 			{/* SELECT CHECKLIST */}
-			<AnimatePresence>
+			{/* <AnimatePresence>
 				{showSelectChecklist && (
 					<SelectChecklist
 						back={() => setShowSelectChecklist(false)}
@@ -273,7 +273,7 @@ export default function Dashboard() {
 						userId={userId}
 					/>
 				)}
-			</AnimatePresence>
+			</AnimatePresence> */}
 
 			{/* BUSINESS CARD OPTIONS */}
 			{showOptions && (
