@@ -149,7 +149,7 @@ const DragDropFile = ({
 						>
 							<Image
 								src={img}
-								alt="Training images"
+								alt="Training Images"
 								width={110}
 								height={110}
 								className={`w-full h-full object-cover rounded-xl`}
@@ -176,8 +176,8 @@ const DragDropFile = ({
 							className={`w-full h-[90px] object-cover rounded-xl relative py-4 md:py-5 bg-[--card]`}
 						>
 							<Image
-								src={icons.noteList}
-								alt="Training images"
+								src={icons.doc_pdf}
+								alt="Training Documents"
 								width={300}
 								height={300}
 								className={`w-full h-[40px] object-contain rounded-xl`}

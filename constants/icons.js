@@ -12,6 +12,7 @@ import caret2 from '../assets/icons/caret2.png';
 import category from '../assets/icons/category.png';
 import checklist from '../assets/icons/checklist.png';
 import deleteRed from '../assets/icons/delete-red.png';
+import doc_pdf from '../assets/icons/doc_pdf.svg';
 import docs from '../assets/icons/docs.png';
 import trash from '../assets/icons/delete.png';
 import details from '../assets/icons/details.png';
@@ -58,6 +59,7 @@ export default {
 	docs,
 	trash,
 	details,
+	doc_pdf,
 	download,
 	edit,
 	envelope,

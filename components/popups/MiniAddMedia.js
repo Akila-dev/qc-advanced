@@ -2,9 +2,12 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Image from 'next/image';
-import Webcam from 'react-webcam';
+// import Webcam from 'react-webcam';
+import Camera from 'react-html5-camera-photo';
+import 'react-html5-camera-photo/build/css/index.css';
 
 import { FaPlay } from 'react-icons/fa';
+import { IoMdClose } from 'react-icons/io';
 
 import { icons } from '../../constants';
 
@@ -18,18 +21,23 @@ const AddSingle = ({ rhf, setValue, name, close, setImageName }) => {
 	};
 	const containerRef = useRef();
 	const webcamRef = useRef(null);
-	const takeScreenshot = useCallback(
-		() => {
-			const imageSrc = webcamRef.current.getScreenshot();
-			console.log(imageSrc);
-			setTakingScreenShot(false);
-			setValue(name, imageSrc);
+	// const takeScreenshot = useCallback(
+	// 	() => {
+	// 		const imageSrc = webcamRef.current.getScreenshot();
+	// 		console.log(imageSrc);
+	// 		setTakingScreenShot(false);
+	// 		setValue(name, imageSrc);
 
-			close();
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[webcamRef]
-	);
+	// 		close();
+	// 	},
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// 	[webcamRef]
+	// );
+
+	const handleTakePhoto = (dataUri) => {
+		// Do stuff with the photo...
+		console.log(dataUri);
+	};
 
 	// On click on Gallery
 	const onImageChange = async (event) => {
@@ -106,7 +114,19 @@ const AddSingle = ({ rhf, setValue, name, close, setImageName }) => {
 
 			{takingScreenShot && (
 				<div className="fixed top-0 left-0 right-0 bottom-0 h-full w-full bg-[--black] backdrop-blur-sm p-4 md:p-7 flex-center">
-					<div ref={containerRef} className="lg:relative">
+					<Camera
+						onTakePhoto={(dataUri) => {
+							handleTakePhoto(dataUri);
+						}}
+						isMaxResolution={true}
+					/>
+					<button
+						className="absolute top-4 md:top-5 right-4 md:right-5 p-3 bg-black/50 back backdrop-blur rounded-full"
+						onClick={() => setTakingScreenShot()}
+					>
+						<IoMdClose className="text-[--white] lg:text-xl" />
+					</button>
+					{/* <div ref={containerRef} className="lg:relative">
 						<Webcam
 							audio={false}
 							screenshotFormat="image/jpeg"
@@ -126,7 +146,7 @@ const AddSingle = ({ rhf, setValue, name, close, setImageName }) => {
 								</div>
 							)}
 						</Webcam>
-					</div>
+					</div> */}
 				</div>
 			)}
 		</div>
@@ -236,7 +256,7 @@ const MiniAddMedia = ({ rhf, setValue, name, close, single, setImageName }) => {
 
 			{takingScreenShot && (
 				<div className="fixed top-0 left-0 right-0 bottom-0 h-full w-full bg-[--black] backdrop-blur-sm p-4 md:p-7 flex-center">
-					<div ref={containerRef} className="lg:relative">
+					{/* <div ref={containerRef} className="lg:relative">
 						<Webcam
 							audio={false}
 							screenshotFormat="image/jpeg"
@@ -256,7 +276,7 @@ const MiniAddMedia = ({ rhf, setValue, name, close, single, setImageName }) => {
 								</div>
 							)}
 						</Webcam>
-					</div>
+					</div> */}
 				</div>
 			)}
 		</div>
