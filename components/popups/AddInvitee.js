@@ -57,7 +57,7 @@ const AddInvitee = ({ close, invitees, setInvitees, businessId }) => {
 			{/* Name */}
 			<InputFieldRHF
 				label="Name"
-				icon={icons.user}
+				icon={icons.user1}
 				type="mail"
 				placeholder="Enter Invitee Username"
 				rhf={{ ...register('username') }}

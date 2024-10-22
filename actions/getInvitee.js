@@ -21,6 +21,7 @@ export const addInvitee = async (values, businessId) => {
 	formData.append('email', values.email);
 	formData.append('username', values.username);
 	formData.append('password', values.password);
+	formData.append('original_password', values.password);
 	formData.append('business_id', businessId);
 	formData.append('user_id', user_id);
 

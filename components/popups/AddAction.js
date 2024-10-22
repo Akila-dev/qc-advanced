@@ -100,87 +100,91 @@ const AddAction = ({
 	}, [businessList, watch]);
 
 	const onSubmit = (values) => {
-		setError('');
-		setSuccess('');
-
-		setIsPending(true);
-
-		// console.log(actionsList[activeAction].action_id)
-
-		if (admin) {
-			if (!edit) {
-				addAction(values, userId).then((data) => {
-					setIsPending(false);
-					setError(data.error);
-					setSuccess(data.success);
-
-					console.log(data?.data?.data);
-					setIsPending(false);
-
-					if (data.success) {
-						setActionsList([data?.data?.data, ...actionsList]);
-						setTimeout(() => {
-							close();
-						}, 1000);
-					}
-				});
-			} else {
-				updateAction(values, userId, actionsList[activeAction].action_id).then(
-					(data) => {
-						setIsPending(false);
-						setError(data.error);
-						setSuccess(data.success);
-
-						console.log(data?.data);
-						setIsPending(false);
-
-						if (data.success) {
-							let prevActions = [...actionsList];
-							prevActions[activeAction] = data?.data?.data;
-							setActionsList(prevActions);
-						}
-					}
-				);
-			}
-		} else {
-			if (!edit) {
-				addActionUser(values, userId).then((data) => {
-					setIsPending(false);
-					setError(data.error);
-					setSuccess(data.success);
-
-					console.log(data?.data?.data);
-					setIsPending(false);
-
-					if (data.success) {
-						setActionsList([data?.data?.data, ...actionsList]);
-						setTimeout(() => {
-							close();
-						}, 1000);
-					}
-				});
-			} else {
-				updateActionUser(
-					values,
-					userId,
-					actionsList[activeAction].action_id
-				).then((data) => {
-					setIsPending(false);
-					setError(data.error);
-					setSuccess(data.success);
-
-					console.log(data?.data);
-					setIsPending(false);
-
-					if (data.success) {
-						let prevActions = [...actionsList];
-						prevActions[activeAction] = data?.data?.data;
-						setActionsList(prevActions);
-					}
-				});
-			}
-		}
+		console.log(values);
 	};
+
+	// const onSubmit = (values) => {
+	// 	setError('');
+	// 	setSuccess('');
+
+	// 	setIsPending(true);
+
+	// 	// console.log(actionsList[activeAction].action_id)
+
+	// 	if (admin) {
+	// 		if (!edit) {
+	// 			addAction(values, userId).then((data) => {
+	// 				setIsPending(false);
+	// 				setError(data.error);
+	// 				setSuccess(data.success);
+
+	// 				console.log(data?.data?.data);
+	// 				setIsPending(false);
+
+	// 				if (data.success) {
+	// 					setActionsList([data?.data?.data, ...actionsList]);
+	// 					setTimeout(() => {
+	// 						close();
+	// 					}, 1000);
+	// 				}
+	// 			});
+	// 		} else {
+	// 			updateAction(values, userId, actionsList[activeAction].action_id).then(
+	// 				(data) => {
+	// 					setIsPending(false);
+	// 					setError(data.error);
+	// 					setSuccess(data.success);
+
+	// 					console.log(data?.data);
+	// 					setIsPending(false);
+
+	// 					if (data.success) {
+	// 						let prevActions = [...actionsList];
+	// 						prevActions[activeAction] = data?.data?.data;
+	// 						setActionsList(prevActions);
+	// 					}
+	// 				}
+	// 			);
+	// 		}
+	// 	} else {
+	// 		if (!edit) {
+	// 			addActionUser(values, userId).then((data) => {
+	// 				setIsPending(false);
+	// 				setError(data.error);
+	// 				setSuccess(data.success);
+
+	// 				console.log(data?.data?.data);
+	// 				setIsPending(false);
+
+	// 				if (data.success) {
+	// 					setActionsList([data?.data?.data, ...actionsList]);
+	// 					setTimeout(() => {
+	// 						close();
+	// 					}, 1000);
+	// 				}
+	// 			});
+	// 		} else {
+	// 			updateActionUser(
+	// 				values,
+	// 				userId,
+	// 				actionsList[activeAction].action_id
+	// 			).then((data) => {
+	// 				setIsPending(false);
+	// 				setError(data.error);
+	// 				setSuccess(data.success);
+
+	// 				console.log(data?.data);
+	// 				setIsPending(false);
+
+	// 				if (data.success) {
+	// 					let prevActions = [...actionsList];
+	// 					prevActions[activeAction] = data?.data?.data;
+	// 					setActionsList(prevActions);
+	// 				}
+	// 			});
+	// 		}
+	// 	}
+	// };
 
 	return (
 		<div

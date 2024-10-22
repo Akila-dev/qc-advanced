@@ -107,6 +107,18 @@ const MyChecklist = ({ close, list, checklistId, businessId, userId }) => {
 			setError('');
 			setSuccess('');
 			setIsPending(true);
+
+			let prev = { ...checklistData };
+			checklistData.sub_check_list_dtl.map((val, i) => {
+				prev.sub_check_list_dtl[i] = {
+					bsc_id: val.bsc_id,
+					question: val.question,
+					media_upload_type: val.media_upload_type,
+				};
+			});
+			setChecklistData(prev);
+
+			console.log(checklistData);
 			updateChecklist(checklistData, userId, checklistId).then((data) => {
 				setError(data.error);
 				setSuccess(data.success);
@@ -118,7 +130,7 @@ const MyChecklist = ({ close, list, checklistId, businessId, userId }) => {
 				}
 			});
 		}
-		console.log(checklistData);
+		// console.log(checklistData);
 	};
 
 	const deleteChecklistFunc = () => {

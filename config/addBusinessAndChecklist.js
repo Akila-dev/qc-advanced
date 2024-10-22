@@ -103,12 +103,11 @@ export const addChecklist = async (formValues, userId, businessId) => {
 };
 
 export const updateChecklist = async (
-	checklistData,
+	formValues,
 	user_id,
 	business_checklist_id
 ) => {
-	// console.log(formValues, userId, businessId);
-	if (!checklistData) {
+	if (!formValues) {
 		return { error: 'Invalid Fields!' };
 	}
 
@@ -116,58 +115,47 @@ export const updateChecklist = async (
 		return { error: 'Network Error, Reload Page' };
 	}
 
+	console.log(formValues.sub_check_list_dtl);
+
 	try {
 		const formData = new FormData();
 
-		formData.append('name', checklistData.name);
-		formData.append('assignee_id', checklistData.assignee_id);
-
+		formData.append('user_id', user_id);
+		formData.append('business_checklist_id', business_checklist_id);
+		formData.append('name', formValues.name);
+		formData.append('assignee_id', formValues.assignee_id);
 		formData.append(
 			'sub_checklist',
-			JSON.stringify(checklistData.sub_check_list_dtl)
+			JSON.stringify(formValues.sub_check_list_dtl)
 		);
-		console.log('subchecklist', checklistData.sub_check_list_dtl);
 
-		// checklistData.sub_check_list_dtl.map((val) =>
-		// 	formData.append('sub_checklist', JSON.stringify(val))
-		// );
-		console.log('formData', formData.getAll('sub_checklist'));
-
-		formData.append('business_checklist_id', business_checklist_id);
-		formData.append('user_id', user_id);
-
-		try {
-			const { data } = await axios.post(
-				`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/updateCheckList`,
-				formData,
-				{
-					headers: {
-						'Content-Type': 'application/json',
-						// 'Content-Type': 'multipart/form-data',
-						Accept: 'application/json',
-						key: process.env.NEXT_PUBLIC_KEY,
-						token: process.env.NEXT_PUBLIC_TOKEN,
-					},
-				}
-			);
-
-			if (data) {
-				if (data.ResponseCode === 1) {
-					// console.log(data);
-					return {
-						success: data.ResponseMsg,
-						response: data.ResponseCode,
-					};
-				} else {
-					console.log(data);
-					return {
-						error: data.ResponseMsg,
-					};
-				}
+		const { data } = await axios.post(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/updateCheckList`,
+			formData,
+			{
+				headers: {
+					'Content-Type': 'multipart/form-data',
+					// 'Content-Type': 'application/json',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
 			}
-		} catch (error) {
-			console.log(error);
-			return { error: 'Invalid Fields, Please Try Again' };
+		);
+
+		if (data) {
+			if (data.ResponseCode === 1) {
+				// console.log(data);
+				return {
+					success: data.ResponseMsg,
+					response: data.ResponseCode,
+				};
+			} else {
+				console.log(data);
+				return {
+					error: data.ResponseMsg,
+				};
+			}
 		}
 	} catch (error) {
 		// console.log(error);

@@ -66,6 +66,7 @@ export { default as AddChecklist } from './popups/AddChecklist';
 export { default as MyChecklist } from './popups/MyChecklist';
 export { default as InspectionsList } from './popups/InspectionsList';
 export { default as AddInvitee } from './popups/AddInvitee';
+export { default as InviteeData } from './popups/InviteeData';
 export { default as InspectionsArchive } from './popups/InspectionsArchive';
 export { default as Purchase } from './popups/Purchase';
 export { default as PurchaseMini } from './popups/PurchaseMini';

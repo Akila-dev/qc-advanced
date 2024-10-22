@@ -12,6 +12,7 @@ import {
 	AddedChecklists,
 	SelectChecklist,
 	AddInvitee,
+	InviteeData,
 	InspectionsArchive,
 	Loading,
 	LoadingFailed,
@@ -37,6 +38,8 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 	const [showArchive, setShowArchive] = useState(false);
 	const [invitees, setInvitees] = useState();
 	const [showAddInvitee, setShowAddInvitee] = useState(false);
+	const [showInviteeData, setShowInviteeData] = useState(false);
+	const [inviteeData, setInviteeData] = useState();
 
 	// SUBCHECKLIST VARIABLES
 	const [activeSubchecklist_id, setActiveSubchecklist_id] = useState();
@@ -59,6 +62,15 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 			}
 			setIsLoading(false);
 		});
+	};
+
+	// DISPLAY INVITEE INFO
+	const showInviteeInfo = (i) => {
+		setInviteeData({
+			id: i,
+			data: invitees[i],
+		});
+		setShowInviteeData(true);
 	};
 
 	// LOAD CHECKLIST DATA
@@ -84,14 +96,16 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 							<div className="flex gap-3 w-full overflow-auto flex-nowrap no-scrollbar pb-2">
 								{invitees &&
 									invitees?.map(({ username }, i) => (
-										<div
+										<button
+											type="button"
+											onClick={() => showInviteeInfo(i)}
 											key={i}
 											className={`w-[50px] min-w-[50px] max-w-[50px] h-[50px] flex-center rounded-full bg-[--brand]`}
 										>
 											<div className="text-[--white] uppercase !tracking-widest text-center scale-125">
 												{username.slice(0, 2)}
 											</div>
-										</div>
+										</button>
 									))}
 								<button
 									type="button"
@@ -185,6 +199,21 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 						invitees={invitees}
 						setInvitees={setInvitees}
 						businessId={businessId}
+					/>
+				</TitlePopupWrapper>
+			)}
+			{showInviteeData && (
+				<TitlePopupWrapper
+					title="Invite"
+					close={() => setShowInviteeData(false)}
+				>
+					<InviteeData
+						close={() => setShowInviteeData(false)}
+						invitees={invitees}
+						setInvitees={setInvitees}
+						businessId={businessId}
+						id={inviteeData.id}
+						inviteeData={inviteeData.data}
 					/>
 				</TitlePopupWrapper>
 			)}

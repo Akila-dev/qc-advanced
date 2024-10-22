@@ -114,7 +114,9 @@ const ActionDetails = ({
 								title={activity.msg}
 								msg={activity.msg}
 								date={activity.created_at}
-								createdBy={activity.user_dtl.username || 'Admin'}
+								createdBy={
+									activity.user_dtl.username || admin ? 'You' : 'Admin'
+								}
 								img={activity.media}
 							/>
 						))}
