@@ -24,7 +24,7 @@ const SignOutPopup = ({ close }) => {
 			if (ok) {
 				setIsPending(false);
 				setSuccess('Logout Successful');
-				router.push(`/`);
+				router.push('/');
 			} else {
 				setIsPending(false);
 				setError('Logout Failed');
