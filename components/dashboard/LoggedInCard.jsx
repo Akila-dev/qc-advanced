@@ -47,7 +47,9 @@ const LoggedInCard = ({ logout, scrolledOffTop }) => {
 					<div className="w-full hidden md:block">
 						<p className="text-sm truncate leading-[110%] text-[--black]">
 							{session && session?.user?.name.split(' ')[0]}{' '}
-							{session && session?.user?.name.split(' ').length > 0 && [1][0]}
+							{session &&
+								session?.user?.name.split(' ').length > 0 &&
+								session?.user?.name.split(' ')[1][0]}
 						</p>
 						{/* <p className="text-xs truncate w-[100px] leading-[110%]">
 						{session?.user?.email}
