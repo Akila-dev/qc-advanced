@@ -20,7 +20,7 @@ const SignOutPopup = ({ close }) => {
 
 		setIsPending(true);
 
-		signOut('credentials').then(({ ok, error }) => {
+		signOut('credentials', { callbackUrl: '/' }).then(({ ok, error }) => {
 			if (ok) {
 				setIsPending(false);
 				setSuccess('Logout Successful');

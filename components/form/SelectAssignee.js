@@ -22,18 +22,78 @@ const SelectAssignee = ({
 }) => {
 	const [showOptions, setShowOptions] = useState(false);
 	`Since getInvitees include also the admin's id, set a condition to check if the first item of the list has a username (which basically means its and admin), if it does, skip it and move to the next ite on the list`;
-	const [selectedId, setSelectedId] = useState(0);
+
 	const [selectedOption, setSelectedOption] = useState(
 		defaultValue
 			? options.filter((option) => {
 					return option.user_id === defaultValue;
-			  })[0].username
+			  }).length > 0
+				? options.filter((option) => {
+						return option.user_id === defaultValue;
+				  })[0].username
+				: options[0].username
 			: options[0].username
+	);
+	const [selectedId, setSelectedId] = useState(
+		defaultValue
+			? options.filter((option) => {
+					return option.user_id === defaultValue;
+			  }).length > 0
+				? options.indexOf(
+						options.filter((option) => {
+							return option.user_id === defaultValue;
+						})[0]
+				  )
+				: 0
+			: 0
 	);
 
 	const selectRef = useRef(null);
+	// console.log(
+	// 	options.indexOf(
+	// 		options.filter((option) => {
+	// 			return option.user_id === defaultValue;
+	// 		})[0]
+	// 	)
+	// );
+
+	const setVals = () => {
+		if (defaultValue) {
+			if (
+				options.filter((option) => {
+					return option.user_id === defaultValue;
+				}).length > 0
+			) {
+				console.log('Ok');
+				setSelectedOption(
+					options.filter((option) => {
+						return option.user_id === defaultValue;
+					})[0].username
+				);
+				setSelectedId(
+					options.indexOf(
+						options.filter((option) => {
+							return option.user_id === defaultValue;
+						})[0]
+					)
+				);
+			} else {
+				setSelectedOption(options[0].username);
+				setSelectedId(0);
+			}
+		} else {
+			setSelectedOption(options[0].username);
+			setSelectedId(0);
+		}
+		setValue(name, options[selectedId].user_id);
+		setSelectedOption(options[selectedId].username);
+	};
+	useEffect(() => {
+		setVals();
+	}, [options]);
 
 	useEffect(() => {
+		setVals();
 		setValue(name, options[selectedId].user_id);
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,7 +120,11 @@ const SelectAssignee = ({
 			<button
 				type="button"
 				className="icon-input flex-v-center w-full !text-left relative"
-				onClick={() => setShowOptions(true)}
+				onClick={() => {
+					if (selectedOption) {
+						setShowOptions(true);
+					}
+				}}
 			>
 				<div className="flex-v-center w-full flex-1">
 					{icon && (
@@ -80,7 +144,7 @@ const SelectAssignee = ({
 						}
 						className={'input truncate w-full max-w-[200px] capitalize'}
 					>
-						{selectedOption}
+						{selectedOption ? selectedOption : 'No Assignee for this Business'}
 					</p>
 				</div>
 				<Image

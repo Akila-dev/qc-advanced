@@ -99,92 +99,92 @@ const AddAction = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [businessList, watch]);
 
-	const onSubmit = (values) => {
-		console.log(values);
-	};
-
 	// const onSubmit = (values) => {
-	// 	setError('');
-	// 	setSuccess('');
-
-	// 	setIsPending(true);
-
-	// 	// console.log(actionsList[activeAction].action_id)
-
-	// 	if (admin) {
-	// 		if (!edit) {
-	// 			addAction(values, userId).then((data) => {
-	// 				setIsPending(false);
-	// 				setError(data.error);
-	// 				setSuccess(data.success);
-
-	// 				console.log(data?.data?.data);
-	// 				setIsPending(false);
-
-	// 				if (data.success) {
-	// 					setActionsList([data?.data?.data, ...actionsList]);
-	// 					setTimeout(() => {
-	// 						close();
-	// 					}, 1000);
-	// 				}
-	// 			});
-	// 		} else {
-	// 			updateAction(values, userId, actionsList[activeAction].action_id).then(
-	// 				(data) => {
-	// 					setIsPending(false);
-	// 					setError(data.error);
-	// 					setSuccess(data.success);
-
-	// 					console.log(data?.data);
-	// 					setIsPending(false);
-
-	// 					if (data.success) {
-	// 						let prevActions = [...actionsList];
-	// 						prevActions[activeAction] = data?.data?.data;
-	// 						setActionsList(prevActions);
-	// 					}
-	// 				}
-	// 			);
-	// 		}
-	// 	} else {
-	// 		if (!edit) {
-	// 			addActionUser(values, userId).then((data) => {
-	// 				setIsPending(false);
-	// 				setError(data.error);
-	// 				setSuccess(data.success);
-
-	// 				console.log(data?.data?.data);
-	// 				setIsPending(false);
-
-	// 				if (data.success) {
-	// 					setActionsList([data?.data?.data, ...actionsList]);
-	// 					setTimeout(() => {
-	// 						close();
-	// 					}, 1000);
-	// 				}
-	// 			});
-	// 		} else {
-	// 			updateActionUser(
-	// 				values,
-	// 				userId,
-	// 				actionsList[activeAction].action_id
-	// 			).then((data) => {
-	// 				setIsPending(false);
-	// 				setError(data.error);
-	// 				setSuccess(data.success);
-
-	// 				console.log(data?.data);
-	// 				setIsPending(false);
-
-	// 				if (data.success) {
-	// 					let prevActions = [...actionsList];
-	// 					prevActions[activeAction] = data?.data?.data;
-	// 					setActionsList(prevActions);
-	// 				}
-	// 			});
-	// 		}
-	// 	}
+	// 	console.log(values);
 	// };
+
+	const onSubmit = (values) => {
+		setError('');
+		setSuccess('');
+
+		setIsPending(true);
+
+		// console.log(actionsList[activeAction].action_id)
+
+		if (admin) {
+			if (!edit) {
+				addAction(values, userId).then((data) => {
+					setIsPending(false);
+					setError(data.error);
+					setSuccess(data.success);
+
+					console.log(data?.data?.data);
+					setIsPending(false);
+
+					if (data.success) {
+						setActionsList([data?.data?.data, ...actionsList]);
+						setTimeout(() => {
+							close();
+						}, 1000);
+					}
+				});
+			} else {
+				updateAction(values, userId, actionsList[activeAction].action_id).then(
+					(data) => {
+						setIsPending(false);
+						setError(data.error);
+						setSuccess(data.success);
+
+						console.log(data?.data);
+						setIsPending(false);
+
+						if (data.success) {
+							let prevActions = [...actionsList];
+							prevActions[activeAction] = data?.data?.data;
+							setActionsList(prevActions);
+						}
+					}
+				);
+			}
+		} else {
+			if (!edit) {
+				addActionUser(values, userId).then((data) => {
+					setIsPending(false);
+					setError(data.error);
+					setSuccess(data.success);
+
+					console.log(data?.data?.data);
+					setIsPending(false);
+
+					if (data.success) {
+						setActionsList([data?.data?.data, ...actionsList]);
+						setTimeout(() => {
+							close();
+						}, 1000);
+					}
+				});
+			} else {
+				updateActionUser(
+					values,
+					userId,
+					actionsList[activeAction].action_id
+				).then((data) => {
+					setIsPending(false);
+					setError(data.error);
+					setSuccess(data.success);
+
+					console.log(data?.data);
+					setIsPending(false);
+
+					if (data.success) {
+						let prevActions = [...actionsList];
+						prevActions[activeAction] = data?.data?.data;
+						setActionsList(prevActions);
+					}
+				});
+			}
+		}
+	};
 
 	return (
 		<div
@@ -237,7 +237,9 @@ const AddAction = ({
 				{/* Assignees */}
 				{!admin && (
 					<SelectOptionsWrapper
-						list={assigneeList}
+						list={assigneeList.filter((option) => {
+							return option.username;
+						})}
 						label="Assignees"
 						setValue={setValue}
 						name="assignee_id"
@@ -245,7 +247,9 @@ const AddAction = ({
 					>
 						<SelectAssignee
 							label="Assignees"
-							options={assigneeList}
+							options={assigneeList.filter((option) => {
+								return option.username;
+							})}
 							setValue={setValue}
 							name="assignee_id"
 							rhf={{ ...register('assignee_id') }}
@@ -279,7 +283,9 @@ const AddAction = ({
 
 						{/* Assignees */}
 						<SelectOptionsWrapper
-							list={inviteesList}
+							list={inviteesList.filter((option) => {
+								return option.username;
+							})}
 							label="Assignees"
 							setValue={setValue}
 							name="assignee_id"
@@ -287,7 +293,9 @@ const AddAction = ({
 						>
 							<SelectAssignee
 								label="Assignees"
-								options={inviteesList}
+								options={inviteesList.filter((option) => {
+									return option.username;
+								})}
 								setValue={setValue}
 								name="assignee_id"
 								rhf={{ ...register('assignee_id') }}

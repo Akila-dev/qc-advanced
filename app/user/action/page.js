@@ -200,7 +200,7 @@ export default function Action() {
 										title={title}
 										time={'5 days'}
 										due_date={due_date}
-										assignee={asignee_dtl.username}
+										assignee={asignee_dtl ? asignee_dtl.username : 'unassigned'}
 										businessName={business_dtl.business_name}
 										businessId={business_dtl.business_id}
 										tag={to_do_list}
