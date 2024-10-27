@@ -17,12 +17,17 @@ import {
 	Empty,
 	InspectionsArchive,
 } from '../../components';
-import { SidePopupWrapper, TitlePopupWrapper } from '../../wrappers';
+import {
+	SidePopupWrapper,
+	TitlePopupWrapper,
+	IconPopupWrapper,
+} from '../../wrappers';
 
 import { SideNavIcons } from '../../components/svgs';
 
 // API RELATED
 import { getListOfChecklistUser } from '@/actions/getChecklist';
+import { completeInspection } from '@/actions/misc';
 
 // OVERVIEW
 const overviewCardColors = ['#2d2d2b08', '#2d2d2b08', '#f5edc7'];
@@ -42,6 +47,10 @@ const OverviewCard = ({ i, label, value }) => (
 );
 
 export default function Dashboard() {
+	const [showInspectionCompleted, setShowInspectionCompleted] = useState(false);
+	const [showInspectionError, setShowInspectionError] = useState(false);
+	const [submittingInspection, setSubmittingInspection] = useState(false);
+
 	const [isLoading, setIsLoading] = useState(true);
 	const [successfullyLoaded, setSuccessfullyLoaded] = useState();
 	const [inspectionData, setInspectionData] = useState();
@@ -100,6 +109,21 @@ export default function Dashboard() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	const callCompleteInspection = () => {
+		setSubmittingInspection(true);
+		completeInspection(businessId).then((data) => {
+			setSubmittingInspection(false);
+
+			console.log(data?.data);
+
+			if (data?.response === 1) {
+				setShowInspectionCompleted(true);
+			} else {
+				setShowInspectionError(true);
+			}
+		});
+	};
+
 	return isLoading ? (
 		<Loading notFull />
 	) : successfullyLoaded ? (
@@ -129,7 +153,11 @@ export default function Dashboard() {
 				</div>
 				{/* DASHBOARD CONTENT */}
 				<div className="dashboard-content-box">
-					<div className="!hidden md:!flex p-7 pb-0 flex-v-center justify-between">
+					<div
+						className={`!hidden md:!flex p-7 pb-0 flex-v-center justify-between ${
+							submittingInspection && 'pending'
+						}`}
+					>
 						<h2 className="text-[--black]">Inspections</h2>
 						<div className="flex-v-center gap-2">
 							<motion.button
@@ -149,15 +177,20 @@ export default function Dashboard() {
 							</motion.button>
 							<div className="md:hidden lg:block">
 								<Button
-									onClick={() => console.log(true)}
+									onClick={() => callCompleteInspection()}
 									text="Complete Inspection"
+									submitting={submittingInspection}
 								/>
 							</div>
 						</div>
 					</div>
 
 					{inspectionData && inspectionData.length > 0 ? (
-						<div className="w-full px-4 py-5 md:p-7 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3">
+						<div
+							className={`w-full px-4 py-5 md:p-7 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3 ${
+								submittingInspection && 'pending'
+							}`}
+						>
 							<motion.button
 								type="button"
 								whileTap="tap"
@@ -193,8 +226,9 @@ export default function Dashboard() {
 							))}
 							<div className="lg:hidden pt-5">
 								<Button
-									onClick={() => console.log(true)}
+									onClick={() => callCompleteInspection()}
 									text="Complete Inspection"
+									submitting={submittingInspection}
 								/>
 							</div>
 						</div>
@@ -231,6 +265,35 @@ export default function Dashboard() {
 						sidebar
 						user
 					/>
+				)}
+
+				{showInspectionCompleted && (
+					<IconPopupWrapper
+						icon={images.congratulations}
+						title={`Inspection Completed`}
+						text={`You have successfully completed this inspection`}
+						smallIcon
+					>
+						<div className={`space-y-3 pt-3 w-[75px]`}>
+							<Button
+								onClick={() => setShowInspectionCompleted(false)}
+								text="ok"
+							/>
+						</div>
+					</IconPopupWrapper>
+				)}
+
+				{showInspectionError && (
+					<IconPopupWrapper
+						icon={images.error}
+						title={`Inspection Failed`}
+						text={`Unable to complete this inspection, Try again`}
+						smallIcon
+					>
+						<div className={`space-y-3 pt-3 w-[75px]`}>
+							<Button onClick={() => setShowInspectionError(false)} text="ok" />
+						</div>
+					</IconPopupWrapper>
 				)}
 			</div>{' '}
 		</>

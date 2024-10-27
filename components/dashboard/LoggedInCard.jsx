@@ -89,8 +89,16 @@ const LoggedInCard = ({ logout, scrolledOffTop }) => {
 									: 'w-[32.5px] min-w-[32.5px] h-[32.5px]'
 							}`}
 						>
-							<h2 className="text-[--white] uppercase">
-								{session?.user?.name.substr(0, 2)}
+							<h2
+								className={`text-[--white] uppercase  ${
+									scrolledOffTop ? '!text-sm' : '!text-lg'
+								}`}
+							>
+								{session && session?.user?.name.split(' ').length > 0
+									? `${session?.user?.name.split(' ')[0][0]}${
+											session?.user?.name.split(' ')[1][0]
+									  }`
+									: `${session?.user?.name.substr(0, 2)}`}
 							</h2>
 						</div>
 					)}
@@ -127,11 +135,15 @@ const LoggedInCard = ({ logout, scrolledOffTop }) => {
 								) : (
 									<motion.div
 										variants={variants.slideInRight}
-										className={`rounded-full bg-[--brand] flex-center w-[45px] min-w-[45px] h-[45px]
+										className={`rounded-full bg-[--brand] flex-center w-[45px] min-w-[45px] max-w-[45px] h-[45px]
 											`}
 									>
 										<h2 className="text-[--white] uppercase">
-											{session?.user?.name.substr(0, 2)}
+											{session && session?.user?.name.split(' ').length > 0
+												? `${session?.user?.name.split(' ')[0][0]}${
+														session?.user?.name.split(' ')[1][0]
+												  }`
+												: `${session?.user?.name.substr(0, 2)}`}
 										</h2>
 									</motion.div>
 								)}

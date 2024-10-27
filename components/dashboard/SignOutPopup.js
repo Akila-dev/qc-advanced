@@ -20,16 +20,17 @@ const SignOutPopup = ({ close }) => {
 
 		setIsPending(true);
 
-		signOut('credentials', { callbackUrl: '/' }).then(({ ok, error }) => {
-			if (ok) {
-				setIsPending(false);
-				setSuccess('Logout Successful');
-				router.push('/');
-			} else {
-				setIsPending(false);
-				setError('Logout Failed');
-			}
-		});
+		signOut({ callbackUrl: process.env.NEXT_PUBLIC_LOGOUT_URL });
+		// .then(({ ok, error }) => {
+		// 	if (ok) {
+		// 		setIsPending(false);
+		// 		setSuccess('Logout Successful');
+		// 		router.push('/');
+		// 	} else {
+		// 		setIsPending(false);
+		// 		setError('Logout Failed');
+		// 	}
+		// });
 	};
 
 	return (
