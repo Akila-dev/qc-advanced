@@ -31,6 +31,7 @@ const MyChecklist = ({ close, list, checklistId, businessId, userId }) => {
 	const [successfullyLoaded, setSuccessfullyLoaded] = useState();
 	const [checklistData, setChecklistData] = useState();
 	const [assigneeList, setAssigneeList] = useState();
+	const [deleteSubchecklistIds, setDeleteSubchecklistIds] = useState([]);
 
 	const [options, setOptions] = useState(); // For Assignee SelectOption
 	const [values, setValues] = useState(); // For Assignee SelectOption
@@ -59,7 +60,7 @@ const MyChecklist = ({ close, list, checklistId, businessId, userId }) => {
 
 				let assigneeNames = [];
 				let assigneeIds = [];
-				allAssignees.map((val, i) => {
+				allAssignees?.map((val, i) => {
 					assigneeNames.push(val.username);
 					assigneeIds.push(val.user_id);
 				});
@@ -119,7 +120,12 @@ const MyChecklist = ({ close, list, checklistId, businessId, userId }) => {
 			setChecklistData(prev);
 
 			console.log(checklistData);
-			updateChecklist(checklistData, userId, checklistId).then((data) => {
+			updateChecklist(
+				checklistData,
+				userId,
+				checklistId,
+				deleteSubchecklistIds
+			).then((data) => {
 				setError(data.error);
 				setSuccess(data.success);
 				setIsPending(false);
@@ -199,6 +205,8 @@ const MyChecklist = ({ close, list, checklistId, businessId, userId }) => {
 								setFormData={setChecklistData}
 								nameValue="sub_check_list_dtl"
 								edit
+								deleteSubchecklistIds={deleteSubchecklistIds}
+								setDeleteSubchecklistIds={setDeleteSubchecklistIds}
 							/>
 						</div>
 

@@ -107,6 +107,8 @@ const SubChecklist = ({
 	nameValue,
 	edit,
 	setErrorMessage,
+	deleteSubchecklistIds,
+	setDeleteSubchecklistIds,
 }) => {
 	const [subChecklist, setSubChecklist] = useState(
 		edit
@@ -134,6 +136,10 @@ const SubChecklist = ({
 	};
 
 	const deleteSubChecklist = (i) => {
+		setDeleteSubchecklistIds([
+			...deleteSubchecklistIds,
+			subChecklist[i].bsc_id,
+		]);
 		let newData = [...subChecklist];
 		let removed = newData.splice(i, 1);
 		setSubChecklist((prev) => [...newData]);

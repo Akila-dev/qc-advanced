@@ -105,7 +105,8 @@ export const addChecklist = async (formValues, userId, businessId) => {
 export const updateChecklist = async (
 	formValues,
 	user_id,
-	business_checklist_id
+	business_checklist_id,
+	deleteIDs
 ) => {
 	if (!formValues) {
 		return { error: 'Invalid Fields!' };
@@ -128,6 +129,8 @@ export const updateChecklist = async (
 			'sub_checklist',
 			JSON.stringify(formValues.sub_check_list_dtl)
 		);
+
+		formData.append('delete_bsc_ids', deleteIDs);
 
 		const { data } = await axios.post(
 			`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/updateCheckList`,
