@@ -94,7 +94,7 @@ const LoggedInCard = ({ logout, scrolledOffTop }) => {
 									scrolledOffTop ? '!text-sm' : '!text-lg'
 								}`}
 							>
-								{session && session?.user?.name.split(' ').length > 0
+								{session && session?.user?.name.split(' ').length > 1
 									? `${session?.user?.name.split(' ')[0][0]}${
 											session?.user?.name.split(' ')[1][0]
 									  }`
@@ -139,7 +139,7 @@ const LoggedInCard = ({ logout, scrolledOffTop }) => {
 											`}
 									>
 										<h2 className="text-[--white] uppercase">
-											{session && session?.user?.name.split(' ').length > 0
+											{session && session?.user?.name.split(' ').length > 1
 												? `${session?.user?.name.split(' ')[0][0]}${
 														session?.user?.name.split(' ')[1][0]
 												  }`

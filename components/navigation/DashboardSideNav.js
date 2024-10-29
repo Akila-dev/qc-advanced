@@ -85,7 +85,7 @@ const DashboardSideNav = ({ type }) => {
 									className={`w-[45px] min-w-[45px] h-[45px] rounded-full bg-[--brand] flex-center`}
 								>
 									<h2 className="text-[--white] uppercase">
-										{session && session?.user?.name.split(' ').length > 0
+										{session && session?.user?.name.split(' ').length > 1
 											? `${session?.user?.name.split(' ')[0][0]}${
 													session?.user?.name.split(' ')[1][0]
 											  }`
