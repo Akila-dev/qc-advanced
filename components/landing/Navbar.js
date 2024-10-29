@@ -177,7 +177,7 @@ const Navbar = () => {
 									{!session && (
 										<div className="flex-v-center flex-col !gap-[1.5vh] mt-[2vh]">
 											<motion.a
-												href="/auth"
+												href="/api/auth/signin?callbackUrl=/auth-in"
 												variants={slideInBottom}
 												whileHover={{ scale: 1.1 }}
 												whileTap={{ scale: 0.9 }}

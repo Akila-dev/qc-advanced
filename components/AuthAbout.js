@@ -20,11 +20,11 @@ const AuthAbout = ({ title, subheading, text, linkText, link }) => {
 			<div className="h-[15vh] lg:h-auto flex-center text-center lg:pb-7">
 				<h1 className="">{title}</h1>
 			</div>
-			<div className="dashboard-content-box max-w-[900px] py-5 lg:py-7 overflow-hidde">
+			<div className="dashboard-content-box max-w-[900px] py-5 lg:py-7 !overflow-hidden">
 				<div
 					// ref={wheelRef}
 					// onWheel={(e) => handleWheel(e)}
-					className={`overflow-y-auto !h-full overflow-x-hidden !relative ${
+					className={`!overflow-y-auto !h-full overflow-x-hidden !relative ${
 						isPending && 'pending'
 					}`}
 				>

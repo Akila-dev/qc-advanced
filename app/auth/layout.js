@@ -16,7 +16,7 @@ export default function AuthLayout({ children }) {
 					className="w-full h-full object-cover"
 				/>{' '}
 			</div>
-			<div className="relativ w-full flex items-center justify-center p-0 md:px-[50px]">
+			<div className="relative w-full flex items-center justify-center p-0 md:px-[50px] !z-10">
 				{children}
 			</div>
 		</div>

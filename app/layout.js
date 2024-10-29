@@ -31,13 +31,21 @@ export default function RootLayout({ children }) {
 	// }, []);
 
 	useEffect(() => {
-		// if (document.querySelector('.overflow-y-auto')) {
-		// 	document
-		// 		.querySelector('.overflow-y-auto')
-		// 		.addEventListener('click', (event) => {
-		// 			console.log('OK');
-		// 		});
-		// }
+		const handleWheel = (e) => {
+			console.log(e);
+		};
+
+		if (document.querySelector('.overflow-y-auto')) {
+			document.querySelector('.overflow-y-auto').addEventListener(
+				'click',
+				(event) => {
+					handleWheel(event);
+				}
+				// {
+				// 	passive: false,
+				// }
+			);
+		}
 		// const allWithClass = Array.from(
 		// 	document.getElementsByClassName('overflow-y-auto')
 		// );
