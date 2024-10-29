@@ -35,7 +35,7 @@ const navigation = [
 	},
 ];
 
-const Navbar = ({ loginButton }) => {
+const Navbar = () => {
 	const [menuToggled, setMenuToggled] = useState(false);
 	const [scrolledOffTop, setScrolledOffTop] = useState(false);
 	const popupClickable = useRef();
@@ -101,7 +101,6 @@ const Navbar = ({ loginButton }) => {
 							</Link>
 						))}
 					</div>
-					{/* <div className="!hidden lg:!block">{loginButton}</div> */}
 
 					<div className="hidden lg:block">
 						{session ? (
@@ -124,10 +123,12 @@ const Navbar = ({ loginButton }) => {
 						)}
 					</div>
 					<div className="flex-v-center !gap-2 lg:hidden">
-						<LoggedInCard
-							logout={() => setShowLogout(true)}
-							scrolledOffTop={scrolledOffTop}
-						/>
+						{session && (
+							<LoggedInCard
+								logout={() => setShowLogout(true)}
+								scrolledOffTop={scrolledOffTop}
+							/>
+						)}
 						<button className="lg:hidden" onClick={() => setMenuToggled(true)}>
 							{menuToggled ? (
 								<MdClose className="text-[--black] text-2xl" />
@@ -173,7 +174,6 @@ const Navbar = ({ loginButton }) => {
 											</motion.p>
 										</Link>
 									))}
-									{/* {loginButton} */}
 									{!session && (
 										<div className="flex-v-center flex-col !gap-[1.5vh] mt-[2vh]">
 											<motion.a

@@ -1,18 +1,33 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components';
 
 const AuthAbout = ({ title, subheading, text, linkText, link }) => {
+	// const wheelRef = useRef();
+	// const handleWheel = (e) => {
+	// 	// e.preventDefault();
+	// 	wheelRef.current.scrollBy({
+	// 		top: e.deltaY,
+	// 		// behavior: 'smooth',
+	// 	});
+	// };
+
 	const [isPending, setIsPending] = useState(false);
 	return (
-		<div className={`lg:p-10 h-screen !pointer-events-auto`}>
+		<div className={`lg:p-10 h-screen`}>
 			<div className="h-[15vh] lg:h-auto flex-center text-center lg:pb-7">
 				<h1 className="">{title}</h1>
 			</div>
-			<div className="dashboard-content-box max-w-[900px] py-5 lg:py-7 overflow-hidden !pointer-events-auto">
-				<div className="h-full overflow-auto">
+			<div className="dashboard-content-box max-w-[900px] py-5 lg:py-7 overflow-hidde">
+				<div
+					// ref={wheelRef}
+					// onWheel={(e) => handleWheel(e)}
+					className={`overflow-y-auto !h-full overflow-x-hidden !relative ${
+						isPending && 'pending'
+					}`}
+				>
 					<div className="flex flex-col items-center px-4 lg:px-7">
 						<h2 className="text-left w-full">{subheading}</h2>
 						<div className="space-y-2 py-2">

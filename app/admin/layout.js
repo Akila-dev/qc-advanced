@@ -7,7 +7,7 @@ export const metadata = {
 	description: 'QC Authentication',
 };
 
-export default function RootLayout({ children }) {
+export default function AdminLayout({ children }) {
 	return (
 		<div className="relative h-screen w-full overflow-hidden flex items-center justify-center">
 			<div className="relative w-full min-h-screen">
