@@ -205,7 +205,7 @@ input,
 
 /* ! DASHBOARD */
 .dashboard-content-box {
-	@apply w-full bg-[--white] shadow shadow-[--shadow] h-[85vh] md:h-[75vh] rounded-t-[--rounding] md:rounded-[--rounding];
+	@apply w-full bg-[--white] shadow shadow-[--shadow] h-[85vh] md:h-[75vh] rounded-t-[--rounding] md:rounded-[--rounding] overflow-auto;
 }
 
 /* ! POPUPS */
