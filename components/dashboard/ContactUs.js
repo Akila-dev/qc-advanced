@@ -88,6 +88,7 @@ const ContactUs = () => {
 					name="subject"
 					rhf={{ ...register('subject') }}
 					error={errors.subject?.message}
+					darkBg
 				/>
 				{/* Message */}
 				<InputFieldRHF

@@ -3,14 +3,14 @@ import { images } from '../../constants';
 import { DashboardSideNav, MobileBottomNav } from '../../components';
 
 export const metadata = {
-	title: 'Choose Your Business',
-	description: 'QC Authentication',
+	title: 'User Dashboard',
+	description: 'QC Advanced User Dashboard',
 };
 
 export default function UserLayout({ children }) {
 	return (
 		<div className="relative h-screen w-full overflow-hidden flex items-center justify-center">
-			<div className="w-full h-full absolute top-0 left-0">
+			<div className="w-full h-full absolute top-0 left-0 pointer-events-none">
 				<Image
 					src={images.bg}
 					alt="background"

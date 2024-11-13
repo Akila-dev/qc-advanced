@@ -21,13 +21,9 @@ import {
 import { LoginSchema } from '@/schemas';
 
 export default function LogIn() {
-	const [showOptions, setShowOptions] = useState(true);
-	const [selectedOption, setSelectedOption] = useState('');
 	const router = useRouter();
 	const searchParams = useSearchParams();
-	const [callback, setCallback] = useState(
-		searchParams.get('callbackUrl') || `/${selectedOption}`
-	);
+	const [callback, setCallback] = useState(searchParams.get('callbackUrl'));
 
 	const [isPending, setIsPending] = useState();
 	const [error, setError] = useState('');
@@ -43,11 +39,15 @@ export default function LogIn() {
 	});
 
 	useEffect(() => {
-		setValue('user_type', selectedOption);
+		if (callback.includes('admin')) {
+			setValue('user_type', 'admin');
+		} else {
+			setValue('user_type', 'user');
+		}
 		setCallback(searchParams.get('callbackUrl') || `/${selectedOption}`);
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedOption]);
+	}, []);
 
 	const onSubmit = (values) => {
 		setError('');
@@ -64,11 +64,7 @@ export default function LogIn() {
 				setIsPending(false);
 				setSuccess('Logging you in...');
 				setTimeout(() => {
-					if (callback === '/auth-in' || callback.includes('auth-in')) {
-						router.push(`/${selectedOption}`);
-					} else {
-						router.push(callback);
-					}
+					router.push(callback);
 				}, 500);
 			} else {
 				setIsPending(false);
@@ -80,99 +76,68 @@ export default function LogIn() {
 
 	return (
 		<>
-			{' '}
-			{showOptions ? (
-				<IconBoxWrapper
-					icon={images.logo}
-					title="Choose your Business"
-					text="Please choose your business to login"
-					className=""
-					logo
+			<IconBoxWrapper
+				icon={images.arrow}
+				title="Login to Your Account"
+				text="Please login to continue"
+				className=""
+			>
+				<form
+					onSubmit={handleSubmit((d) => onSubmit(d))}
+					className={`flex flex-col items-center justify-center w-full max-w-[350px] gap-3 ${
+						isPending && 'pending'
+					}`}
 				>
-					<div className="flex items-center justify-center w-full py-[12vw] md:py-[30px]">
-						<div className="flex flex-col items-center justify-center w-full md:max-w-[300px] gap-3 ">
-							<Button
-								text="admin"
-								onClick={() => {
-									setSelectedOption('admin');
-									setShowOptions(false);
-								}}
+					{/* user type */}
+					<input {...register('user_type')} className="hidden" />
+
+					<div className="w-full space-y-3 py-[5px]">
+						{/* Email */}
+						<InputFieldRHF
+							label="Email"
+							icon={icons.envelope}
+							type="mail"
+							placeholder="mail@mail.com"
+							rhf={{ ...register('email') }}
+							error={errors.email?.message}
+						/>
+						{/* Password */}
+						<div className="input-block">
+							<InputFieldRHF
+								label="Password"
+								icon={icons.lock}
+								type="password"
+								placeholder="password"
+								rhf={{ ...register('password') }}
+								error={errors.password?.message}
 							/>
-							<Button
-								text="user "
-								onClick={() => {
-									setSelectedOption('user');
-									setShowOptions(false);
-								}}
-								noBg
-							/>
+							{callback.includes('admin') && (
+								<div className="flex justify-end w-full">
+									<Link
+										href="/auth/admin/forgot-password"
+										className="p !font-medium !text-[--black] hover:!text-[--brand]"
+									>
+										Forgot Password
+									</Link>
+								</div>
+							)}
 						</div>
 					</div>
-				</IconBoxWrapper>
-			) : (
-				<IconBoxWrapper
-					icon={images.arrow}
-					title="Login to Your Account"
-					text="Please login to continue"
-					className=""
-				>
-					<form
-						onSubmit={handleSubmit((d) => onSubmit(d))}
-						className={`flex flex-col items-center justify-center w-full max-w-[350px] gap-3 ${
-							isPending && 'pending'
-						}`}
-					>
-						{/* user type */}
-						<input {...register('user_type')} className="hidden" />
+					{error && <FormError message={error} />}
+					{success && <FormSuccess message={success} />}
 
-						<div className="w-full space-y-3 py-[5px]">
-							{/* Email */}
-							<InputFieldRHF
-								label="Email"
-								icon={icons.envelope}
-								type="mail"
-								placeholder="mail@mail.com"
-								rhf={{ ...register('email') }}
-								error={errors.email?.message}
-							/>
-							{/* Password */}
-							<div className="input-block">
-								<InputFieldRHF
-									label="Password"
-									icon={icons.lock}
-									type="password"
-									placeholder="password"
-									rhf={{ ...register('password') }}
-									error={errors.password?.message}
-								/>
-								{selectedOption === 'admin' && (
-									<div className="flex justify-end w-full">
-										<Link
-											href="/auth/admin/forgot-password"
-											className="p !font-medium !text-[--black] hover:!text-[--brand]"
-										>
-											Forgot Password
-										</Link>
-									</div>
-								)}
-							</div>
-						</div>
-						{error && <FormError message={error} />}
-						{success && <FormSuccess message={success} />}
+					<SubmitButton text="login" submitting={isPending} />
 
-						<SubmitButton text="login" submitting={isPending} />
-
-						{selectedOption === 'admin' && (
-							<p className="auth/user/about text-[--black] p-4 w-full text-center">
-								{"Don't have an account?"}{' '}
-								<Link href="/auth/admin/register" className="text-[--brand]">
-									Register
-								</Link>
-							</p>
-						)}
-					</form>
-				</IconBoxWrapper>
-			)}
+					{callback.includes('admin') && (
+						<p className="auth/user/about text-[--black] p-4 w-full text-center">
+							{"Don't have an account?"}{' '}
+							<Link href="/auth/admin/register" className="text-[--brand]">
+								Register
+							</Link>
+						</p>
+					)}
+				</form>
+			</IconBoxWrapper>
 		</>
 	);
 }

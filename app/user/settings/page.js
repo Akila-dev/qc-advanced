@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 import { images, icons } from '../../../constants';
 import {
@@ -19,14 +21,17 @@ const navs = [
 	{
 		label: 'Privacy Policy',
 		icon: icons.lock2,
+		link: 'privacy-policy',
 	},
 	{
 		label: 'Contact Us',
 		icon: icons.profile2,
+		link: 'contact-us',
 	},
 	{
 		label: 'Terms & Conditions',
 		icon: icons.noteList,
+		link: 'terms-and-conditions',
 	},
 	{
 		label: 'Logout',
@@ -40,13 +45,29 @@ export default function Settings() {
 	const [showPopup, setShowPopup] = useState(false);
 	const [showLogout, setShowLogout] = useState(false);
 
+	const router = useRouter();
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+
 	useEffect(() => {
 		setIsLoading(false);
 	}, []);
 
+	useEffect(() => {
+		let tab = searchParams.get('tab');
+
+		navs.map((nav, i) => {
+			if (tab === nav.link) {
+				setActiveTab(i);
+				setShowPopup(true);
+			}
+		});
+	}, [pathname, searchParams, router]);
+
 	const openTab = (i) => {
 		setActiveTab(i);
 		setShowPopup(true);
+		router.push(`?tab=${navs[i].link}`);
 	};
 
 	return isLoading ? (
@@ -95,7 +116,10 @@ export default function Settings() {
 				{showPopup && (
 					<SidePopupWrapper
 						title={navs[activeTab].label}
-						close={() => setShowPopup(false)}
+						close={() => {
+							setShowPopup(false);
+							router.push(`?tab=0`);
+						}}
 					>
 						<div className="px-4 py-5">
 							{activeTab === 0 && <PrivacyPolicy />}

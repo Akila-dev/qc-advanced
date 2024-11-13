@@ -14,8 +14,7 @@ import {
 	Button,
 } from '../../components';
 
-// SERVER COMPONENTE
-import { addInvitee } from '@/actions/getInvitee';
+// SERVER COMPONENT
 import { InviteSchema } from '@/schemas';
 
 const ValueField = ({ icon, label, value }) => (

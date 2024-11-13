@@ -37,6 +37,7 @@ export default function Home() {
 						Explore our resources, connect with industry experts, and take your
 						restaurant to the next level with QC Advanced."
 				/>
+
 				<OurSolutions />
 				<WhyChooseUs />
 				<Testimonials />

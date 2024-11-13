@@ -17,14 +17,22 @@ import {
 	Loading,
 	LoadingFailed,
 	Empty,
+	Button,
+	FormError,
+	FormSuccess,
 } from '../../components';
-import { SidePopupWrapper, TitlePopupWrapper } from '../../wrappers';
+import {
+	SidePopupWrapper,
+	TitlePopupWrapper,
+	IconPopupWrapper,
+} from '../../wrappers';
 // import { inspectionData } from '../../textData/inspectionData';
 
 import { SideNavIcons } from '../../components/svgs';
 
 // API RELATED
 import { getListOfChecklist } from '@/actions/getChecklist';
+import { removeInvitee } from '@/actions/getInvitee';
 
 export default function InspectionsList({ close, title, businessId, userId }) {
 	const [isLoading, setIsLoading] = useState(true);
@@ -40,6 +48,11 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 	const [showAddInvitee, setShowAddInvitee] = useState(false);
 	const [showInviteeData, setShowInviteeData] = useState(false);
 	const [inviteeData, setInviteeData] = useState();
+
+	const [isDeleting, setIsDeleting] = useState(false);
+	const [pendingDelete, setPendingDelete] = useState(false);
+	const [error, setError] = useState('');
+	const [success, setSuccess] = useState('');
 
 	// SUBCHECKLIST VARIABLES
 	const [activeSubchecklist_id, setActiveSubchecklist_id] = useState();
@@ -79,6 +92,30 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	// Delete Assignee
+	const requestDeleteAssignee = (id) => {
+		setError('');
+		setSuccess('');
+		setPendingDelete(true);
+
+		removeInvitee(invitees[id].user_id).then((data) => {
+			setError(data.error);
+			setSuccess(data.success);
+			setPendingDelete(false);
+
+			if (data?.response === 1) {
+				let newData = invitees?.filter((list) => {
+					return list !== invitees[id];
+				});
+				setInvitees(newData);
+				setTimeout(() => {
+					setShowInviteeData(false);
+					setIsDeleting(false);
+				}, 1000);
+			}
+		});
+	};
+
 	return (
 		<>
 			<SidePopupWrapper
@@ -103,7 +140,12 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 											className={`w-[50px] min-w-[50px] max-w-[50px] h-[50px] flex-center rounded-full bg-[--brand]`}
 										>
 											<div className="text-[--white] uppercase !tracking-widest text-center scale-125">
-												{username.slice(0, 2)}
+												{username && username.split(' ').length > 1
+													? `${username.split(' ')[0][0]}${
+															username.split(' ')[1][0]
+													  }`
+													: `${username.substr(0, 2)}`}
+												{/* {username.slice(0, 2)} */}
 											</div>
 										</button>
 									))}
@@ -206,6 +248,8 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 				<TitlePopupWrapper
 					title="Invite"
 					close={() => setShowInviteeData(false)}
+					icon={icons.deleteRed}
+					iconFunc={() => setIsDeleting(true)}
 				>
 					<InviteeData
 						close={() => setShowInviteeData(false)}
@@ -227,6 +271,46 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 					setInspectionData={setInspectionData}
 					sidebar
 				/>
+			)}
+
+			{/* DELETE PROMPT */}
+			{isDeleting && (
+				<IconPopupWrapper
+					icon={
+						success
+							? images.congratulations
+							: error
+							? images.error
+							: images.query
+					}
+					title={`Delete Business`}
+					text={
+						success
+							? ''
+							: error
+							? ''
+							: `Are you sure you want to delete this Assignee`
+					}
+					smallIcon
+					className={pendingDelete && 'pointer-events-none'}
+				>
+					<div
+						className={`space-y-3 pt-3 w-full ${pendingDelete && 'pending'}`}
+					>
+						{error && <FormError message={error} />}
+						{success && <FormSuccess message={success} />}
+
+						<div className="grid grid-cols-2 gap-3 w-[80%] mx-auto">
+							<Button onClick={() => setIsDeleting(false)} text="no" noBg />
+							<Button
+								onClick={() => requestDeleteAssignee(inviteeData.id)}
+								text="Yes"
+								sm
+								submitting={pendingDelete}
+							/>
+						</div>
+					</div>
+				</IconPopupWrapper>
 			)}
 		</>
 	);

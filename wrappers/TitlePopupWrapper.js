@@ -1,6 +1,10 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
+import Image from 'next/image';
+
+import { motion } from 'framer-motion';
+import { variants } from '@/constants';
 
 export default function TitlePopupWrapper({
 	children,
@@ -8,6 +12,8 @@ export default function TitlePopupWrapper({
 	close,
 	darkBg,
 	options,
+	icon,
+	iconFunc,
 }) {
 	const ref = useRef();
 
@@ -42,9 +48,20 @@ export default function TitlePopupWrapper({
 					ref={ref}
 					className={`bg-white w-full py-4 lg:py-5 rounded-[--rounding] max-w-[375px] space-y-4`}
 				>
-					<div className="px-4 lg:px-5">
+					<div className="px-4 lg:px-5 !relative">
 						<h1 className="border-b border-[--border] text-center !text-[--black] pb-4">
 							{title}
+							{icon && (
+								<motion.button
+									whileTap="tap"
+									whileHover="hover"
+									variants={variants.buttonClick}
+									onClick={iconFunc}
+									className="popup-animated-children popup-button absolute right-4 lg:right-5 top-0"
+								>
+									<Image src={icon} alt="close" />
+								</motion.button>
+							)}
 						</h1>
 					</div>
 					<div className="px-4 lg:px-5 max-h-[70vh] overflow-auto">

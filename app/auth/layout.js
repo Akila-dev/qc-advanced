@@ -9,7 +9,7 @@ export const metadata = {
 export default function AuthLayout({ children }) {
 	return (
 		<div className="relative h-screen w-full overflow-hidden flex items-center justify-center">
-			<div className="w-full h-full absolute top-0 left-0 z-[-1]">
+			<div className="w-full h-full absolute top-0 left-0 z-[-1] pointer-events-none">
 				<Image
 					src={images.bg}
 					alt="background"
