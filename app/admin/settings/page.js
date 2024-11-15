@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -70,6 +70,7 @@ export default function Settings() {
 	const [showPopup, setShowPopup] = useState(false);
 	const [showLogout, setShowLogout] = useState(false);
 	const [tabHistory, setTabHistory] = useState([0]);
+	const [tab, setTab] = useState();
 
 	const router = useRouter();
 	const pathname = usePathname();
@@ -80,14 +81,13 @@ export default function Settings() {
 	}, []);
 
 	useEffect(() => {
-		let tab = searchParams.get('tab');
-
 		navs.map((nav, i) => {
-			if (tab === nav.link) {
+			if (searchParams.get('tab') === nav.link) {
 				setActiveTab(i);
 				setShowPopup(true);
 			}
 		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [pathname, searchParams, router]);
 
 	const openTab = (i) => {
@@ -99,74 +99,76 @@ export default function Settings() {
 	return isLoading ? (
 		<Loading notFull />
 	) : (
-		<div className="md:p-10 h-screen overflow-auto scroll-2">
-			<h1 className="h-[15vh] lg:h-auto flex-center text-center lg:pb-7">
-				Settings
-			</h1>
-			{/* DASHBOARD CONTENT */}
-			<div className="dashboard-content-box lg:!h-full">
-				<div className="flex w-full lg:h-full">
-					<div className="w-full lg:max-w-[310px] lg:min-w-[310px] border-r border-[--border] p-4 lg:p-7 lg:space-y-3 overflow-auto">
-						<h3 className="hidden lg:block">Settings</h3>
-						<div className="flex w-full flex-col gap-3">
-							{navs.slice(0, navs.length - 1).map((nav, i) => (
+		<Suspense>
+			<div className="md:p-10 h-screen overflow-auto scroll-2">
+				<h1 className="h-[15vh] lg:h-auto flex-center text-center lg:pb-7">
+					Settings
+				</h1>
+				{/* DASHBOARD CONTENT */}
+				<div className="dashboard-content-box lg:!h-full">
+					<div className="flex w-full lg:h-full">
+						<div className="w-full lg:max-w-[310px] lg:min-w-[310px] border-r border-[--border] p-4 lg:p-7 lg:space-y-3 overflow-auto">
+							<h3 className="hidden lg:block">Settings</h3>
+							<div className="flex w-full flex-col gap-3">
+								{navs.slice(0, navs.length - 1).map((nav, i) => (
+									<SettingsNavButton
+										key={i}
+										icon={nav.icon}
+										label={nav.label}
+										onClick={() => openTab(i)}
+										active={i === activeTab}
+									/>
+								))}
 								<SettingsNavButton
-									key={i}
-									icon={nav.icon}
-									label={nav.label}
-									onClick={() => openTab(i)}
-									active={i === activeTab}
+									icon={navs[navs.length - 1].icon}
+									label={navs[navs.length - 1].label}
+									onClick={() => setShowLogout(true)}
 								/>
-							))}
-							<SettingsNavButton
-								icon={navs[navs.length - 1].icon}
-								label={navs[navs.length - 1].label}
-								onClick={() => setShowLogout(true)}
-							/>
+							</div>
+						</div>
+						<div className="hidden lg:flex p-7 w-full h-full">
+							<div className="flex-1 border border-[--border] rounded-[--rounding] py-7 flex">
+								<div className="flex-1 px-7 overflow-auto">
+									{activeTab === 0 && <EditProfile />}
+									{activeTab === 1 && <ChangePassword />}
+									{activeTab === 2 && <PrivacyPolicy />}
+									{activeTab === 3 && <ContactUs />}
+									{activeTab === 4 && <TermsAndConditions />}
+									{activeTab === 5 && <PurchaseMini />}
+									{activeTab === 6 && <DeleteAccount />}
+								</div>
+							</div>
 						</div>
 					</div>
-					<div className="hidden lg:flex p-7 w-full h-full">
-						<div className="flex-1 border border-[--border] rounded-[--rounding] py-7 flex">
-							<div className="flex-1 px-7 overflow-auto">
+
+					<div className="pb lg:!hidden" />
+				</div>
+				<div className="lg:hidden">
+					{showPopup && (
+						<SidePopupWrapper
+							title={navs[activeTab].label}
+							close={() => {
+								setShowPopup(false);
+								// router.push(`?tab=0`);
+							}}
+						>
+							<div className="px-4 py-5">
 								{activeTab === 0 && <EditProfile />}
-								{activeTab === 1 && <ChangePassword />}
+								{activeTab === 1 && (
+									<ChangePassword close={() => setShowPopup(false)} />
+								)}
 								{activeTab === 2 && <PrivacyPolicy />}
 								{activeTab === 3 && <ContactUs />}
 								{activeTab === 4 && <TermsAndConditions />}
 								{activeTab === 5 && <PurchaseMini />}
 								{activeTab === 6 && <DeleteAccount />}
 							</div>
-						</div>
-					</div>
+						</SidePopupWrapper>
+					)}
 				</div>
 
-				<div className="pb lg:!hidden" />
+				{showLogout && <SignOutPopup close={() => setShowLogout(false)} />}
 			</div>
-			<div className="lg:hidden">
-				{showPopup && (
-					<SidePopupWrapper
-						title={navs[activeTab].label}
-						close={() => {
-							setShowPopup(false);
-							router.push(`?tab=0`);
-						}}
-					>
-						<div className="px-4 py-5">
-							{activeTab === 0 && <EditProfile />}
-							{activeTab === 1 && (
-								<ChangePassword close={() => setShowPopup(false)} />
-							)}
-							{activeTab === 2 && <PrivacyPolicy />}
-							{activeTab === 3 && <ContactUs />}
-							{activeTab === 4 && <TermsAndConditions />}
-							{activeTab === 5 && <PurchaseMini />}
-							{activeTab === 6 && <DeleteAccount />}
-						</div>
-					</SidePopupWrapper>
-				)}
-			</div>
-
-			{showLogout && <SignOutPopup close={() => setShowLogout(false)} />}
-		</div>
+		</Suspense>
 	);
 }
