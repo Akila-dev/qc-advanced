@@ -54,26 +54,29 @@ export default function Action() {
 		getActions().then((data) => {
 			// console.log(data?.businessList);
 			// console.log(data?.data);
-			setActionsList(data?.data?.data);
-			setFilteredActionsList(data?.data?.data);
-			setBusinessList(data?.businessList?.data);
-			setOverview([
-				{
-					label: 'Pending Actions',
-					value: data?.overview?.data?.no_of_actions,
-				},
-				{
-					label: 'Due Soon',
-					value: data?.overview?.data?.no_of_pending_actions,
-				},
-				{
-					label: 'Businesses',
-					value: data?.overview?.data?.no_of_business,
-				},
-			]);
-			setIsLoading(false);
+
 			if (data?.data?.ResponseCode === 1) {
-				setSuccessfullyLoaded(true);
+				setActionsList(data?.data?.data);
+				setFilteredActionsList(data?.data?.data);
+				setBusinessList(data?.businessList?.data);
+				setOverview([
+					{
+						label: 'Pending Actions',
+						value: data?.overview?.data?.no_of_actions,
+					},
+					{
+						label: 'Due Soon',
+						value: data?.overview?.data?.no_of_pending_actions,
+					},
+					{
+						label: 'Businesses',
+						value: data?.overview?.data?.no_of_business,
+					},
+				]);
+				setTimeout(() => {
+					setSuccessfullyLoaded(true);
+					setIsLoading(false);
+				}, 500);
 			}
 		});
 	}, []);
@@ -89,10 +92,6 @@ export default function Action() {
 		setShowDetails(true);
 	};
 
-	// OPTIONS FUNCTIONS
-	const shareAction = () => {
-		console.log('Share Option:' + activeAction);
-	};
 	const deleteSelectedAction = () => {
 		setError('');
 		setSuccess('');
@@ -110,11 +109,16 @@ export default function Action() {
 					return list?.action_id !== active_action_id;
 				});
 
+				let newOverview = overview;
+				newOverview[0].value = overview[0].value - 1;
+				newOverview[1].value = overview[1].value - 1;
+				setOverview(newOverview);
+
 				setActionsList(newActionsList);
 				setTimeout(() => {
 					setShowDetails(false);
 					setShowDelete(false);
-				}, 1000);
+				}, 500);
 			}
 		});
 	};
@@ -231,6 +235,8 @@ export default function Action() {
 							actionsList={actionsList}
 							setActionsList={setActionsList}
 							businessList={businessList}
+							overview={overview}
+							setOverview={setOverview}
 						/>
 					</SidePopupWrapper>
 				)}

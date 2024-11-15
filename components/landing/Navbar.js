@@ -35,7 +35,7 @@ const navigation = [
 	},
 ];
 
-const Navbar = () => {
+const Navbar = ({ bgActive }) => {
 	const [menuToggled, setMenuToggled] = useState(false);
 	const [scrolledOffTop, setScrolledOffTop] = useState(false);
 	const popupClickable = useRef();
@@ -82,7 +82,8 @@ const Navbar = () => {
 	return (
 		<>
 			<div
-				className={`fixed top-0 left-0 z-[100000] flex flex-col justify-center w-full transition-all duration-500  ${
+				className={`fixed top-0 left-0 z-[100000] flex flex-col justify-center w-full transition-all duration-500 
+					${bgActive && '!bg-[--white] shadow-sm shadow-[--card]'} ${
 					scrolledOffTop
 						? 'bg-[--white] shadow-sm shadow-[--card] h-[60px] md:h-[70px]'
 						: 'bg-transparent h-[80px] md:h-[100px]'
@@ -111,6 +112,7 @@ const Navbar = () => {
 						) : (
 							<div className="flex-v-center justify-end min-w-[220px] !gap-2 !hidden lg:!flex">
 								<Link
+									// href="/api/auth/signin?callbackUrl=/auth-in"
 									href="/auth"
 									className="btn-2-v2 !bg-transparent hover:!bg-[--card] !capitalize"
 								>
@@ -177,7 +179,8 @@ const Navbar = () => {
 									{!session && (
 										<div className="flex-v-center flex-col !gap-[1.5vh] mt-[2vh]">
 											<motion.a
-												href="/api/auth/signin?callbackUrl=/auth-in"
+												// href="/api/auth/signin?callbackUrl=/auth-in"
+												href="/auth"
 												variants={slideInBottom}
 												whileHover={{ scale: 1.1 }}
 												whileTap={{ scale: 0.9 }}

@@ -35,18 +35,18 @@ export const addTrainingMaterial = async (values, id) => {
 		if (data) {
 			if (data.ResponseCode === 1) {
 				return {
-					success: data.ResponseMsg,
+					success: 'Material Added Successfully',
 					data: data,
 				};
 			} else {
 				return {
-					error: data.ResponseMsg.replace('business_img', 'business image'),
+					error: data.ResponseMsg,
 				};
 			}
 		}
 	} catch (error) {
 		// console.log(error);
-		return { error: 'Invalid Fields, Please Try Again' };
+		return { error: 'Network Error, Please Try Again' };
 	}
 };
 
@@ -89,17 +89,59 @@ export const updateTrainingMaterial = async (values, id, training_id) => {
 		if (data) {
 			if (data.ResponseCode === 1) {
 				return {
-					success: data.ResponseMsg,
+					success: 'Updated Successfully',
 					data: data,
 				};
 			} else {
 				return {
-					error: data.ResponseMsg.replace('business_img', 'business image'),
+					error: data.ResponseMsg,
 				};
 			}
 		}
 	} catch (error) {
 		// console.log(error);
-		return { error: 'Invalid Fields, Please Try Again' };
+		return { error: 'Network Error, Please Try Again' };
+	}
+};
+
+export const deleteTrainingMaterial = async (id, training_id) => {
+	const formData = new FormData();
+
+	formData.append('user_id', id);
+	formData.append('training_id', training_id);
+
+	console.log(id, training_id);
+
+	try {
+		const { data } = await axios.post(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/deleteTrainingMaterial`,
+			formData,
+			{
+				headers: {
+					'Content-Type': 'multipart/form-data',
+					// 'Content-Type': 'application/json',
+					Accept: 'application/json',
+					key: process.env.NEXT_PUBLIC_KEY,
+					token: process.env.NEXT_PUBLIC_TOKEN,
+				},
+			}
+		);
+
+		if (data) {
+			if (data.ResponseCode === 1) {
+				return {
+					success: 'Deleted Successfully',
+					response: data.ResponseCode,
+					// data: data,
+				};
+			} else {
+				return {
+					error: data.ResponseMsg,
+				};
+			}
+		}
+	} catch (error) {
+		// console.log(error);
+		return { error: 'Network Error, Please Try Again' };
 	}
 };

@@ -39,7 +39,7 @@ const SignOutPopup = ({ close }) => {
 			title={`Logout`}
 			text={`Are you sure you want to logout?`}
 			smallIcon
-			className={isPending && 'pointer-events-none'}
+			className={`!z-10 ${isPending && 'pointer-events-none'}`}
 		>
 			<div className={`space-y-3 pt-3 w-full ${isPending && 'pending'}`}>
 				{error && <FormError message={error} />}

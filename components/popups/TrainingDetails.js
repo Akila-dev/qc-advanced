@@ -16,7 +16,7 @@ const TrainingDetails = ({ img, text }) => {
 				/>
 			</div>
 			<div className="space-y-4">
-				{text.split('\r\n').map((p, i) => (
+				{text?.split('\r\n').map((p, i) => (
 					<p key={i}>{p}</p>
 				))}
 				{/* <p>{text}</p> */}

@@ -35,7 +35,7 @@ const Footer = () => {
 						</Link>
 					</div>
 				</div>
-				<div className="grid md:grid-cols-2 gap-5">
+				<div className="grid grid-cols-2 gap-5">
 					<div className="flex flex-col gap-3">
 						<h3>Company</h3>
 						<Link href="/about" className="footer-link">

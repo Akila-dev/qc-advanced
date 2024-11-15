@@ -59,8 +59,7 @@ const Header = () => {
 						variants={slideInBottom}
 						className="text-[--black] py-4 lg:py-5"
 					>
-						Never at water me might. On formed merits hunted unable merely by mr
-						whence or. Possession the unpleasing simplicity her uncommonly.
+						Become part of a community committed to quality and excellence.
 					</motion.p>
 					<motion.div
 						variants={slideInBottom}

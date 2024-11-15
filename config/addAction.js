@@ -53,7 +53,7 @@ export const addAction = async (values, id) => {
 		}
 	} catch (error) {
 		// console.log(error);
-		return { error: 'Invalid Fields, Please Try Again' };
+		return { error: 'Network Error, Please Try Again' };
 	}
 };
 
@@ -105,7 +105,7 @@ export const updateAction = async (values, id, action_id) => {
 		}
 	} catch (error) {
 		// console.log(error);
-		return { error: 'Invalid Fields, Please Try Again' };
+		return { error: 'Network Error, Please Try Again' };
 	}
 };
 
@@ -155,7 +155,7 @@ export const addActionActivity = async (values, user_id, action_id) => {
 		}
 	} catch (error) {
 		// console.log(error);
-		return { error: 'Invalid Fields, Please Try Again' };
+		return { error: 'Network Error, Please Try Again' };
 	}
 };
 
@@ -210,7 +210,7 @@ export const addActionUser = async (values, id) => {
 		}
 	} catch (error) {
 		// console.log(error);
-		return { error: 'Invalid Fields, Please Try Again' };
+		return { error: 'Network Error, Please Try Again' };
 	}
 };
 
@@ -262,7 +262,7 @@ export const updateActionUser = async (values, id, action_id) => {
 		}
 	} catch (error) {
 		// console.log(error);
-		return { error: 'Invalid Fields, Please Try Again' };
+		return { error: 'Network Error, Please Try Again' };
 	}
 };
 
@@ -312,6 +312,6 @@ export const updateActionUser = async (values, id, action_id) => {
 // 		}
 // 	} catch (error) {
 // 		// console.log(error);
-// 		return { error: 'Invalid Fields, Please Try Again' };
+// 		return { error: 'Network Error, Please Try Again' };
 // 	}
 // };

@@ -23,7 +23,9 @@ import { LoginSchema } from '@/schemas';
 export default function LogIn() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
-	const [callback, setCallback] = useState(searchParams.get('callbackUrl'));
+	const [callback, setCallback] = useState(
+		searchParams.get('callbackUrl') || ''
+	);
 
 	const [isPending, setIsPending] = useState();
 	const [error, setError] = useState('');
@@ -44,7 +46,7 @@ export default function LogIn() {
 		} else {
 			setValue('user_type', 'user');
 		}
-		setCallback(searchParams.get('callbackUrl') || `/${selectedOption}`);
+		setCallback(searchParams.get('callbackUrl') || '');
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -58,14 +60,12 @@ export default function LogIn() {
 		signIn('credentials', {
 			...values,
 			redirect: false,
-			callbackUrl: callback,
+			callbackUrl: searchParams.get('callbackUrl'),
 		}).then(({ ok, error }) => {
 			if (ok) {
-				setIsPending(false);
 				setSuccess('Logging you in...');
-				setTimeout(() => {
-					router.push(callback);
-				}, 500);
+				router.push(searchParams.get('callbackUrl'));
+				// router.push(callback);
 			} else {
 				setIsPending(false);
 				console.log(error);

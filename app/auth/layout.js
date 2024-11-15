@@ -2,8 +2,8 @@ import Image from 'next/image';
 import { images } from '../../constants';
 
 export const metadata = {
-	title: 'Choose Your Business',
-	description: 'QC Authentication',
+	title: 'Choose Login Type | QC Authentication',
+	description: 'Choose what role you want to login as',
 };
 
 export default function AuthLayout({ children }) {

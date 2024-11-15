@@ -47,7 +47,7 @@ export const addBusiness = async (values, id) => {
 		}
 	} catch (error) {
 		// console.log(error);
-		return { error: 'Invalid Fields, Please Try Again' };
+		return { error: 'Network Error, Please Try Again' };
 	}
 };
 
@@ -206,6 +206,6 @@ export const archiveToggleChecklist = async (userId, checklistId, type) => {
 		}
 	} catch (error) {
 		// console.log(error);
-		return { error: "Couldn't Upload Checklist" };
+		return { error: 'Network Error, Please Try Again' };
 	}
 };

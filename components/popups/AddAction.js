@@ -38,6 +38,8 @@ const AddAction = ({
 	actionsList,
 	setActionsList,
 	assigneeList,
+	overview,
+	setOverview,
 	edit,
 	activeAction,
 	initialValues,
@@ -123,6 +125,12 @@ const AddAction = ({
 
 					if (data.success) {
 						setActionsList([data?.data?.data, ...actionsList]);
+
+						let prevOverview = overview;
+						prevOverview[0].value = overview[0].value + 1;
+						prevOverview[1].value = overview[1].value + 1;
+						setOverview(prevOverview);
+
 						setTimeout(() => {
 							close();
 						}, 1000);
@@ -158,6 +166,11 @@ const AddAction = ({
 
 					if (data.success) {
 						setActionsList([data?.data?.data, ...actionsList]);
+						let prevOverview = overview;
+						prevOverview[0].value = overview[0].value + 1;
+						prevOverview[1].value = overview[1].value + 1;
+						setOverview(prevOverview);
+
 						setTimeout(() => {
 							close();
 						}, 1000);

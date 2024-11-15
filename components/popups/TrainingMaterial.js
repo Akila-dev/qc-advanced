@@ -35,6 +35,8 @@ const TrainingMaterial = ({
 	trainingMaterialsList,
 	setTrainingMaterialsList,
 	initialValues,
+	overview,
+	setOverview,
 }) => {
 	const [isPending, setIsPending] = useState();
 	const [error, setError] = useState('');
@@ -94,6 +96,11 @@ const TrainingMaterial = ({
 						data?.data?.data,
 						...trainingMaterialsList,
 					]);
+
+					let newOverview = overview;
+					newOverview[0].value = overview[0].value + 1;
+					setOverview(newOverview);
+
 					setTimeout(() => {
 						close();
 					}, 1000);

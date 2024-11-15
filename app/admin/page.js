@@ -152,9 +152,19 @@ export default function Dashboard() {
 			setPendingDelete(false);
 
 			if (data?.response === 1) {
+				let newBusinessList = businessList.filter((list) => {
+					return list.business_id !== activeBusiness;
+				});
+				setBusinessList(newBusinessList);
+
+				let newOverview = overview;
+				newOverview[0] = overview[0] - 1;
+				setOverview(newOverview);
+
 				setTimeout(() => {
-					window.location.reload();
-				}, 1000);
+					setPendingDelete(false);
+					setIsDeleting(false);
+				}, 500);
 			}
 		});
 	};
@@ -305,7 +315,11 @@ export default function Dashboard() {
 						<button
 							type="button"
 							className="options-btn group"
-							onClick={() => setIsDeleting(true)}
+							onClick={() => {
+								setError('');
+								setSuccess('');
+								setIsDeleting(true);
+							}}
 						>
 							<div className="group-hover:scale-110 group-hover: text-[--brand] inline-flex items-center gap-[6px] transition duration-700 ">
 								<GoTrash className="scale-110" />

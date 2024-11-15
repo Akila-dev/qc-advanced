@@ -64,7 +64,7 @@ const SelectAssignee = ({
 					return option.user_id === defaultValue;
 				}).length > 0
 			) {
-				console.log('Ok');
+				// console.log('Ok');
 				setSelectedOption(
 					options.filter((option) => {
 						return option.user_id === defaultValue;

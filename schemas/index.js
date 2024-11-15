@@ -145,7 +145,17 @@ export const TrainingMaterialSchema = z.object({
 				message: 'File format must be either jpg, jpeg or png.',
 			}
 		),
-	// document: z.any(),
+	document:
+		// z.any() ||
+		zfd
+			.file()
+			.refine((file) => file?.length !== 0, 'Required*')
+			.refine((file) => file.size < 100000000, {
+				message: "File can't be bigger than 100MB.",
+			})
+			.refine((file) => ['application/pdf'].includes(file.type), {
+				message: 'File format must be pdf.',
+			}),
 	title: z.string().min(1, { message: 'Enter Title' }),
 	description: z.string().min(1, { message: 'Enter Description' }),
 	business_id: z.string().min(1, { message: 'Select Business' }),
@@ -171,18 +181,12 @@ export const EditTrainingMaterialSchema = z.object({
 		zfd
 			.file()
 			.refine((file) => file?.length !== 0, 'Required*')
-			.refine((file) => file.size < 10000000, {
-				message: "File can't be bigger than 10MB.",
+			.refine((file) => file.size < 100000000, {
+				message: "File can't be bigger than 100MB.",
 			})
-			.refine(
-				(file) =>
-					['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'].includes(
-						file.type
-					),
-				{
-					message: 'File format must be either pdf, jpg, jpeg or png.',
-				}
-			),
+			.refine((file) => ['application/pdf'].includes(file.type), {
+				message: 'File format must be pdf.',
+			}),
 	// document: z.any(),
 	title: z.string().min(1, { message: 'Enter Title' }),
 	description: z.string().min(1, { message: 'Enter Description' }),

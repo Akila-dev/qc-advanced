@@ -35,7 +35,7 @@ export const answerSubChecklistQuestion = async (user_id, bsc_id, answer) => {
 		}
 	} catch (error) {
 		// console.log(error);
-		return { error: 'Invalid Fields, Please Try Again' };
+		return { error: 'Network Error, Please Try Again' };
 	}
 };
 
@@ -74,7 +74,7 @@ export const addSubChecklistNote = async (user_id, bsc_id, note) => {
 		}
 	} catch (error) {
 		// console.log(error);
-		return { error: 'Invalid Fields, Please Try Again' };
+		return { error: 'Network Error, Please Try Again' };
 	}
 };
 
@@ -117,7 +117,7 @@ export const addSubChecklistAction = async (user_id, bsc_id, values) => {
 		}
 	} catch (error) {
 		// console.log(error);
-		return { error: 'Invalid Fields, Please Try Again' };
+		return { error: 'Network Error, Please Try Again' };
 	}
 };
 
@@ -158,7 +158,7 @@ export const addSubChecklistMedia = async (user_id, bsc_id, media) => {
 		}
 	} catch (error) {
 		// console.log(error);
-		return { error: 'Invalid Fields, Please Try Again' };
+		return { error: 'Network Error, Please Try Again' };
 	}
 };
 
@@ -197,6 +197,6 @@ export const deleteSubChecklistMedia = async (user_id, scmm_id) => {
 		}
 	} catch (error) {
 		// console.log(error);
-		return { error: 'Invalid Fields, Please Try Again' };
+		return { error: 'Network Error, Please Try Again' };
 	}
 };

@@ -43,6 +43,8 @@ const ActionDetails = ({
 	assigneeList,
 	setActionsList,
 	activeAction,
+	overview,
+	setOverview,
 }) => {
 	// TAB VARIABLES
 	const [activeTab, setActiveTab] = useState(0);
@@ -54,7 +56,7 @@ const ActionDetails = ({
 
 	useEffect(() => {
 		getActionActivities(actionsList[activeAction].action_id).then((data) => {
-			console.log(data?.data?.data);
+			// console.log(data?.data?.data);
 			if (data?.response === 1) {
 				setActionActivitiesList(data?.data?.data);
 				setSuccessfullyLoaded(true);
@@ -87,6 +89,8 @@ const ActionDetails = ({
 							activeAction={activeAction}
 							admin={admin}
 							assigneeList={assigneeList}
+							overview={overview}
+							setOverview={setOverview}
 						/>
 
 						<div className="flex flex-col items-center text-center gap-1">

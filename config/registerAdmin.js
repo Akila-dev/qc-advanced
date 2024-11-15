@@ -55,6 +55,6 @@ export const registerAdmin = async (values, otp) => {
 		}
 	} catch (error) {
 		console.log(error);
-		return { error: 'Invalid Fields, Please Try Again' };
+		return { error: 'Network Error, Please Try Again' };
 	}
 };

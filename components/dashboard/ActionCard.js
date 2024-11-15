@@ -42,7 +42,7 @@ const ActionCard = ({
 			setRemainder('exceeded due date');
 		}
 
-		console.log(diff_days);
+		// console.log(diff_days);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

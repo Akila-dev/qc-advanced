@@ -25,6 +25,7 @@ import location from '../assets/icons/location.png';
 import lock from '../assets/icons/lock.png';
 import lock2 from '../assets/icons/lock2.png';
 import logout from '../assets/icons/logout.png';
+import logoutRed from '../assets/icons/logout.svg';
 import message from '../assets/icons/message.png';
 import mobile from '../assets/icons/mobile.png';
 import noteList from '../assets/icons/note-list.png';
@@ -69,6 +70,7 @@ export default {
 	lock,
 	lock2,
 	logout,
+	logoutRed,
 	message,
 	mobile,
 	noteList,

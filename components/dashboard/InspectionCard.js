@@ -124,7 +124,7 @@ const InspectionCard = ({
 				whileHover={{ x: sidebar ? -50 : 0 }}
 				transition={{ type: 'spring', duration: 1 }}
 				dragElastic={sidebar ? 0.1 : 0}
-				className={`slide-animated-children flex justify-between items-center w-full bg-[--card] border border-[--border] rounded-lg gap-4 relative z-[1] ${
+				className={`slide-animated-children flex justify-between items-center w-full bg-[--card] border border-[--border] rounded-lg gap-4 relatives ${
 					sidebar ? '' : 'lg:flex-col lg:items-start lg:p-[14px]'
 				}`}
 			>

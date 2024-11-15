@@ -110,6 +110,11 @@ export default function Action() {
 					return list.action_id !== active_action_id;
 				});
 
+				let prevOverview = overview;
+				prevOverview[0].value = overview[0].value - 1;
+				prevOverview[1].value = overview[1].value - 1;
+				setOverview(prevOverview);
+
 				setActionsList(newActionsList);
 				setTimeout(() => {
 					setShowDetails(false);
@@ -225,6 +230,8 @@ export default function Action() {
 							actionsList={actionsList}
 							setActionsList={setActionsList}
 							assigneeList={assigneeList}
+							overview={overview}
+							setOverview={setOverview}
 						/>
 					</SidePopupWrapper>
 				)}
@@ -242,6 +249,8 @@ export default function Action() {
 							setActionsList={setActionsList}
 							activeAction={activeAction}
 							assigneeList={assigneeList}
+							overview={overview}
+							setOverview={setOverview}
 						/>
 					</SidePopupWrapper>
 				)}

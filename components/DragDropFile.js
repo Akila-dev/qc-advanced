@@ -23,7 +23,9 @@ const DragDropFile = ({
 	// const [showImages, setShowImages] = useState(false);
 	const [dragActive, setDragActive] = useState(false);
 	const inputRef = useRef();
-	const [fileName, setFileName] = useState();
+	const [fileName, setFileName] = useState(
+		defaultValue && defaultValue.split('/')[-1]
+	);
 
 	const removeImage = (i) => {
 		let res = [...materialImages];
@@ -105,7 +107,7 @@ const DragDropFile = ({
 					ref={inputRef}
 					type="file"
 					multiple={!single}
-					accept={!document ? '.png,.jpg,.jpeg' : '.png,.jpg,.jpeg,.pdf'}
+					accept={!document ? '.png,.jpg,.jpeg' : '.pdf'}
 					className="absolute top-0 left-0 w-[200%] hidden"
 					onChange={onImageChange}
 				/>
@@ -182,12 +184,12 @@ const DragDropFile = ({
 								height={300}
 								className={`w-full h-[40px] object-contain rounded-xl`}
 							/>
-							<p className="text-center px-3 !text-xs">
+							<p className="text-center px-3 pt-1 !text-xs">
 								{fileName
 									? fileName.length > 5
 										? fileName.slice(0, 5) + '...'
 										: fileName
-									: 'Upload'}
+									: 'Uploaded'}
 							</p>
 							<button
 								className="p-1 bg-[--transparent-bg] rounded-full absolute top-2 right-2"

@@ -21,10 +21,8 @@ import { SidePopupWrapper, IconPopupWrapper } from '../../../wrappers';
 import { SideNavIcons } from '../../../components/svgs';
 
 // SERVER ACTIONS/COMPONENTS
-import {
-	getTrainingMaterials,
-	deleteTrainingMaterial,
-} from '@/actions/getTrainingMaterials';
+import { getTrainingMaterials } from '@/actions/getTrainingMaterials';
+import { deleteTrainingMaterial } from '@/config/addTrainingMaterials';
 
 const colors = ['#2d2d2b08', '#2d2d2b08', '#f5edc7'];
 const tags = ['all', 'due soon', 'exceeded due date'];
@@ -47,11 +45,12 @@ export default function Training() {
 	const [showDelete, setShowDelete] = useState(false);
 	const [showAddMaterial, setShowAddMaterial] = useState(false);
 	const [activeTrainingData, setActiveTrainingData] = useState();
+	const [showNoDocument, setShowNoDocument] = useState(false);
 
 	useEffect(() => {
 		if (trainingMaterialsList && activeTraining) {
 			setActiveTrainingData(
-				trainingMaterialsList.filter((list) => {
+				trainingMaterialsList?.filter((list) => {
 					return list.training_id === activeTraining;
 				})[0]
 			);
@@ -61,7 +60,6 @@ export default function Training() {
 
 	useEffect(() => {
 		getTrainingMaterials().then((data) => {
-			console.log(data?.businessList);
 			setTrainingMaterialsList(data?.data?.data);
 			setBusinessList(data?.businessList?.data);
 			setOverview([
@@ -78,9 +76,11 @@ export default function Training() {
 					value: data?.overview?.data?.no_of_business,
 				},
 			]);
-			setIsLoading(false);
 			if (data?.data?.ResponseCode === 1) {
+				setIsLoading(false);
 				setSuccessfullyLoaded(true);
+			} else {
+				setIsLoading(false);
 			}
 		});
 	}, []);
@@ -103,23 +103,29 @@ export default function Training() {
 	};
 
 	const deleteActiveMaterial = () => {
+		console.log(userId, activeTraining);
 		setError('');
 		setSuccess('');
 		setPendingDelete(true);
 
-		deleteTrainingMaterial(activeTraining).then((data) => {
+		deleteTrainingMaterial(userId, activeTraining).then((data) => {
 			setError(data.error);
 			setSuccess(data.success);
-			setPendingDelete(false);
+
 			if (data?.response === 1) {
 				let newTrainingMaterialsList = trainingMaterialsList.filter((list) => {
 					return list.training_id !== activeTraining;
 				});
-
 				setTrainingMaterialsList(newTrainingMaterialsList);
-				setTimeout(() => {
-					setShowDelete(false);
-				}, 1000);
+
+				let newOverview = overview;
+				newOverview[0].value = overview[0].value - 1;
+				setOverview(newOverview);
+
+				setPendingDelete(false);
+				setShowDelete(false);
+			} else {
+				setPendingDelete(false);
 			}
 		});
 	};
@@ -222,7 +228,13 @@ export default function Training() {
 						close={() => setShowDetails(false)}
 						title={activeTrainingData?.title}
 						otherIcon={icons.download}
-						otherFunc={() => window.open(activeTrainingData?.document)}
+						otherFunc={() => {
+							if (activeTrainingData?.document) {
+								window.open(activeTrainingData?.document);
+							} else {
+								setShowNoDocument(true);
+							}
+						}}
 					>
 						<TrainingDetails
 							img={activeTrainingData?.image}
@@ -263,6 +275,8 @@ export default function Training() {
 							businessList={businessList}
 							trainingMaterialsList={trainingMaterialsList}
 							setTrainingMaterialsList={setTrainingMaterialsList}
+							overview={overview}
+							setOverview={setOverview}
 						/>
 					</SidePopupWrapper>
 				)}
@@ -310,6 +324,30 @@ export default function Training() {
 									text="yes"
 									submitting={pendingDelete}
 									sm
+								/>
+							</div>
+						</div>
+					</IconPopupWrapper>
+				)}
+
+				{showNoDocument && (
+					<IconPopupWrapper
+						icon={images.error}
+						title={`No Document`}
+						smallIcon
+						darkBg
+					>
+						<div className={`space-y-3 text-center pt-3 w-full`}>
+							<p>No tutorial document to download</p>
+
+							{error && <FormError message={error} center />}
+							{success && <FormSuccess message={success} center />}
+
+							<div className="w-full grid grid-cols-2 gap-4 lg:gap-5">
+								<Button
+									onClick={() => setShowNoDocument(false)}
+									noBg
+									text="ok"
 								/>
 							</div>
 						</div>

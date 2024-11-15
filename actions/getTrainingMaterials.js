@@ -74,46 +74,6 @@ export const getTrainingMaterials = async () => {
 	}
 };
 
-export const deleteTrainingMaterial = async (training_id) => {
-	const session = await getServerSession(options);
-	const user_id = session?.user?.id;
-
-	try {
-		const res = await fetch(
-			`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/deleteTrainingMaterial`,
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json',
-					key: process.env.NEXT_PUBLIC_KEY,
-					token: process.env.NEXT_PUBLIC_TOKEN,
-				},
-				body: JSON.stringify({
-					user_id: session?.user?.id,
-					training_id: training_id,
-				}),
-			}
-		);
-
-		const deleted = await res.json();
-		console.log(deleted);
-
-		if (res.ok && deleted.ResponseCode === 1) {
-			return {
-				success: 'Training deleted successfully',
-				response: deleted.ResponseCode,
-			};
-		} else {
-			return {
-				error: deleted.ResponseMsg,
-			};
-		}
-	} catch (error) {
-		return { errorMsg: "Couldn't Access Database" };
-	}
-};
-
 // !USER
 export const getUserTrainingMaterials = async () => {
 	const session = await getServerSession(options);
