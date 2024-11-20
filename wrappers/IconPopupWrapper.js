@@ -32,8 +32,10 @@ export default function IconPopupWrapper({
 
 	return (
 		<div
-			className={`fixed top-0 right-0 bottom-0 h-full w-full bg-[--transparent-bg] backdrop-blur-sm lg:w-[--sidebar !z-10 flex flex-col items-center justify-center p-5 lg:p-7 ${className} ${
-				noBg && '!bg-transparent'
+			className={`fixed top-0 right-0 bottom-0 h-full w-full !z-10 flex flex-col items-center justify-center p-5 lg:p-7 ${className} ${
+				noBg
+					? '!bg-transparent backdrop-blur-sm'
+					: 'bg-[--transparent-bg] backdrop-blur-sm'
 			}`}
 		>
 			<div ref={ref} className={`flex flex-col items-center justify-center`}>

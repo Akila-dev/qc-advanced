@@ -1,11 +1,12 @@
-'use client';
+// 'use client';
 
 import { Suspense } from 'react';
+import { Loading } from '@/containers';
 import SignIn from '@/containers/SignIn';
 
-export default function Settings() {
+export default function SigningIn() {
 	return (
-		<Suspense>
+		<Suspense fallback={<Loading notFull />}>
 			<SignIn />
 		</Suspense>
 	);

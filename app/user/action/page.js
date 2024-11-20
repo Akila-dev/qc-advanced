@@ -54,7 +54,7 @@ export default function Action() {
 	useEffect(() => {
 		getActionsUser().then((data) => {
 			// console.log(data?.businessList);
-			// console.log(data?.data);
+			console.log(data);
 			setActionsList(data?.data?.data);
 			setFilteredActionsList(data?.data?.data);
 
@@ -66,11 +66,11 @@ export default function Action() {
 			setOverview([
 				{
 					label: 'Pending Actions',
-					value: data?.overview?.data?.no_of_actions,
+					value: data?.overview?.data?.no_of_pending_actions,
 				},
 				{
 					label: 'Due Soon',
-					value: data?.overview?.data?.no_of_pending_actions,
+					value: data?.overview?.data?.no_of_action_due_soon,
 				},
 				{
 					label: 'Exceeded Due Date',

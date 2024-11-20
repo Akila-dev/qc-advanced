@@ -76,6 +76,7 @@ export default function LogIn() {
 		}).then(({ ok, error }) => {
 			if (ok) {
 				setSuccess('Logging you in...');
+				console.log('Hi');
 				// router.push(searchParams.get('callbackUrl'));
 				// router.redirect(`/${callback}`);
 			} else {

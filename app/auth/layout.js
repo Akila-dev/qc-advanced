@@ -22,9 +22,6 @@ export default function AuthLayout({ children }) {
 					<IconPopupWrapper
 						icon={images.logout}
 						title={`Can't View Page`}
-						// text={`You are logged in as ${
-						// 	session?.user?.role === 'admin' ? 'an admin' : 'a user'
-						// }. Logout first`}
 						smallIcon
 					>
 						<div className={`space-y-3 pt-3 w-full`}>
@@ -43,7 +40,7 @@ export default function AuthLayout({ children }) {
 							</div>
 						</div>
 						{showLogout && (
-							<SignOutPopup noBg close={() => setShowLogout(false)} />
+							<SignOutPopup noBg={true} close={() => setShowLogout(false)} />
 						)}
 					</IconPopupWrapper>
 				</div>

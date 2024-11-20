@@ -62,11 +62,11 @@ export default function Action() {
 				setOverview([
 					{
 						label: 'Pending Actions',
-						value: data?.overview?.data?.no_of_actions,
+						value: data?.overview?.data?.no_of_pending_actions,
 					},
 					{
 						label: 'Due Soon',
-						value: data?.overview?.data?.no_of_pending_actions,
+						value: data?.overview?.data?.no_of_action_due_soon,
 					},
 					{
 						label: 'Businesses',
