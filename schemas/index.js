@@ -15,7 +15,7 @@ export const RegisterSchema = z
 			z.any() ||
 			zfd
 				.file()
-				.refine((file) => file?.length !== 0, 'Required*')
+				.refine((file) => file?.length !== 0, 'Required')
 				.refine((file) => file.size < 2000000, {
 					message: "File can't be bigger than 2MB.",
 				})
@@ -58,11 +58,11 @@ export const ResetPasswordSchema = z
 
 export const BusinessSchema = zfd.formData({
 	// user_id: z.string().email().min(1, { message: 'Password is required' }),
-	business_email: z.string().min(1, { message: 'Enter Business Email*' }),
-	business_name: z.string().min(1, { message: 'Enter Business Name*' }),
+	business_email: z.string().min(1, { message: 'Enter Business Email' }),
+	business_name: z.string().min(1, { message: 'Enter Business Name' }),
 	business_img: zfd
 		.file()
-		.refine((file) => file?.length !== 0, 'Required*')
+		.refine((file) => file?.length !== 0, 'Required')
 		.refine((file) => file.size < 2000000, {
 			message: "File can't be bigger than 2MB.",
 		})
@@ -73,11 +73,11 @@ export const BusinessSchema = zfd.formData({
 			}
 		),
 	// business_img: z.any(),
-	location: z.string().min(1, { message: 'Enter Business Location*' }),
+	location: z.string().min(1, { message: 'Enter Business Location' }),
 });
 
 export const ChecklistSchema = z.object({
-	name: z.string().min(1, { message: 'Required*' }),
+	name: z.string().min(1, { message: 'Required' }),
 	assignee_id: z.number(),
 	sub_checklist: z.array(
 		z.object({
@@ -101,24 +101,24 @@ export const InviteSchema = z
 	});
 
 export const NoteSchema = z.object({
-	notes: z.string().min(1, { message: 'Required*' }),
-	follow_up: z.string().min(1, { message: 'Required*' }),
+	notes: z.string().min(1, { message: 'Required' }),
+	follow_up: z.string().min(1, { message: 'Required' }),
 });
 
 // ! MINI ACTION
 export const MiniActionSchema = z.object({
 	title: z.string().min(1, { message: 'Enter Title' }),
 	desc: z.string().min(1, { message: 'Enter Description' }),
-	priority: z.string().min(1, { message: 'Select Priority*' }),
-	due_date: z.string().min(1, { message: 'Pick a Date*' }),
-	assignee_id: z.string().min(1, { message: 'Choose Assignee*' }),
+	priority: z.string().min(1, { message: 'Select Priority' }),
+	due_date: z.string().min(1, { message: 'Pick a Date' }),
+	assignee_id: z.string().min(1, { message: 'Choose Assignee' }),
 });
 
 export const MiniMediaSchema = z.object({
 	media: z.array(
 		zfd
 			.file()
-			.refine((file) => file?.length !== 0, 'Required*')
+			.refine((file) => file?.length !== 0, 'Required')
 			.refine((file) => file.size < 2000000, {
 				message: "File can't be bigger than 2MB.",
 			})
@@ -135,7 +135,7 @@ export const MiniMediaSchema = z.object({
 export const TrainingMaterialSchema = z.object({
 	image: zfd
 		.file()
-		.refine((file) => file?.length !== 0, 'Required*')
+		.refine((file) => file?.length !== 0, 'Required')
 		.refine((file) => file.size < 2000000, {
 			message: "File can't be bigger than 2MB.",
 		})
@@ -149,7 +149,7 @@ export const TrainingMaterialSchema = z.object({
 		// z.any() ||
 		zfd
 			.file()
-			.refine((file) => file?.length !== 0, 'Required*')
+			.refine((file) => file?.length !== 0, 'Required')
 			.refine((file) => file.size < 100000000, {
 				message: "File can't be bigger than 100MB.",
 			})
@@ -166,7 +166,7 @@ export const EditTrainingMaterialSchema = z.object({
 		z.any() ||
 		zfd
 			.file()
-			.refine((file) => file?.length !== 0, 'Required*')
+			.refine((file) => file?.length !== 0, 'Required')
 			.refine((file) => file.size < 2000000, {
 				message: "File can't be bigger than 2MB.",
 			})
@@ -180,7 +180,7 @@ export const EditTrainingMaterialSchema = z.object({
 		z.any() ||
 		zfd
 			.file()
-			.refine((file) => file?.length !== 0, 'Required*')
+			.refine((file) => file?.length !== 0, 'Required')
 			.refine((file) => file.size < 100000000, {
 				message: "File can't be bigger than 100MB.",
 			})
@@ -197,28 +197,28 @@ export const AdminActionSchema = z.object({
 	business_id: z.string().min(1, { message: 'Select Business' }),
 	title: z.string().min(1, { message: 'Enter Title' }),
 	desc: z.string().min(1, { message: 'Enter Description' }),
-	priority: z.string().min(1, { message: 'Select Priority*' }),
-	due_date: z.string().min(1, { message: 'Pick a Date*' }),
-	assignee_id: z.string().min(1, { message: 'Choose Assignee*' }),
-	to_do_list: z.string().min(1, { message: 'Required*' }),
+	priority: z.string().min(1, { message: 'Select Priority' }),
+	due_date: z.string().min(1, { message: 'Pick a Date' }),
+	assignee_id: z.string().min(1, { message: 'Choose Assignee' }),
+	to_do_list: z.string().min(1, { message: 'Required' }),
 });
 
 export const UserActionSchema = z.object({
 	title: z.string().min(1, { message: 'Enter Title' }),
 	desc: z.string().min(1, { message: 'Enter Description' }),
-	priority: z.string().min(1, { message: 'Select Priority*' }),
-	due_date: z.string().min(1, { message: 'Pick a Date*' }),
-	assignee_id: z.string().min(1, { message: 'Choose Assignee*' }),
-	to_do_list: z.string().min(1, { message: 'Required*' }),
+	priority: z.string().min(1, { message: 'Select Priority' }),
+	due_date: z.string().min(1, { message: 'Pick a Date' }),
+	assignee_id: z.string().min(1, { message: 'Choose Assignee' }),
+	to_do_list: z.string().min(1, { message: 'Required' }),
 });
 
 export const AddActionCommentSchema = z.object({
-	msg: z.string().min(1, { message: 'Required*' }),
+	msg: z.string().min(1, { message: 'Required' }),
 	media:
 		z.any() ||
 		zfd
 			.file()
-			.refine((file) => file?.length !== 0, 'Required*')
+			.refine((file) => file?.length !== 0, 'Required')
 			.refine((file) => file.size < 2000000, {
 				message: "File can't be bigger than 2MB.",
 			})
@@ -233,9 +233,9 @@ export const AddActionCommentSchema = z.object({
 // SETTINGS
 export const ChangePasswordSchema = z
 	.object({
-		old_pass: z.string().min(1, { message: 'Required*' }),
-		new_pass: z.string().min(1, { message: 'Required*' }),
-		confirm_pass: z.string().min(1, { message: 'Required*' }),
+		old_pass: z.string().min(1, { message: 'Required' }),
+		new_pass: z.string().min(1, { message: 'Required' }),
+		confirm_pass: z.string().min(1, { message: 'Required' }),
 	})
 	.refine((data) => data.new_pass === data.confirm_pass, {
 		message: "Passwords don't match",
@@ -243,10 +243,10 @@ export const ChangePasswordSchema = z
 	});
 
 export const ContactUsSchema = z.object({
-	name: z.string().min(1, { message: 'Required*' }),
+	name: z.string().min(1, { message: 'Required' }),
 	email: z.string().email(),
-	subject: z.string().min(1, { message: '' }).max(3, { message: 'Required*' }),
-	msg: z.string().min(1, { message: 'Required*' }),
+	subject: z.string().min(1, { message: '' }).max(3, { message: 'Required' }),
+	msg: z.string().min(1, { message: 'Required' }),
 });
 
 // ! REGISTER/SIGN UP
@@ -255,7 +255,7 @@ export const EditProfileSchema = z.object({
 		z.any() ||
 		zfd
 			.file()
-			.refine((file) => file?.length !== 0, 'Required*')
+			.refine((file) => file?.length !== 0, 'Required')
 			.refine((file) => file.size < 2000000, {
 				message: "File can't be bigger than 2MB.",
 			})
@@ -280,8 +280,8 @@ export const EditProfileSchema = z.object({
 // !LANDING PAGE SCHEMA
 // * CONTACT US
 export const LandingPageContactUsSchema = z.object({
-	name: z.string().min(1, { message: 'Required*' }),
+	name: z.string().min(1, { message: 'Required' }),
 	email: z.string().email(),
-	subject: z.string().min(1, { message: '' }).max(3, { message: 'Required*' }),
-	msg: z.string().min(1, { message: 'Required*' }),
+	subject: z.string().min(1, { message: '' }).max(3, { message: 'Required' }),
+	msg: z.string().min(1, { message: 'Required' }),
 });

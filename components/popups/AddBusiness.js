@@ -106,7 +106,10 @@ const AddBusiness = ({
 							)}
 						</button>
 						<p className="text-[--brand] text-xs">
-							{errors.business_img?.message}
+							{errors.business_img?.message &&
+							errors.business_img?.message.includes('instance')
+								? 'Enter Business Image*'
+								: errors.business_img?.message}
 						</p>
 					</div>
 					{/* Business Name */}
