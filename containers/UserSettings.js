@@ -57,10 +57,10 @@ export default function Settings() {
 		let tab = searchParams.get('tab');
 
 		navs.map((nav, i) => {
-			if (searchParams.get('tab') === nav.link) {
+			if (tab === nav.link) {
 				setActiveTab(i);
 				setShowPopup(true);
-			} else if (searchParams.get('tab') === '0') {
+			} else if (tab === '0') {
 				setShowPopup(false);
 			} else {
 				setActiveTab(0);
