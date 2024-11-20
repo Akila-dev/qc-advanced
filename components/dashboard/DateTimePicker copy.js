@@ -30,7 +30,7 @@ const DatePicker = ({ setDate }) => {
 					day: 'numeric',
 				})
 			);
-			console.log(selected.toLocaleDateString());
+			// console.log(selected.toLocaleDateString());
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selected]);
@@ -66,9 +66,9 @@ const TimePickerTab = ({ time, setTime }) => {
 	const [selected, setSelected] = useState('00:00');
 
 	useEffect(() => {
-		console.log(time);
+		// console.log(time);
 		if (selected) {
-			console.log(selected);
+			// console.log(selected);
 		}
 	}, [selected]);
 

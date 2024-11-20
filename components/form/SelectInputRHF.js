@@ -43,7 +43,7 @@ const SelectInputRHF = ({
 		if (value) {
 			setValue(name, value);
 		} else {
-			console.log(options[i]);
+			// console.log(options[i]);
 			setValue(name, options[i]);
 		}
 	};

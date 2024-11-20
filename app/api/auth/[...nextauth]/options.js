@@ -83,12 +83,12 @@ export const options = {
 								// subscribed: subscribedUser,
 							};
 						} else {
-							console.log(user.ResponseMsg);
+							// console.log(user.ResponseMsg);
 						}
 					}
 					return null;
 				} catch (error) {
-					console.log('error:', error);
+					// console.log('error:', error);
 				}
 			},
 		}),

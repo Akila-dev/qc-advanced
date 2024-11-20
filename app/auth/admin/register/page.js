@@ -51,7 +51,7 @@ export default function Register() {
 
 	useEffect(() => {
 		getBusinessTypes().then((data) => {
-			console.log(data?.data);
+			// console.log(data?.data);
 
 			if (data?.data?.ResponseCode === 1) {
 				setBusinessTypes(data?.data?.data);
@@ -229,7 +229,7 @@ export default function Register() {
 						}`}
 					/>
 					{/* <div className="hidden md:block h-[50px] bg-[--white] absolute top-[50px] left-0 w-full rounded-t-[--rounding]" /> */}
-					<div className="h-[20px] lg:h-0 bg-[--white] absolute bottom-0 left-0 w-full rounded-b-[--rounding]" />
+					{/* <div className="h-[20px] lg:h-0 bg-[--white] absolute bottom-0 left-0 w-full rounded-b-[--rounding]" /> */}
 					{/* <div className="h-screen w-full fixed top-0 left-0 z-10">
 					<Loading />
 				</div> */}

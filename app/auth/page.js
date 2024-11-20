@@ -19,8 +19,12 @@ export default function LogIn() {
 			>
 				<div className="flex items-center justify-center w-full py-[12vw] md:py-[30px]">
 					<div className="flex flex-col items-center justify-center w-full md:max-w-[300px] gap-3 ">
-						<Button text="admin" link="/admin" />
-						<Button text="user " link="/user" noBg />
+						<Button text="admin" link="/api/auth/signin?callbackUrl=/admin" />
+						<Button
+							text="user "
+							link="/api/auth/signin?callbackUrl=/user"
+							noBg
+						/>
 					</div>
 				</div>
 			</IconBoxWrapper>

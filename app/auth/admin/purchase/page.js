@@ -61,7 +61,7 @@ export default function Purchase() {
 
 	const router = useRouter();
 	const submitForm = () => {
-		console.log(formData);
+		// console.log(formData);
 		router.push('/admin');
 	};
 

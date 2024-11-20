@@ -77,7 +77,7 @@ export default function Training() {
 		<Loading notFull />
 	) : successfullyLoaded ? (
 		<>
-			<div className="md:p-10 h-screen overflow-auto scroll-2">
+			<div className="md:p-10">
 				<h1 className="h-[15vh] lg:h-auto flex-center text-center relative">
 					Training <span className="md:hidden">Material</span>
 				</h1>

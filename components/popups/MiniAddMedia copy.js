@@ -17,7 +17,7 @@ const MiniAddMedia = ({ close, single, formData, setFormData, valueName }) => {
 		let removed = res.splice(i, 1);
 		setUploadedImages(res);
 		setFormData({ ...formData, [valueName]: res });
-		console.log('Upload Images', uploadedImages);
+		// console.log('Upload Images', uploadedImages);
 	};
 
 	// Webcam Functions

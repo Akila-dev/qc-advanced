@@ -73,7 +73,7 @@ const InspectionCard = ({
 			setIsPending(false);
 			setError(data.error);
 			setSuccess(data.success);
-			console.log(data);
+			// console.log(data);
 
 			if (data.success) {
 				if (archived) {

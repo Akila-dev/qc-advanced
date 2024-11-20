@@ -120,7 +120,7 @@ const AddAction = ({
 					setError(data.error);
 					setSuccess(data.success);
 
-					console.log(data?.data?.data);
+					// console.log(data?.data?.data);
 					setIsPending(false);
 
 					if (data.success) {
@@ -128,7 +128,17 @@ const AddAction = ({
 
 						let prevOverview = overview;
 						prevOverview[0].value = overview[0].value + 1;
-						prevOverview[1].value = overview[1].value + 1;
+						// Due Soon and Exceeded Due date
+						let due = new Date(data?.data?.data.due_date);
+						let now = new Date();
+						let diff_time = due.getTime() - now.getTime();
+						let diff_mins = Math.round(diff_time / (1000 * 60));
+						if (diff_mins > 0) {
+							prevOverview[1].value = overview[1].value + 1;
+						}
+						// else {
+						// 	prevOverview[2].value = overview[2].value + 1;
+						// }
 						setOverview(prevOverview);
 
 						setTimeout(() => {
@@ -143,7 +153,7 @@ const AddAction = ({
 						setError(data.error);
 						setSuccess(data.success);
 
-						console.log(data?.data);
+						// console.log(data?.data);
 						setIsPending(false);
 
 						if (data.success) {
@@ -151,6 +161,11 @@ const AddAction = ({
 							prevActions[activeAction] = data?.data?.data;
 							setActionsList(prevActions);
 						}
+
+						setTimeout(() => {
+							setError('');
+							setSuccess('');
+						}, 3000);
 					}
 				);
 			}
@@ -161,14 +176,25 @@ const AddAction = ({
 					setError(data.error);
 					setSuccess(data.success);
 
-					console.log(data?.data?.data);
+					// console.log(data?.data?.data);
 					setIsPending(false);
 
 					if (data.success) {
 						setActionsList([data?.data?.data, ...actionsList]);
+
+						// Overview
 						let prevOverview = overview;
 						prevOverview[0].value = overview[0].value + 1;
-						prevOverview[1].value = overview[1].value + 1;
+						// Due Soon and Exceeded Due date
+						let due = new Date(data?.data?.data.due_date);
+						let now = new Date();
+						let diff_time = due.getTime() - now.getTime();
+						let diff_mins = Math.round(diff_time / (1000 * 60));
+						if (diff_mins > 0) {
+							prevOverview[1].value = overview[1].value + 1;
+						} else {
+							prevOverview[2].value = overview[2].value + 1;
+						}
 						setOverview(prevOverview);
 
 						setTimeout(() => {
@@ -186,14 +212,48 @@ const AddAction = ({
 					setError(data.error);
 					setSuccess(data.success);
 
-					console.log(data?.data);
+					// console.log(data?.data);
 					setIsPending(false);
 
 					if (data.success) {
 						let prevActions = [...actionsList];
 						prevActions[activeAction] = data?.data?.data;
 						setActionsList(prevActions);
+
+						// if to remove action when reassigned, uncomment these:
+						// if (
+						// 	prevActions[activeAction].asignee_dtl ===
+						// 	data?.data?.data.asignee_dtl
+						// ) {
+						// 	prevActions[activeAction] = data?.data?.data;
+						// 	setActionsList(prevActions);
+						// } else {
+						// 	prevActions.splice(activeAction, 1);
+
+						// 	// Overview
+						// 	let prevOverview = overview;
+						// 	prevOverview[0].value = overview[0].value - 1;
+						// 	// Due Soon and Exceeded Due date
+						// 	let due = new Date(data?.data?.data.due_date);
+						// 	let now = new Date();
+						// 	let diff_time = due.getTime() - now.getTime();
+						// 	let diff_mins = Math.round(diff_time / (1000 * 60));
+						// 	if (diff_mins > 0) {
+						// 		prevOverview[1].value = overview[1].value - 1;
+						// 	} else {
+						// 		prevOverview[2].value =
+						// 			prevOverview[2].value > 0 ? overview[2].value - 1 : 0;
+						// 	}
+
+						// 	setActionsList(prevActions);
+						// 	close();
+						// }
 					}
+
+					setTimeout(() => {
+						setError('');
+						setSuccess('');
+					}, 3000);
 				});
 			}
 		}

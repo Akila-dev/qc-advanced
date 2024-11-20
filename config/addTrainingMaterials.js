@@ -110,7 +110,7 @@ export const deleteTrainingMaterial = async (id, training_id) => {
 	formData.append('user_id', id);
 	formData.append('training_id', training_id);
 
-	console.log(id, training_id);
+	// console.log(id, training_id);
 
 	try {
 		const { data } = await axios.post(

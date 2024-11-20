@@ -72,7 +72,7 @@ export default function LogIn() {
 				}, 500);
 			} else {
 				setIsPending(false);
-				console.log(error);
+				// console.log(error);
 				setError('Invalid Login details!');
 			}
 		});

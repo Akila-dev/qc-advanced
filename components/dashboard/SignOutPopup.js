@@ -8,7 +8,7 @@ import { IconPopupWrapper } from '@/wrappers';
 import { images } from '@/constants';
 import { FormError, FormSuccess, Button } from '@/components';
 
-const SignOutPopup = ({ close }) => {
+const SignOutPopup = ({ close, noBg }) => {
 	const router = useRouter();
 	const [isPending, setIsPending] = useState();
 	const [error, setError] = useState('');
@@ -35,11 +35,12 @@ const SignOutPopup = ({ close }) => {
 
 	return (
 		<IconPopupWrapper
-			icon={images.query}
+			icon={images.logout}
 			title={`Logout`}
 			text={`Are you sure you want to logout?`}
 			smallIcon
-			className={`!z-10 ${isPending && 'pointer-events-none'}`}
+			className={`!z-[10000000000] ${isPending && 'pointer-events-none'}`}
+			noBg={noBg}
 		>
 			<div className={`space-y-3 pt-3 w-full ${isPending && 'pending'}`}>
 				{error && <FormError message={error} />}

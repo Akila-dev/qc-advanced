@@ -28,7 +28,7 @@ export const changePassword = async (values) => {
 		);
 
 		const changedPass = await res.json();
-		console.log(changedPass);
+		// console.log(changedPass);
 
 		if (res.ok && changedPass.ResponseCode === 1) {
 			return {

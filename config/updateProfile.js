@@ -46,7 +46,7 @@ export const updateProfile = async (values, user_id, user_type) => {
 			}
 		}
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 		return { error: 'Network Error, Please Try Again' };
 	}
 };

@@ -54,7 +54,7 @@ const CommentTextBox = ({
 		setError('');
 		setSuccess('');
 
-		console.log(values);
+		// console.log(values);
 
 		setIsPending(true);
 

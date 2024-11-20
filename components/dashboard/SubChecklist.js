@@ -143,7 +143,7 @@ const SubChecklist = ({
 		let newData = [...subChecklist];
 		let removed = newData.splice(i, 1);
 		setSubChecklist((prev) => [...newData]);
-		console.log(newData);
+		// console.log(newData);
 	};
 
 	useEffect(() => {

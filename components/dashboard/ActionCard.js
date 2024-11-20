@@ -44,7 +44,7 @@ const ActionCard = ({
 
 		// console.log(diff_days);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [due_date]);
 
 	return (
 		<button

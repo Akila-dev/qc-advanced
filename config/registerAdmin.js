@@ -54,7 +54,7 @@ export const registerAdmin = async (values, otp) => {
 			}
 		}
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 		return { error: 'Network Error, Please Try Again' };
 	}
 };

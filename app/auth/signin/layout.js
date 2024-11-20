@@ -4,5 +4,5 @@ export const metadata = {
 };
 
 export default function AdminLayout({ children }) {
-	return <div>{children}</div>;
+	return <div className="w-full md:max-w-[375px]">{children}</div>;
 }

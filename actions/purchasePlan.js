@@ -35,7 +35,7 @@ export const purchasePlan = async (id) => {
 			}
 		}
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 		return { error: 'Network Error, Please Try Again' };
 	}
 };

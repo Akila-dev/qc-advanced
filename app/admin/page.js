@@ -173,7 +173,7 @@ export default function Dashboard() {
 		<Loading notFull />
 	) : successfullyLoaded ? (
 		<>
-			<div className="md:p-10 h-screen overflow-auto ">
+			<div className="md:p-10">
 				<h1 className="h-[15vh] lg:h-auto flex-center text-center">
 					QC Advanced
 				</h1>
@@ -211,7 +211,16 @@ export default function Dashboard() {
 					</div>
 					{businessList?.length > 0 ? (
 						<div className="w-full px-4 py-5 md:p-7 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3">
-							{businessList?.map(
+							{[
+								...businessList,
+								// ...businessList,
+								// ...businessList,
+								// ...businessList,
+								// ...businessList,
+								// ...businessList,
+								// ...businessList,
+								// ...businessList,
+							]?.map(
 								(
 									{
 										business_img,
@@ -338,7 +347,7 @@ export default function Dashboard() {
 						success
 							? images.congratulations
 							: error
-							? images.error
+							? images.query
 							: images.query
 					}
 					title={`Delete Business`}
@@ -402,7 +411,7 @@ export default function Dashboard() {
 										url: reportPDF ? reportPDF : defaultPDF,
 										title: `Report on ${activeBusinessName}`,
 									}}
-									onClick={() => console.log('shared successfully!')}
+									// onClick={() => console.log('shared successfully!')}
 								>
 									<Button text="Share" noClick />
 								</RWebShare>

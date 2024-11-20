@@ -79,7 +79,7 @@ export default function Dashboard() {
 		setSuccessfullyLoaded(false);
 		getListOfChecklistUser()
 			.then((data) => {
-				console.log(data);
+				// console.log(data);
 				setInspectionData(data?.checklist?.data?.checklist_data);
 				setArchiveList(data?.archive?.data);
 				setInvitees(data?.checklist?.data?.invited_user_list);
@@ -114,7 +114,7 @@ export default function Dashboard() {
 		completeInspection(businessId).then((data) => {
 			setSubmittingInspection(false);
 
-			console.log(data?.data);
+			// console.log(data?.data);
 
 			if (data?.response === 1) {
 				setShowInspectionCompleted(true);
@@ -128,7 +128,7 @@ export default function Dashboard() {
 		<Loading notFull />
 	) : successfullyLoaded ? (
 		<>
-			<div className="md:p-10 h-screen overflow-auto">
+			<div className="md:p-10">
 				<h1 className="h-[15vh] lg:h-auto flex-center text-center">
 					QC Advanced
 				</h1>
@@ -285,7 +285,7 @@ export default function Dashboard() {
 
 				{showInspectionError && (
 					<IconPopupWrapper
-						icon={images.error}
+						icon={images.query}
 						title={`Inspection Failed`}
 						text={`Unable to complete this inspection, Try again`}
 						smallIcon

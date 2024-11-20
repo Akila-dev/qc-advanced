@@ -85,21 +85,21 @@ export default function AdminSettings() {
 			if (searchParams.get('tab') === nav.link) {
 				setActiveTab(i);
 				setShowPopup(true);
+			} else if (searchParams.get('tab') === '0') {
+				setShowPopup(false);
 			}
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [pathname, searchParams, router]);
 
 	const openTab = (i) => {
-		setActiveTab(i);
-		setShowPopup(true);
 		router.push(`?tab=${navs[i].link}`);
 	};
 
 	return isLoading ? (
 		<Loading notFull />
 	) : (
-		<div className="md:p-10 h-screen overflow-auto scroll-2">
+		<div className="md:p-10">
 			<h1 className="h-[15vh] lg:h-auto flex-center text-center lg:pb-7">
 				Settings
 			</h1>
@@ -126,7 +126,7 @@ export default function AdminSettings() {
 						</div>
 					</div>
 					<div className="hidden lg:flex p-7 w-full h-full">
-						<div className="flex-1 border border-[--border] rounded-[--rounding] py-7 flex">
+						<div className="flex-1 border border-[--border] rounded-[--rounding] py-7 flex md:min-h-[calc(85vh-48px)]">
 							<div className="flex-1 px-7 overflow-auto">
 								{activeTab === 0 && <EditProfile />}
 								{activeTab === 1 && <ChangePassword />}
@@ -147,8 +147,8 @@ export default function AdminSettings() {
 					<SidePopupWrapper
 						title={navs[activeTab].label}
 						close={() => {
-							setShowPopup(false);
-							// router.push(`?tab=0`);
+							// setShowPopup(false);
+							router.push(`?tab=0`);
 						}}
 					>
 						<div className="px-4 py-5">

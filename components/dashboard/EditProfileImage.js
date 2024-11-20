@@ -22,7 +22,7 @@ const EditProfileImage = ({ rhf, error, setValue, name, defaultValue }) => {
 
 	return (
 		<div
-			className={`popup-animated-children bg-white w-[100px] md:w-[110px] h-[100px] md:h-[110px] rounded-full flex items-center justify-center border-[5px] border-[--gray] mb-[-50px] md:mb-[-55px] z-10 relative`}
+			className={`popup-animated-children bg-white w-[100px] md:w-[110px] h-[100px] md:h-[110px] rounded-full flex items-center justify-center border-[5px] border-[--gray] mb-[-50px] md:mb-[-55px] z-1 relative`}
 		>
 			<div
 				className={`w-full h-full object-cover rounded-full overflow-hidden`}

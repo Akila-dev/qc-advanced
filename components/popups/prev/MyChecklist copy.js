@@ -55,7 +55,7 @@ const MyChecklist = ({
 					assigneeIds.push(val.user_id);
 				});
 
-				console.log(data?.assignees?.data);
+				// console.log(data?.assignees?.data);
 
 				return {
 					success: data?.response === 1,
@@ -98,7 +98,7 @@ const MyChecklist = ({
 		// 	setChecklist(newData);
 		// 	close();
 		// }
-		console.log(checklistData);
+		// console.log(checklistData);
 	};
 
 	return (

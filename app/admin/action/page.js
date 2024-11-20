@@ -82,8 +82,38 @@ export default function Action() {
 	}, []);
 
 	useEffect(() => {
-		if (filter === tags[0]) {
-			setFilteredActionsList(actionsList);
+		if (actionsList) {
+			let prevList = [...actionsList];
+
+			if (filter === tags[0]) {
+				setFilteredActionsList(actionsList);
+			}
+			// due_soon
+			else if (filter === tags[1]) {
+				let newList = prevList.filter((list) => {
+					return (
+						Math.round(
+							(new Date(list.due_date).getTime() - new Date().getTime()) /
+								(1000 * 60)
+						) > 0
+					);
+				});
+				setFilteredActionsList(newList);
+			}
+			// Exceeded due_date
+			else if (filter === tags[2]) {
+				let newList = prevList.filter((list) => {
+					return (
+						Math.round(
+							(new Date(list.due_date).getTime() - new Date().getTime()) /
+								(1000 * 60)
+						) < 0
+					);
+				});
+				setFilteredActionsList(newList);
+			} else {
+				setFilteredActionsList(actionsList);
+			}
 		}
 	}, [actionsList, filter]);
 
@@ -127,7 +157,7 @@ export default function Action() {
 		<Loading notFull />
 	) : successfullyLoaded ? (
 		<>
-			<div className="md:p-10 h-screen overflow-auto scroll-2">
+			<div className="md:p-10">
 				<h1 className="h-[15vh] lg:h-auto flex-center text-center">Actions</h1>
 				{/* OVERVIEW */}
 				<div className="hidden lg:block min-h-[250px] w-full bg-white rounded-[--rounding] p-7 my-7">
@@ -180,8 +210,12 @@ export default function Action() {
 									<button
 										key={i}
 										className={
-											i === 0 ? 'tag !border-[--brand] !text-[--brand]' : 'tag'
+											filter === tag
+												? 'tag !border-[--brand] !text-[--brand]'
+												: 'tag'
 										}
+										type="button"
+										onClick={() => setFilter(tag)}
 									>
 										{tag}
 									</button>
@@ -269,7 +303,7 @@ export default function Action() {
 							success
 								? images.congratulations
 								: error
-								? images.error
+								? images.query
 								: images.query
 						}
 						title={`Delete Action?`}

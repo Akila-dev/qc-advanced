@@ -33,7 +33,7 @@ const SelectInputLabelValueRHF = ({
 		setSelectedOption(options[i]);
 		setShowOptions(false);
 
-		console.log(valueList[i]);
+		// console.log(valueList[i]);
 		setValue(name, valueList[i]);
 	};
 

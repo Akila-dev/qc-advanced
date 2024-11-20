@@ -1,6 +1,6 @@
 export const metadata = {
-	title: 'Forgot Password | QC Authentication',
-	description: 'QC Advanced Admin Forgot Password Page',
+	title: 'About User | QC Authentication',
+	description: 'QC Advanced About Page for Users',
 };
 
 export default function AdminLayout({ children }) {

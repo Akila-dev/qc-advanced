@@ -90,14 +90,7 @@ export default function Purchase({ close }) {
 	};
 
 	return (
-		<div className="fixed top-0 left-0 w-full h-screen overflow-auto flex-center">
-			<div className="w-full h-screen absolute top-0 left-0">
-				<Image
-					src={images.bg}
-					alt="background"
-					className="w-full h-full object-cover"
-				/>{' '}
-			</div>
+		<div className="fixed top-0 left-0 w-full h-screen overflow-auto flex-center bg-pattern bg-cover bg-fixed">
 			<IconBoxWrapper
 				icon={images.crown}
 				title="Go Premium"

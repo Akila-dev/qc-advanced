@@ -12,6 +12,7 @@ export default function IconPopupWrapper({
 	title,
 	text,
 	className,
+	noBg,
 }) {
 	const ref = useRef();
 
@@ -31,7 +32,9 @@ export default function IconPopupWrapper({
 
 	return (
 		<div
-			className={`fixed top-0 right-0 bottom-0 h-full w-full bg-[--transparent-bg] backdrop-blur-sm lg:w-[--sidebar !z-10 flex flex-col items-center justify-center p-5 lg:p-7 ${className}`}
+			className={`fixed top-0 right-0 bottom-0 h-full w-full bg-[--transparent-bg] backdrop-blur-sm lg:w-[--sidebar !z-10 flex flex-col items-center justify-center p-5 lg:p-7 ${className} ${
+				noBg && '!bg-transparent'
+			}`}
 		>
 			<div ref={ref} className={`flex flex-col items-center justify-center`}>
 				<div className="bg-white w-[90px] md:w-[100px] h-[90px] md:h-[100px] rounded-full overflow-hidden flex items-center justify-center p-5 border-[5px] border-[--gray] mb-[-45px] md:mb-[-50px] z-10">

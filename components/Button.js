@@ -102,7 +102,7 @@ const Button = ({
 				className={
 					className
 						? className
-						: `flex-center !gap-2 ${noBg ? 'btn-2' : 'btn-1'}`
+						: `!w-full flex-center !gap-2 ${noBg ? 'btn-2' : 'btn-1'}`
 				}
 			>
 				{icon && icon} {text}

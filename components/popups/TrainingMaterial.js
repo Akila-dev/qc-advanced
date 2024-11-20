@@ -59,7 +59,7 @@ const TrainingMaterial = ({
 		setError('');
 		setSuccess('');
 
-		console.log(values);
+		// console.log(values);
 
 		setIsPending(true);
 
@@ -69,7 +69,7 @@ const TrainingMaterial = ({
 				setError(data.error);
 				setSuccess(data.success);
 
-				console.log(data?.data?.data);
+				// console.log(data?.data?.data);
 
 				if (data.success) {
 					let prevTrainingMaterials = [...trainingMaterialsList];
@@ -89,7 +89,7 @@ const TrainingMaterial = ({
 				setError(data.error);
 				setSuccess(data.success);
 
-				console.log(data?.data?.data);
+				// console.log(data?.data?.data);
 
 				if (data.success) {
 					setTrainingMaterialsList([

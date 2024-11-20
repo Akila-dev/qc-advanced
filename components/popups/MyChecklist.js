@@ -81,7 +81,7 @@ const MyChecklist = ({ close, list, checklistId, businessId, userId }) => {
 				setOptions(data.assigneeNames);
 				setValues(data.assigneeIds);
 
-				console.log(data.allChecklists);
+				// console.log(data.allChecklists);
 
 				setIsLoading(false);
 				if (data.success) {
@@ -119,7 +119,7 @@ const MyChecklist = ({ close, list, checklistId, businessId, userId }) => {
 			});
 			setChecklistData(prev);
 
-			console.log(checklistData);
+			// console.log(checklistData);
 			updateChecklist(
 				checklistData,
 				userId,
@@ -240,7 +240,7 @@ const MyChecklist = ({ close, list, checklistId, businessId, userId }) => {
 								success
 									? images.congratulations
 									: error
-									? images.error
+									? images.query
 									: images.query
 							}
 							title={`Delete Business`}

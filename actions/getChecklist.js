@@ -124,7 +124,7 @@ export const getTemplateChecklist = async () => {
 			};
 		}
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 		return { errorMsg: "Couldn't Connect" };
 	}
 };
@@ -155,7 +155,7 @@ export const importTemplateChecklist = async (businessId, acmIds) => {
 
 		const data = await res.json();
 
-		console.log(data);
+		// console.log(data);
 
 		if (res.ok && data.ResponseCode === 1) {
 			return {
@@ -169,7 +169,7 @@ export const importTemplateChecklist = async (businessId, acmIds) => {
 			};
 		}
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 		return { errorMsg: "Couldn't Connect" };
 	}
 };
@@ -237,7 +237,7 @@ export const getSingleChecklistData = async (
 			};
 		}
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 		return { errorMsg: "Couldn't Connect" };
 	}
 };
@@ -279,7 +279,7 @@ export const getAssigneeData = async (business_id) => {
 			};
 		}
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 		return { errorMsg: "Couldn't Connect" };
 	}
 };

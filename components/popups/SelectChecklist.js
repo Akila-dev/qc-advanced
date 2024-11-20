@@ -45,7 +45,7 @@ export default function SelectChecklist({
 
 	useEffect(() => {
 		getTemplateChecklist().then((data) => {
-			console.log(data);
+			// console.log(data);
 			setChecklist(data?.checklist?.data);
 			setSelected(new Array(data?.checklist?.data.length).fill(false));
 			setIsLoading(false);
@@ -63,14 +63,14 @@ export default function SelectChecklist({
 			}
 		});
 
-		console.log(businessId);
+		// console.log(businessId);
 
 		setSuccess('');
 		setError('');
 		setIsPending(true);
 
 		importTemplateChecklist(businessId, acmIds).then((data) => {
-			console.log(data);
+			// console.log(data);
 			setError(data.error);
 			setSuccess(data.success);
 			setIsPending(false);

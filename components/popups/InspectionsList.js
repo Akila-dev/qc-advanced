@@ -280,7 +280,7 @@ export default function InspectionsList({ close, title, businessId, userId }) {
 						success
 							? images.congratulations
 							: error
-							? images.error
+							? images.query
 							: images.query
 					}
 					title={`Delete Business`}

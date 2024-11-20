@@ -41,7 +41,7 @@ const ContactUs = () => {
 
 		setIsPending(true);
 
-		console.log(values);
+		// console.log(values);
 
 		contactUs(values).then((data) => {
 			setError(data.error);

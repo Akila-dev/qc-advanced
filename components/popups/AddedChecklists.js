@@ -45,7 +45,7 @@ export default function AddedChecklists({
 		setIsLoading(true);
 		setSuccessfullyLoaded(false);
 		getListOfChecklist(businessId, 'unarchive').then((data) => {
-			console.log(data);
+			// console.log(data);
 			setChecklist(data?.checklist?.data?.checklist_data);
 			if (data?.response === 1) {
 				setSuccessfullyLoaded(true);

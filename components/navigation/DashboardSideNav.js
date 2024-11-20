@@ -33,7 +33,6 @@ const menu = [
 ];
 
 const DashboardSideNav = ({ type }) => {
-	const [showOptions, setShowOptions] = useState(false);
 	const [showLogout, setShowLogout] = useState(false);
 
 	const path = usePathname();
@@ -89,8 +88,8 @@ const DashboardSideNav = ({ type }) => {
 					<div className="w-full absolute bottom-0 flex gap-3 font-medium text-[--black] items-center px-5 pb-8">
 						<div className="relative flex gap-3">
 							{session ? (
-								<button
-									onClick={() => setShowOptions((prev) => !prev)}
+								<Link
+									href={`/${session?.user?.role}/settings`}
 									className="relative flex gap-3 text-left"
 								>
 									{type === 'admin' ? (
@@ -124,49 +123,10 @@ const DashboardSideNav = ({ type }) => {
 											{session?.user?.email}
 										</p>
 									</div>
-								</button>
+								</Link>
 							) : (
 								<div></div>
 							)}
-							{/* POPUP */}
-							<AnimatePresence>
-								{showOptions && (
-									<motion.div
-										initial="initial"
-										animate="animate"
-										exit="exit"
-										// variants={variants.slideInRight}
-										// transition={{ staggerChildren: 0.01 }}
-										className={`absolute bottom-[100%] mb-5 bg-[--white] rounded-xl w-[100%] max-w-[220px] p-5 pb-2 shadow-lg transition-all duration-700 overflow-hidden`}
-									>
-										<motion.div className="pt-1 flex flex-col w-full divide-y divide-[--outline]">
-											<motion.div
-												className="py-2"
-												variants={variants.slideInRight}
-											>
-												<Link
-													href={`/${session?.user?.role}/settings`}
-													className="py-2 hover:text-[--brand] transition duration-700"
-												>
-													Settings
-												</Link>
-											</motion.div>{' '}
-											{/* <motion.div
-												className="py-2"
-												variants={variants.slideInRight}
-											>
-												<button
-													type="button"
-													onClick={() => setShowLogout(true)}
-													className="py-2 text-[--brand] transition duration-700 flex-v-center !gap-2 text-sm"
-												>
-													Logout
-												</button>
-											</motion.div>{' '} */}
-										</motion.div>
-									</motion.div>
-								)}
-							</AnimatePresence>
 						</div>
 					</div>
 				</div>

@@ -6,12 +6,15 @@ export default withAuth(
 		// console.log(req.nextUrl.pathname)
 		// console.log(req.nextauth.token.role);
 
+		// If going to admin page without baing logged in as admin
 		if (
 			req.nextUrl.pathname.startsWith('/admin') &&
 			req.nextauth.token.role != 'admin'
 		) {
 			return NextResponse.rewrite(new URL('/api/auth/signin', req.url));
-		} else if (
+		}
+		// If going to user page without baing logged in as user
+		else if (
 			req.nextUrl.pathname.startsWith('/user') &&
 			req.nextauth.token.role != 'user'
 		) {

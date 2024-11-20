@@ -32,7 +32,7 @@ const Contact = () => {
 	});
 
 	const onSubmit = (values) => {
-		console.log(values);
+		// console.log(values);
 	};
 
 	// ANIMATION

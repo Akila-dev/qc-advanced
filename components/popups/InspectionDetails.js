@@ -50,7 +50,7 @@ const InspectionDetails = ({ userId, checklistId, businessId }) => {
 		setSuccessfullyLoaded(false);
 		getSingleChecklistData(checklistId, businessId).then((data) => {
 			// console.log(data?.checklist?.data?.sub_check_list_dtl);
-			console.log(data?.checklist?.data);
+			// console.log(data?.checklist?.data);
 			// console.log(data?.assignees?.data);
 			let allAssignees = data?.assignees?.data?.filter((val) => val.username);
 

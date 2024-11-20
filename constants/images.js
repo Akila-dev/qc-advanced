@@ -14,6 +14,7 @@ import lockApproved from '../assets/imgs/lock-approved.png';
 import lockQuery from '../assets/imgs/lock-query.png';
 import logo from '../assets/imgs/logo.png';
 import logoFull from '../assets/imgs/logo-full.png';
+import logout from '../assets/imgs/logout.png';
 import noting from '../assets/imgs/noting.png';
 import order from '../assets/imgs/order.png';
 import profile from '../assets/imgs/profile.jpg';
@@ -37,6 +38,7 @@ export default {
 	lockQuery,
 	logo,
 	logoFull,
+	logout,
 	noting,
 	order,
 	profile,

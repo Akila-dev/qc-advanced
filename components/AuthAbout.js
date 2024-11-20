@@ -16,18 +16,16 @@ const AuthAbout = ({ title, subheading, text, linkText, link }) => {
 
 	const [isPending, setIsPending] = useState(false);
 	return (
-		<div className={`lg:p-10 h-screen`}>
+		<div className={`lg:p-10`}>
 			<div className="h-[15vh] lg:h-auto flex-center text-center lg:pb-7">
 				<h1 className="">{title}</h1>
 			</div>
-			<div className="dashboard-content-box max-w-[900px] py-5 lg:py-7 !overflow-hidden">
-				<div
-					// ref={wheelRef}
-					// onWheel={(e) => handleWheel(e)}
-					className={`!overflow-y-auto !h-full overflow-x-hidden !relative ${
-						isPending && 'pending'
-					}`}
-				>
+			<div
+				// ref={wheelRef}
+				// onWheel={(e) => handleWheel(e)}
+				className="dashboard-content-box !h-fit max-w-[900px] py-5 lg:py-7"
+			>
+				<div className={`!relative ${isPending && 'pending'}`}>
 					<div className="flex flex-col items-center px-4 lg:px-7">
 						<h2 className="text-left w-full">{subheading}</h2>
 						<div className="space-y-2 py-2">

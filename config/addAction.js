@@ -94,12 +94,12 @@ export const updateAction = async (values, id, action_id) => {
 		if (data) {
 			if (data.ResponseCode === 1) {
 				return {
-					success: data.ResponseMsg,
+					success: 'Action Updated Successfully',
 					data: data,
 				};
 			} else {
 				return {
-					error: data.ResponseMsg,
+					error: 'Action Update Failed',
 				};
 			}
 		}
@@ -251,12 +251,12 @@ export const updateActionUser = async (values, id, action_id) => {
 		if (data) {
 			if (data.ResponseCode === 1) {
 				return {
-					success: data.ResponseMsg,
+					success: 'Action Updated Successfully',
 					data: data,
 				};
 			} else {
 				return {
-					error: data.ResponseMsg,
+					error: 'Action Update Failed',
 				};
 			}
 		}

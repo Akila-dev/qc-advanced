@@ -97,7 +97,7 @@ export const addChecklist = async (formValues, userId, businessId) => {
 			}
 		}
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 		return { error: "Couldn't Upload Checklist" };
 	}
 };
@@ -116,7 +116,7 @@ export const updateChecklist = async (
 		return { error: 'Network Error, Reload Page' };
 	}
 
-	console.log(formValues.sub_check_list_dtl);
+	// console.log(formValues.sub_check_list_dtl);
 
 	try {
 		const formData = new FormData();
@@ -154,7 +154,7 @@ export const updateChecklist = async (
 					response: data.ResponseCode,
 				};
 			} else {
-				console.log(data);
+				// console.log(data);
 				return {
 					error: data.ResponseMsg,
 				};

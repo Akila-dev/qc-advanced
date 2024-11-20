@@ -52,7 +52,7 @@ export default function EditProfile() {
 
 	useEffect(() => {
 		getUserProfile().then((data) => {
-			console.log(data);
+			// console.log(data);
 
 			if (data?.data?.ResponseCode === 1) {
 				setBusinessTypes(data?.business_types?.data);

@@ -9,16 +9,9 @@ export const metadata = {
 
 export default function UserLayout({ children }) {
 	return (
-		<div className="relative h-screen w-full overflow-hidden flex items-center justify-center">
-			<div className="w-full h-full absolute top-0 left-0 pointer-events-none">
-				<Image
-					src={images.bg}
-					alt="background"
-					className="w-full h-full object-cover"
-				/>{' '}
-			</div>
-			<div className="w-full h-full">
-				<div className="md:ml-[250px] relative h-full">{children}</div>
+		<div className="relative w-full flex items-center justify-center bg-pattern bg-cover bg-fixed">
+			<div className="w-full min-h-screen !z-10">
+				<div className="md:ml-[250px] relative">{children}</div>
 				<div className="hidden md:block fixed top-0 left-0 h-full w-[250px] bg-[--white]">
 					<DashboardSideNav type="user" />
 				</div>

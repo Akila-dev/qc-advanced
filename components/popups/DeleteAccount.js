@@ -134,7 +134,7 @@ const DeleteAccount = () => {
 						success
 							? images.congratulations
 							: error
-							? images.error
+							? images.query
 							: images.query
 					}
 					title={`Delete Account`}

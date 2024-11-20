@@ -51,7 +51,7 @@ export default function Verification() {
 
 		const otp = `${formData.input1}${formData.input2}${formData.input3}${formData.input4}`;
 
-		console.log(cookie_data);
+		// console.log(cookie_data);
 
 		verifyForgotPasswordOTP(cookie_data, otp).then((data) => {
 			setError(data.error);
