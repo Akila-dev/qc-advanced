@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,27 +11,13 @@ import {
 	PrivacyPolicy,
 	TermsAndConditions,
 	SettingsNavButton,
-	EditProfile,
-	ChangePassword,
-	DeleteAccount,
 	SignOutPopup,
 	Loading,
-	PurchaseMini,
 } from '@/components';
 import { SidePopupWrapper } from '@/wrappers';
 import { SideNavIcons } from '@/components/svgs';
 
 const navs = [
-	{
-		label: 'Edit Profile',
-		icon: icons.profile,
-		link: 'edit-profile',
-	},
-	{
-		label: 'Change Password',
-		icon: icons.passwordCheck,
-		link: 'change-password',
-	},
 	{
 		label: 'Privacy Policy',
 		icon: icons.lock2,
@@ -49,28 +34,16 @@ const navs = [
 		link: 'terms-and-conditions',
 	},
 	{
-		label: 'Subscriptions',
-		icon: icons.category,
-		link: 'pricing',
-	},
-	{
-		label: 'Delete Account',
-		icon: icons.trash,
-		link: 'delete-account',
-	},
-	{
 		label: 'Logout',
 		icon: icons.logout,
 	},
 ];
 
-export default function AdminSettings() {
+export default function Settings() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [activeTab, setActiveTab] = useState(0);
 	const [showPopup, setShowPopup] = useState(false);
 	const [showLogout, setShowLogout] = useState(false);
-	const [tabHistory, setTabHistory] = useState([0]);
-	const [tab, setTab] = useState();
 
 	const router = useRouter();
 	const pathname = usePathname();
@@ -81,6 +54,8 @@ export default function AdminSettings() {
 	}, []);
 
 	useEffect(() => {
+		let tab = searchParams.get('tab');
+
 		navs.map((nav, i) => {
 			if (searchParams.get('tab') === nav.link) {
 				setActiveTab(i);
@@ -91,7 +66,6 @@ export default function AdminSettings() {
 				setActiveTab(0);
 			}
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [pathname, searchParams, router]);
 
 	const openTab = (i) => {
@@ -108,16 +82,15 @@ export default function AdminSettings() {
 			{/* DASHBOARD CONTENT */}
 			<div className="dashboard-content-box lg:!h-full">
 				<div className="flex w-full lg:h-full">
-					<div className="w-full lg:max-w-[310px] lg:min-w-[310px] border-r border-[--border] p-4 lg:p-7 lg:space-y-3 overflow-auto">
+					<div className="w-full lg:max-w-[300px] border-r border-[--border] p-4 lg:p-7 space-y-3">
 						<h3 className="hidden lg:block">Settings</h3>
-						<div className="flex w-full flex-col gap-3">
+						<div className="space-y-4">
 							{navs.slice(0, navs.length - 1).map((nav, i) => (
 								<SettingsNavButton
 									key={i}
 									icon={nav.icon}
 									label={nav.label}
 									onClick={() => openTab(i)}
-									active={i === activeTab}
 								/>
 							))}
 							<SettingsNavButton
@@ -130,13 +103,9 @@ export default function AdminSettings() {
 					<div className="hidden lg:flex p-7 w-full h-full">
 						<div className="flex-1 border border-[--border] rounded-[--rounding] py-7 flex md:min-h-[calc(85vh-48px)]">
 							<div className="flex-1 px-7 overflow-auto">
-								{activeTab === 0 && <EditProfile />}
-								{activeTab === 1 && <ChangePassword />}
-								{activeTab === 2 && <PrivacyPolicy />}
-								{activeTab === 3 && <ContactUs />}
-								{activeTab === 4 && <TermsAndConditions />}
-								{activeTab === 5 && <PurchaseMini />}
-								{activeTab === 6 && <DeleteAccount />}
+								{activeTab === 0 && <PrivacyPolicy />}
+								{activeTab === 1 && <ContactUs />}
+								{activeTab === 2 && <TermsAndConditions />}
 							</div>
 						</div>
 					</div>
@@ -144,6 +113,7 @@ export default function AdminSettings() {
 
 				<div className="pb lg:!hidden" />
 			</div>
+
 			<div className="lg:hidden">
 				{showPopup && (
 					<SidePopupWrapper
@@ -151,15 +121,9 @@ export default function AdminSettings() {
 						close={() => router.push(`?tab=0`)}
 					>
 						<div className="px-4 py-5">
-							{activeTab === 0 && <EditProfile />}
-							{activeTab === 1 && (
-								<ChangePassword close={() => setShowPopup(false)} />
-							)}
-							{activeTab === 2 && <PrivacyPolicy />}
-							{activeTab === 3 && <ContactUs />}
-							{activeTab === 4 && <TermsAndConditions />}
-							{activeTab === 5 && <PurchaseMini />}
-							{activeTab === 6 && <DeleteAccount />}
+							{activeTab === 0 && <PrivacyPolicy />}
+							{activeTab === 1 && <ContactUs />}
+							{activeTab === 2 && <TermsAndConditions />}
 						</div>
 					</SidePopupWrapper>
 				)}

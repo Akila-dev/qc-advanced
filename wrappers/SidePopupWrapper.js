@@ -102,6 +102,7 @@ export default function SidePopupWrapper({
 							variants={variants.buttonClick}
 							onClick={close}
 							className="popup-animated-children popup-button min-w-[35px]"
+							type="button"
 						>
 							<Image src={icons.arrowLeft} alt="close" />
 						</motion.button>
@@ -116,6 +117,7 @@ export default function SidePopupWrapper({
 									variants={variants.buttonClick}
 									onClick={otherFunc}
 									className="popup-animated-children popup-button"
+									type="button"
 								>
 									<Image src={otherIcon} alt="close" />
 								</motion.button>
