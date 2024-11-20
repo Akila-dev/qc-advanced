@@ -59,11 +59,13 @@ export default function Settings() {
 		navs.map((nav, i) => {
 			if (tab === nav.link) {
 				setActiveTab(i);
-				setShowPopup(true);
+				if (window.innerWidth < 768) {
+					setShowPopup(true);
+				}
 			} else if (tab === '0') {
-				setShowPopup(false);
-			} else {
-				setActiveTab(0);
+				if (window.innerWidth < 768) {
+					setShowPopup(false);
+				}
 			}
 		});
 	}, [pathname, searchParams, router]);
@@ -118,7 +120,9 @@ export default function Settings() {
 				{showPopup && (
 					<SidePopupWrapper
 						title={navs[activeTab].label}
-						close={() => router.push(`?tab=0`)}
+						close={() => {
+							router.push(`?tab=0`);
+						}}
 					>
 						<div className="px-4 py-5">
 							{activeTab === 0 && <PrivacyPolicy />}

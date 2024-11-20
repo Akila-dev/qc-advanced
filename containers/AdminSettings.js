@@ -81,14 +81,18 @@ export default function AdminSettings() {
 	}, []);
 
 	useEffect(() => {
+		let tab = searchParams.get('tab');
+
 		navs.map((nav, i) => {
-			if (searchParams.get('tab') === nav.link) {
+			if (tab === nav.link) {
 				setActiveTab(i);
-				setShowPopup(true);
-			} else if (searchParams.get('tab') === '0') {
-				setShowPopup(false);
-			} else {
-				setActiveTab(0);
+				if (window.innerWidth < 768) {
+					setShowPopup(true);
+				}
+			} else if (tab === '0') {
+				if (window.innerWidth < 768) {
+					setShowPopup(false);
+				}
 			}
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -148,12 +152,18 @@ export default function AdminSettings() {
 				{showPopup && (
 					<SidePopupWrapper
 						title={navs[activeTab].label}
-						close={() => router.push(`?tab=0`)}
+						close={() => {
+							router.push(`?tab=0`);
+						}}
 					>
 						<div className="px-4 py-5">
 							{activeTab === 0 && <EditProfile />}
 							{activeTab === 1 && (
-								<ChangePassword close={() => setShowPopup(false)} />
+								<ChangePassword
+									close={() => {
+										router.push(`?tab=0`);
+									}}
+								/>
 							)}
 							{activeTab === 2 && <PrivacyPolicy />}
 							{activeTab === 3 && <ContactUs />}
