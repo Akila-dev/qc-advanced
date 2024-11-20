@@ -70,7 +70,7 @@ const Testimonials = () => {
 							width={25}
 							height={25}
 						/>
-						<div className="flex gap-1">
+						{/* <div className="flex gap-1">
 							{Array(testimonials[0].no_of_stars)
 								.fill(0)
 								.map((n, i) => (
@@ -94,7 +94,7 @@ const Testimonials = () => {
 											height={20}
 										/>
 									))}
-						</div>
+						</div> */}
 						<h2 className="lg:leading-[130%] lg:text-[1.75rem]">
 							{testimonials[0].comment}
 						</h2>
@@ -109,8 +109,9 @@ const Testimonials = () => {
 								<Image
 									src={testimonials[0].logo}
 									alt="testimonial quote"
-									width={100}
+									width={40}
 									height={40}
+									className="h-[20px] w-auto grayscale"
 								/>
 							</div>
 						</div>

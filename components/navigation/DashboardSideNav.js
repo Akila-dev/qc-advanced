@@ -42,7 +42,7 @@ const DashboardSideNav = ({ type }) => {
 	return (
 		<>
 			<div className="h-screen w-full">
-				<div className="w-full h-full flex flex-col items-center p-5 gap-[50px] ">
+				<div className="w-full h-full flex flex-col items-center p-5 gap-7 xl:gap-[50px] ">
 					<div className="w-[120px] h-[120px]">
 						<Image
 							src={images.logoFull}

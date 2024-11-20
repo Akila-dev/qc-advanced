@@ -3,15 +3,15 @@ import { landingImages } from '../constants';
 export const qcSteps = [
 	{
 		step: 'Create an account',
-		desc: 'Lorem ipsum dolor sit amet consectetur. Tempor eu libero iaculis pellentesque. ',
+		desc: 'Sign up and create an admin account effortlessly.',
 	},
 	{
-		step: 'Create Business Inspection',
-		desc: 'Lorem ipsum dolor sit amet consectetur. Tempor eu libero iaculis pellentesque. ',
+		step: 'Add Business',
+		desc: 'Add your business(es) and create actions that are to be carried out by your employees.',
 	},
 	{
-		step: 'Assign to Employees',
-		desc: 'Lorem ipsum dolor sit amet consectetur. Tempor eu libero iaculis pellentesque. ',
+		step: 'Assign Action',
+		desc: 'Assign the actions to your employees, who would then be able to assess these actions.',
 	},
 ];
 

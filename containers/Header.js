@@ -59,7 +59,9 @@ const Header = () => {
 						variants={slideInBottom}
 						className="text-[--black] py-4 lg:py-5"
 					>
-						Become part of a community committed to quality and excellence.
+						From menu development and kitchen design to marketing and financial
+						planning, we have the skills and experience to help your restaurant
+						thrive.
 					</motion.p>
 					<motion.div
 						variants={slideInBottom}

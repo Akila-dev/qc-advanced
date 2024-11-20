@@ -2,7 +2,12 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter, useSearchParams, redirect } from 'next/navigation';
+import {
+	useRouter,
+	useSearchParams,
+	usePathname,
+	redirect,
+} from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -23,8 +28,9 @@ import { LoginSchema } from '@/schemas';
 export default function LogIn() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
+	const pathname = usePathname();
 	const [callback, setCallback] = useState(
-		searchParams.get('callbackUrl') || ''
+		searchParams.get('callbackUrl') || '/'
 	);
 
 	const [isPending, setIsPending] = useState();
@@ -46,7 +52,12 @@ export default function LogIn() {
 		} else {
 			setValue('user_type', 'user');
 		}
-		setCallback(searchParams.get('callbackUrl') || '');
+		// const params = searchParams.toString();
+		// const callbackUrlNew = `${pathname}${params ? '?' : ''}${params}`;
+
+		// setCallback(callbackUrlNew);
+
+		setCallback(searchParams.get('callbackUrl') || '/');
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchParams]);
@@ -57,7 +68,11 @@ export default function LogIn() {
 		} else {
 			setValue('user_type', 'user');
 		}
-		setCallback(searchParams.get('callbackUrl') || '');
+		// const params = searchParams.toString();
+		// const callbackUrlNew = `${pathname}${params ? '?' : ''}${params}`;
+
+		// setCallback(callbackUrlNew);
+		setCallback(searchParams.get('callbackUrl') || '/');
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -78,7 +93,7 @@ export default function LogIn() {
 				setSuccess('Logging you in...');
 				console.log('Hi');
 				// router.push(searchParams.get('callbackUrl'));
-				// router.redirect(`/${callback}`);
+				router.push(callback);
 			} else {
 				setIsPending(false);
 				setError('Invalid Login details!');

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 
@@ -9,15 +9,31 @@ import { SignOutPopup, Button } from '@/components';
 import { IconPopupWrapper } from '@/wrappers';
 
 export default function AuthLayout({ children }) {
-	const [showLogout, setShowLogout] = useState(false);
 	const { data: session } = useSession();
+	const [showLogout, setShowLogout] = useState(false);
+	const [authenticated, setAuthenticated] = useState(session);
+	const [dontRespond, setDontRespond] = useState(true);
+
+	useEffect(() => {
+		if (session) {
+			setAuthenticated(true);
+		} else {
+			setAuthenticated(false);
+			setDontRespond(false);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<div className="relative w-full flex items-center justify-center bg-pattern bg-cover bg-fixed">
-			<div className="relative w-full flex items-center justify-center p-0 md:px-[50px] min-h-screen">
+			<div
+				className={`relative w-full flex items-center justify-center p-0 md:px-[50px] min-h-screen ${
+					dontRespond && 'pointer-events-none'
+				}`}
+			>
 				{children}
 			</div>
-			{session && (
+			{authenticated && (
 				<div className="fixed top-0 left-0 w-full h-screen !z-10">
 					<IconPopupWrapper
 						icon={images.logout}
