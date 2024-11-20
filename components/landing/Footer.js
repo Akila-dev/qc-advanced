@@ -56,7 +56,7 @@ const Footer = () => {
 						<Link href="/auth/admin/about" className="footer-link">
 							Sign Up
 						</Link>
-						<Link href="/api/auth/signin?callbackUrl=/" className="footer-link">
+						<Link href="/auth" className="footer-link">
 							Sign In
 						</Link>
 						<Link href="/about" className="footer-link">
