@@ -87,7 +87,9 @@ const AddBusiness = ({
 				<div className="w-full space-y-4">
 					{/* Upload Document */}
 					<div className="input-block">
-						<label>Business Image</label>
+						<label className={errors.business_img?.message && 'text-[--brand]'}>
+							Business Image
+						</label>
 						<button
 							type="button"
 							onClick={() => setShowAddMedia(true)}

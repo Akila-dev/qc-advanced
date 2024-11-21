@@ -135,7 +135,9 @@ const DragDropFile = ({
 			</div>
 			{error ? (
 				<p className="text-[--brand] text-xs pt-1">
-					{'Please Add an Image (png,jpg or jpeg)'}
+					{document
+						? 'Please Add a document (pdf)'
+						: 'Please Add an Image (png,jpg or jpeg)'}
 					{/* {error} */}
 				</p>
 			) : (

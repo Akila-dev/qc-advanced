@@ -94,7 +94,9 @@ export default function SidePopupWrapper({
 					/>{' '}
 				</div>
 				<div className="h-full w-full">
-					<div className="popup-content-box relative">{children}</div>
+					<div className="popup-content-box relative !bg-red-700">
+						{children}
+					</div>
 					<div className="w-full md:w-[--sidebar] flex justify-between gap-5 items-center h-[15vh] md:h-[80px] fixed top-0 right-0 !text-[--white] md:!text-[--black] px-4 md:z-[1] md:shadow md:bg-[--white]">
 						<motion.button
 							whileTap="tap"
