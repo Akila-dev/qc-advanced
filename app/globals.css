@@ -211,7 +211,7 @@ input,
 /* ! POPUPS */
 
 .popup-container {
-	@apply fixed top-0 right-0 w-full md:w-[--sidebar] h-screen pt-[15vh] md:pt-0 overflow-auto;
+	@apply absolute top-0 right-0 w-full md:w-[--sidebar] h-full pt-[15vh] md:pt-0;
 }
 
 .popup-content-box {
