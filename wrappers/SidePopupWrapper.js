@@ -25,15 +25,15 @@ export default function SidePopupWrapper({
 		};
 	}, []);
 
-	// scroll
-	const wheelRef = useRef();
-	const handleWheel = (e) => {
-		e.preventDefault;
-		wheelRef.current.scrollBy({
-			top: e.deltaY / 5,
-			// behavior: 'smooth',
-		});
-	};
+	// // scroll
+	// const wheelRef = useRef();
+	// const handleWheel = (e) => {
+	// 	e.preventDefault;
+	// 	wheelRef.current.scrollBy({
+	// 		top: e.deltaY / 5,
+	// 		// behavior: 'smooth',
+	// 	});
+	// };
 
 	// ANIMATION
 	const [scope, animate] = useAnimate();
@@ -98,8 +98,8 @@ export default function SidePopupWrapper({
 				>
 					<div className="h-full w-full">
 						<div
-							ref={wheelRef}
-							onWheel={(e) => handleWheel(e)}
+							// ref={wheelRef}
+							// onWheel={(e) => handleWheel(e)}
 							className="popup-content-box relative !bg-red-700"
 						>
 							{children}

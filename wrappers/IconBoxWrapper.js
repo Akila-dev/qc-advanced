@@ -29,14 +29,14 @@ export default function AppWrap({
 	const [scope, animate] = useAnimate();
 	const [isPresent, safeToRemove] = usePresence();
 
-	// scroll
-	const wheelRef = useRef();
-	const handleWheel = (e) => {
-		wheelRef.current.scrollBy({
-			top: e.deltaY / 2,
-			behavior: 'smooth',
-		});
-	};
+	// // scroll
+	// const wheelRef = useRef();
+	// const handleWheel = (e) => {
+	// 	wheelRef.current.scrollBy({
+	// 		top: e.deltaY / 2,
+	// 		behavior: 'smooth',
+	// 	});
+	// };
 
 	useEffect(() => {
 		if (isPresent) {
@@ -122,8 +122,8 @@ export default function AppWrap({
 			)}
 
 			<div
-				ref={wheelRef}
-				onWheel={(e) => handleWheel(e)}
+				// ref={wheelRef}
+				// onWheel={(e) => handleWheel(e)}
 				className="bg-[--white] pt-[50px] w-full rounded-t-[--rounding] md:rounded-[--rounding] min-h-[300px] h-full md:h-auto md:max-h-[80vh] shadow overflow-auto"
 			>
 				<div className="flex flex-col items-center px-5 pt-3 pb-7 ">

@@ -213,13 +213,13 @@ export default function Dashboard() {
 						<div className="w-full px-4 py-5 md:p-7 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3">
 							{[
 								...businessList,
-								// ...businessList,
-								// ...businessList,
-								// ...businessList,
-								// ...businessList,
-								// ...businessList,
-								// ...businessList,
-								// ...businessList,
+								...businessList,
+								...businessList,
+								...businessList,
+								...businessList,
+								...businessList,
+								...businessList,
+								...businessList,
 							]?.map(
 								(
 									{
